@@ -6,8 +6,8 @@ services:
       context: ./app
       dockerfile: Dockerfile
     image: area/app
-#    volumes:
-#      - ./app-apk/:/usr/src/app/build/app/outputs/flutter-apk/
+    volumes:
+      - ./app-apk/:/usr/src/app/build/app/outputs/flutter-apk/
     stdin_open: true
   frontend:
     container_name: area_webs
@@ -21,8 +21,8 @@ services:
       - backend
     links:
       - backend
-    volumes:
-      - ./website/build:/usr/share/nginx/html
+#    volumes:
+#      - ./website/build:/usr/share/nginx/html
     stdin_open: true
   backend:
     container_name: area_bend
