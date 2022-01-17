@@ -1,7 +1,7 @@
 {
-  "name": "dashboard",
+  "name": "area",
   "version": "1.0.0",
-  "description": "Dashboard",
+  "description": "area",
   "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

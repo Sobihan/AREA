@@ -20,6 +20,7 @@ model User {
     avatar    String?  //non mandatory
     role      Role     @default(USER)
     exApi     EX_API[]
+    job       Job[]
 }
 
 model EX_API {
@@ -32,6 +33,18 @@ model EX_API {
     user      User?    @relation(fields: [userToken], references: [token])
     userToken String?
     @@unique([type, userToken])
+}
+
+model Job {
+    id        Int      @id @default(autoincrement())
+    jobToken  String   @unique @default(uuid())
+    name      String
+    action    String
+    reaction  String
+    interval  Int     //seconds
+    user      User?    @relation(fields: [userToken], references: [token])
+    userToken String?
+    @@unique([jobToken, userToken])
 }
 
 enum Role {
