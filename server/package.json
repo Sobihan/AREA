@@ -1,0 +1,34 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EpitechPromo2024/B-DEV-500-PAR-5-1-dashboard-alexandre1.berthomier.git"
+  },
+  "author": "Alexandre Berthomier, Adrien Moreau",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EpitechPromo2024/B-DEV-500-PAR-5-1-dashboard-alexandre1.berthomier/issues"
+  },
+  "homepage": "https://github.com/EpitechPromo2024/B-DEV-500-PAR-5-1-dashboard-alexandre1.berthomier#readme",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "prisma": "^3.8.1"
+  },
+  "proxy": "http://backend:5000",
+  "dependencies": {
+    "@prisma/client": "^3.8.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "follow-redirects": "^1.14.5",
+    "node-fetch": "^2.6.6",
+    "node-twitch": "^0.4.5",
+    "utf8": "^3.0.0"
+  }
+}

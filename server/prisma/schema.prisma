@@ -1,0 +1,44 @@
+datasource db {
+    url      = "postgresql://pguser:pguser@dbpostgres/prisma"
+    provider = "postgresql"
+}
+
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl"]
+}
+
+model User {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    username  String   @unique
+    email     String   @unique
+    password  String
+    name      String?  //non mandatory
+    lstName   String?  //non mandatory
+    token     String   @unique @default(uuid())
+    avatar    String?  //non mandatory
+    role      Role     @default(USER)
+    exApi     EX_API[]
+}
+
+model EX_API {
+    id        Int      @id @default(autoincrement())
+    type      Api_id   //@default(UNKNOWN)
+    token     String   @unique
+    disableAt BigInt?  @db.BigInt
+    acstoken  String?  @unique
+    rfstoken  String?  @unique
+    user      User?    @relation(fields: [userToken], references: [token])
+    userToken String?
+    @@unique([type, userToken])
+}
+
+enum Role {
+    USER
+    ADMIN
+}
+
+enum Api_id {
+    REDDIT
+}
