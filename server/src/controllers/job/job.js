@@ -1,3 +1,4 @@
+const main = require('../../main');
 const job = require('../../db_management/job/db_job');
 
 function convertInt(x, base) {
@@ -99,6 +100,23 @@ const searchJob = (req, res, next) => {
     console.log('Got body:', req.body);
 };
 
+const actions = require('../../area/action');
+const reactions = require('../../area/reaction');
+
+const testJob = (req, res, next) => {
+    actions.action.get(req.body.action)("skyrroztv", reactions.reaction.get(req.body.reaction))
+
+    res.status(401).json({
+        //success: false,
+        body: 'test job'
+    });
+
+    console.log('test-job');
+    console.log('Got body:', req.body);
+};
+
 module.exports.updateJob = updateJob;
 module.exports.deleteJob = deleteJob;
 module.exports.searchJob = searchJob;
+
+module.exports.testJob = testJob;

@@ -16,4 +16,6 @@ router.post('/update-job', job.updateJob);
 router.post('/delete-job', job.deleteJob);
 router.get('/search-job', job.searchJob);
 
+router.get('/test-job', job.testJob);
+
 module.exports = router;
