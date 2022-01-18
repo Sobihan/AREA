@@ -44,7 +44,7 @@ export function Login()
         User.token = respdata.token;
         User.email = formData.get('email');
         User.logged = true;
-        navigate('/news');
+        navigate('/');
       });
     }
     else {
