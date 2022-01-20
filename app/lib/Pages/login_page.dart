@@ -127,24 +127,5 @@ class _LoginPageState extends State<LoginPage> {
         ],
       )),
     ));
-
-    // return Scaffold(
-    //     resizeToAvoidBottomInset: false,
-    //     body: Column(
-    //       children: <Widget>[
-    //         getMyHeader("AREA"),
-    //         const SizedBox(height: 50),
-    //         getMyInput(_controllerEmail, Icons.mail_outline, "Email", false),
-    //         const SizedBox(height: 40),
-    //         getMyInput(_controllerPassword, Icons.password, "Password", true),
-    //         const SizedBox(height: 50),
-    //         getMyLongButton("Sign In", () => {printer(_controllerEmail.text)},
-    //             CustomColor.whiteBlue),
-    //         const SizedBox(height: 30),
-    //         getMyLongButton("Sign Up", () => {printer(_controllerEmail.text)},
-    //             CustomColor.lightBlue)
-    //         // Text(_controller.text == "" ? "Hello" : _controller.text)
-    //       ],
-    //     ));
   }
 }
