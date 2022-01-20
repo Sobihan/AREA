@@ -4,6 +4,8 @@ class CustomColor {
   static const Color lightBlue = Color.fromRGBO(98, 174, 251, 1);
   static const Color grey = Color.fromRGBO(196, 196, 196, 0.34);
   static const Color whiteBlue = Color.fromRGBO(178, 226, 254, 1);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color darkBlue = Color.fromRGBO(34, 84, 224, 1);
 }
 
 Map<int, Color> color = const {
