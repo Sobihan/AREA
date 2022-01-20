@@ -1,7 +1,7 @@
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/Login/gbutton.dart';
 import 'package:area/Components/Login/text_span.dart';
-import 'package:area/Pages/signup_page.dart';
+import 'package:area/Pages/login_page.dart';
 import 'package:flutter/material.dart';
 import '../Components/Login/button.dart';
 import '../API/api.dart';
@@ -9,35 +9,38 @@ import 'package:flutter/services.dart';
 import '../Components/Login/or.dart';
 import '../Components/Login/inputSection.dart';
 
-class LoginPage extends StatefulWidget {
+class SignupPage extends StatefulWidget {
   final String host;
-  const LoginPage({Key? key, required this.host}) : super(key: key);
+  const SignupPage({Key? key, required this.host}) : super(key: key);
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   late TextEditingController _controllerEmail;
   late TextEditingController _controllerPassword;
+  late TextEditingController _controllerUsername;
 
   @override
   void initState() {
     super.initState();
     _controllerEmail = TextEditingController();
     _controllerPassword = TextEditingController();
+    _controllerUsername = TextEditingController();
   }
 
   @override
   void dispose() {
     _controllerEmail.dispose();
     _controllerPassword.dispose();
+    _controllerUsername.dispose();
     super.dispose();
   }
 
-  void signupPressed() {
+  void logInPressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignupPage(host: widget.host)),
+      MaterialPageRoute(builder: (context) => LoginPage(host: widget.host)),
     );
   }
 
@@ -63,14 +66,20 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Text(
-                    'Sign In',
+                    'Sign Up',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 40),
+                  inputSection(
+                      hintText: 'Username',
+                      icon: Icons.email,
+                      isSecure: false,
+                      controller: _controllerUsername),
+                  const SizedBox(height: 20),
                   inputSection(
                       hintText: 'Email',
                       icon: Icons.email,
@@ -86,9 +95,9 @@ class _LoginPageState extends State<LoginPage> {
                       name: 'Login',
                       onPressed: () => printer(_controllerEmail.text)),
                   textSpan(
-                      description: 'Don\'t have an Account ? ',
-                      name: 'Sign Up',
-                      onTap: () => signupPressed()),
+                      description: 'Already have an account ? ',
+                      name: 'Sign In',
+                      onTap: () => logInPressed()),
                   const SizedBox(height: 10),
                   or(),
                   const SizedBox(height: 20),
