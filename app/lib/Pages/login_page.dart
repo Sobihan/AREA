@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:area/Models/User.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/Login/gbutton.dart';
 import 'package:area/Components/Login/text_span.dart';
@@ -41,6 +44,26 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void signInPressed() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) return; // Add Alert Box
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(_controllerEmail.text);
+
+    if (emailValid == false) return;
+    final responseLogin = await login(
+        host: widget.host,
+        email: _controllerEmail.text,
+        password: _controllerPassword.text);
+    if (responseLogin.statusCode != 200) return; //ADD Alert BOX
+    String token = jsonDecode(responseLogin.body)['token'];
+    final responseUser = await getUser(token: token, host: widget.host);
+    User user = User.fromJson(
+        token: token, json: jsonDecode(responseUser.body)['user']);
+    print(user);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,9 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                       icon: Icons.lock,
                       isSecure: true,
                       controller: _controllerPassword),
-                  button(
-                      name: 'Login',
-                      onPressed: () => printer(_controllerEmail.text)),
+                  button(name: 'Login', onPressed: () => signInPressed()),
                   textSpan(
                       description: 'Don\'t have an Account ? ',
                       name: 'Sign Up',

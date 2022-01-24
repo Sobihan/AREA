@@ -8,6 +8,9 @@ import '../API/api.dart';
 import 'package:flutter/services.dart';
 import '../Components/Login/or.dart';
 import '../Components/Login/inputSection.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'dart:convert';
+import 'package:area/Models/User.dart';
 
 class SignupPage extends StatefulWidget {
   final String host;
@@ -42,6 +45,26 @@ class _SignupPageState extends State<SignupPage> {
       context,
       MaterialPageRoute(builder: (context) => LoginPage(host: widget.host)),
     );
+  }
+
+  void signInPressed() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) return;
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(_controllerEmail.text);
+
+    if (emailValid == false) return;
+    final responseSignUp = await register(
+        username: _controllerUsername.text,
+        host: widget.host,
+        email: _controllerEmail.text,
+        password: _controllerPassword.text);
+    if (responseSignUp.statusCode != 200) return; //ADD Alert BOX
+    String token = jsonDecode(responseSignUp.body)['token'];
+    final responseUser = await getUser(token: token, host: widget.host);
+    User user = User.fromJson(
+        token: token, json: jsonDecode(responseUser.body)['user']);
   }
 
   @override
@@ -91,9 +114,7 @@ class _SignupPageState extends State<SignupPage> {
                       icon: Icons.lock,
                       isSecure: true,
                       controller: _controllerPassword),
-                  button(
-                      name: 'Login',
-                      onPressed: () => printer(_controllerEmail.text)),
+                  button(name: 'Sign Up', onPressed: () => signInPressed()),
                   textSpan(
                       description: 'Already have an account ? ',
                       name: 'Sign In',

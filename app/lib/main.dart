@@ -17,10 +17,11 @@ class MyApp extends StatelessWidget {
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'AREA',
           theme: getMyTheme(),
           home: kReleaseMode == false
-              ? const LoginPage(host: "Host")
+              ? const LoginPage(
+                  host: "192.168.1.15") //Need to change in debug mode.
               : const HostAlert(),
         ));
   }
