@@ -20,17 +20,6 @@ import ListItemText from '@mui/material/ListItemText';
 import RedditIcon from '@mui/icons-material/Reddit';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
-import { useNavigate } from 'react-router';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import TitleIcon from '@mui/icons-material/Title';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-
-import { OAuthReddit } from '../OAuth/OAuthReddit';
-import { User } from '../Account/User';
-import { Sleep } from '../Sleep';
 
 const drawerWidth = 240;
 
@@ -80,7 +69,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export function Dashboard()
 {
-  let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
 
   const toggleDrawer = () => {
