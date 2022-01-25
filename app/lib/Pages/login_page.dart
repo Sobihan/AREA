@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:area/Models/User.dart';
+import 'package:area/API/google.dart';
+import 'package:area/Models/user.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/Login/gbutton.dart';
@@ -64,6 +65,23 @@ class _LoginPageState extends State<LoginPage> {
     print(user);
   }
 
+  void gButtonPressed() async {
+    final user = await GoogleSignInApi.login();
+
+    if (user != null) {
+      final auth = await user.authHeaders;
+      String token = auth['Authorization'] ?? '';
+
+      var snackBar = SnackBar(
+        content: Text(token),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      print(auth['Authorization']);
+    } else {
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 10),
                   or(),
                   const SizedBox(height: 20),
-                  gbutton(onTap: () => print('Gbutton pressed'))
+                  gbutton(onTap: () => gButtonPressed())
                 ],
               ),
             ),

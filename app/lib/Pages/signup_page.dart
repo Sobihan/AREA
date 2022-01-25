@@ -10,7 +10,8 @@ import '../Components/Login/or.dart';
 import '../Components/Login/inputSection.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:convert';
-import 'package:area/Models/User.dart';
+import 'package:area/Models/user.dart';
+import 'package:area/API/google.dart';
 
 class SignupPage extends StatefulWidget {
   final String host;
@@ -65,6 +66,16 @@ class _SignupPageState extends State<SignupPage> {
     final responseUser = await getUser(token: token, host: widget.host);
     User user = User.fromJson(
         token: token, json: jsonDecode(responseUser.body)['user']);
+  }
+
+  void gButtonPressed() async {
+    final user = await GoogleSignInApi.login();
+    if (user != null) {
+      final auth = await user.authHeaders;
+      print(auth['Authorization']);
+    } else {
+      return;
+    }
   }
 
   @override
