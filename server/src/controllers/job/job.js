@@ -1,5 +1,8 @@
-const main = require('../../main');
+//const main = require('../../main');
 const job = require('../../db_management/job/db_job');
+const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
+
+const scheduler = new ToadScheduler()
 
 function convertInt(x, base) {
     const parsed = parseInt(x, base);

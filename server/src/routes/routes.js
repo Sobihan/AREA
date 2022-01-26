@@ -6,6 +6,7 @@ const job = require('../controllers/job/job');
 
 router.post('/authenticate', user_controllers.authenticate);
 router.post('/register', user_controllers.register);
+router.post('/google-auth', user_controllers.googleRegisterOrAuthenticate);
 router.post('/update-user-data', user_controllers.updateUserData);
 router.get('/get-user-data', user_controllers.getUserData);
 

@@ -29,6 +29,7 @@
     "follow-redirects": "^1.14.5",
     "node-fetch": "^2.6.6",
     "node-twitch": "^0.4.5",
+    "toad-scheduler": "^1.6.0",
     "utf8": "^3.0.0"
   }
 }

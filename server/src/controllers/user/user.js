@@ -32,31 +32,80 @@ const register = (req, res, next) => {
 const authenticate = (req, res, next) => {
     let isSuccess = true;
 
-    user_prisma.findUniqueAuthenticate(req.body.email, req.body.password)
+    user_prisma.findUniqueAuthenticate(req.body.email)
     .catch((e) => {
         isSuccess = false;
         console.log(e);
     })
     .then((user) => {
-        if (isSuccess == true && req.body.password == user.password){
-            console.log('Register SUCESSFUL');
+        if (isSuccess == true && user != null && req.body.password == user.password){
+            console.log('Authenticate SUCESSFUL');
             res.status(200).json({
                 success: true,
-                body: 'Registration done!',
+                body: 'Authentication done!',
                 token: user.token,
             });
         }
         else {
-            console.log('Register FAIL');
+            console.log('Authenticate FAIL');
             res.status(401).json({
                 success: false,
-                body: 'Registration Failed'
+                body: 'Authentication Failed'
             });
         }
     });
 
     console.log('authenticate');
     console.log('Got body:', req.body);
+};
+
+const googleRegisterOrAuthenticate = (req, res, next) => {
+    const json_google = JSON.parse(req.body.google);
+    let isSuccess = true;
+    let isSuccess_2 = true;
+
+    user_prisma.findUniqueAuthenticate(json_google.profileObj.email)
+    .catch((e) => {
+        isSuccess = false;
+        console.log(e);
+    })
+    .then((user) => {
+        if (isSuccess == true && user != null && json_google.profileObj.googleId == user.password){
+            console.log('googleAuthenticate SUCESSFUL');
+            res.status(200).json({
+                success: true,
+                body: 'googleAuthentication done!',
+                token: user.token,
+            });
+        }
+        else {
+            user_prisma.createUser(json_google.profileObj.email, json_google.profileObj.email, json_google.profileObj.googleId, json_google.profileObj.givenName, json_google.profileObj.familyName)
+            .catch((e) => {
+                isSuccess_2 = false;
+                console.log(e);
+            })
+            .then((user) => {
+                if (isSuccess_2 == true){
+                    console.log('googleRegister SUCESSFUL');
+                    res.status(200).json({
+                        success: true,
+                        body: 'googleRegistration done!',
+                        user
+                    });
+                }
+                else {
+                    console.log('googleRegisterOrAuthenticate FAIL');
+                    res.status(401).json({
+                        success: false,
+                        body: 'googleRegisterOrAuthenticate Failed'
+                    });
+                }
+            });
+        }
+    });
+
+    console.log('authenticate');
+    console.log(req.body);
 };
 
 const updateUserData = (req, res, next) => {
@@ -120,5 +169,6 @@ const getUserData = (req, res, next) => {
 
 module.exports.register = register;
 module.exports.authenticate = authenticate;
+module.exports.googleRegisterOrAuthenticate = googleRegisterOrAuthenticate;
 module.exports.updateUserData = updateUserData;
 module.exports.getUserData = getUserData;
