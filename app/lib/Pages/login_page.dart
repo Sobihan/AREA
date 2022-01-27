@@ -21,22 +21,34 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   late TextEditingController _controllerEmail;
   late TextEditingController _controllerPassword;
   String errorMessage = '';
+  bool reloading = false;
+  late AnimationController _controllerCircular;
 
   @override
   void initState() {
     super.initState();
     _controllerEmail = TextEditingController();
     _controllerPassword = TextEditingController();
+    _controllerCircular = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..addListener(() {
+        setState(() {
+          errorMessage = '';
+        });
+      });
+    _controllerCircular.repeat();
   }
 
   @override
   void dispose() {
     _controllerEmail.dispose();
     _controllerPassword.dispose();
+    _controllerCircular.dispose();
     super.dispose();
   }
 
@@ -53,47 +65,65 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Future checkError() async {
+  void reload() {
+    setState(() {
+      errorMessage = "";
+      reloading = !reloading;
+    });
+  }
+
+  Future<bool> checkError() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       addError("Check Internet connection");
-      return;
+      return false;
     } // Add Alert Box
     if (_controllerEmail.text.isEmpty) {
       addError("Check your email field");
-      return;
+      return false;
     }
     bool emailValid = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(_controllerEmail.text);
     if (emailValid == false) {
       addError("Check your email field");
-      return;
+      return false;
     }
 
     if (_controllerPassword.text.isEmpty) {
       addError("Check your password field");
-      return;
+      return false;
     }
+    return true;
   }
 
   void signInPressed() async {
-    await checkError();
+    if (!await checkError()) return;
 
+    reload();
     final responseLogin = await login(
         host: widget.host,
         email: _controllerEmail.text,
         password: _controllerPassword.text);
-    if (responseLogin.statusCode != 200) return; //ADD Alert BOX
+    if (responseLogin.statusCode != 200) {
+      addError("Email or password is incorrect");
+      return;
+    }
     String token = jsonDecode(responseLogin.body)['token'];
     final responseUser = await getUser(token: token, host: widget.host);
     User user = User.fromJson(
         token: token, json: jsonDecode(responseUser.body)['user']);
     print(user.toString());
+    reload();
   }
 
   void gButtonPressed() async {
-    final user = await GoogleSignInApi.login();
+    final user;
+    try {
+      user = await GoogleSignInApi.login();
+    } catch (e) {
+      return;
+    }
 
     if (user != null) {
       final token = await user.authentication;
@@ -109,11 +139,20 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget buildError() {
+  Widget buildHeader() {
+    if (reloading) {
+      return CircularProgressIndicator(
+        value: _controllerCircular.value,
+        semanticsLabel: 'Linear progress indicator',
+      );
+    }
     if (errorMessage.isEmpty) {
       return const SizedBox.shrink();
     } else {
-      return Text(errorMessage);
+      return Text(
+        errorMessage,
+        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      );
     }
   }
 
@@ -138,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildError(),
+                  buildHeader(),
                   const Text(
                     'Sign In',
                     style: TextStyle(
