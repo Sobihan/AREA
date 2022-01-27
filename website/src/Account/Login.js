@@ -132,13 +132,20 @@ export function Login()
             >
               Sign In
             </Button>
-            <GoogleLogin
-              clientId="789963154068-jq4283e019useue1vfa8d8a19go9istp.apps.googleusercontent.com"
-              buttonText="Login"
-              onSuccess={OAuthGoogle}
-              onFailure={() => {setShowError(true)}}
-              cookiePolicy={'single_host_origin'}
-            />
+            <Grid container spacing={{ xs: 2 }}>
+              <Grid item>
+                <GoogleLogin
+                  clientId="789963154068-jq4283e019useue1vfa8d8a19go9istp.apps.googleusercontent.com"
+                  buttonText="Log in with Google"
+                  onSuccess={OAuthGoogle}
+                  onFailure={() => {setShowError(true)}}
+                  cookiePolicy={'single_host_origin'}
+                />
+              </Grid>
+              <Grid item>
+                
+              </Grid>
+            </Grid>
             <Grid container>
               <Grid item>
                 <Link href="signup" variant="body2">
