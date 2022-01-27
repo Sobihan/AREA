@@ -12,9 +12,11 @@ import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { useNavigate } from 'react-router';
+import GoogleLogin from 'react-google-login';
 
 import { Sleep } from '../Sleep';
 import { User } from './User';
+import { OAuthGoogle } from '../OAuth/OAuthGoogle';
 
 export function Login()
 {
@@ -44,7 +46,7 @@ export function Login()
         User.token = respdata.token;
         User.email = formData.get('email');
         User.logged = true;
-        navigate('/news');
+        navigate('/');
       });
     }
     else {
@@ -130,6 +132,20 @@ export function Login()
             >
               Sign In
             </Button>
+            <Grid container spacing={{ xs: 2 }}>
+              <Grid item>
+                <GoogleLogin
+                  clientId="789963154068-jq4283e019useue1vfa8d8a19go9istp.apps.googleusercontent.com"
+                  buttonText="Log in with Google"
+                  onSuccess={OAuthGoogle}
+                  onFailure={() => {setShowError(true)}}
+                  cookiePolicy={'single_host_origin'}
+                />
+              </Grid>
+              <Grid item>
+                
+              </Grid>
+            </Grid>
             <Grid container>
               <Grid item>
                 <Link href="signup" variant="body2">
