@@ -21,10 +21,13 @@ class SignupPage extends StatefulWidget {
   State<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
   late TextEditingController _controllerEmail;
   late TextEditingController _controllerPassword;
   late TextEditingController _controllerUsername;
+  late AnimationController _controllerCircular;
+  String errorMessage = '';
+  bool reloading = false;
 
   @override
   void initState() {
@@ -32,6 +35,13 @@ class _SignupPageState extends State<SignupPage> {
     _controllerEmail = TextEditingController();
     _controllerPassword = TextEditingController();
     _controllerUsername = TextEditingController();
+    _controllerCircular = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..addListener(() {
+        setState(() {});
+      });
+    _controllerCircular.repeat();
   }
 
   @override
@@ -49,29 +59,76 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  void signInPressed() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) return;
+  void addError(String message) {
+    setState(() {
+      errorMessage = message;
+    });
+  }
 
+  void reload() {
+    setState(() {
+      errorMessage = "";
+      reloading = !reloading;
+    });
+  }
+
+  Future<bool> checkError() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      addError("Check Internet connection");
+      return false;
+    } // Add Alert Box
+
+    if (_controllerUsername.text.isEmpty) {
+      addError("Check your username field");
+      return false;
+    }
+    if (_controllerEmail.text.isEmpty) {
+      addError("Check your email field");
+      return false;
+    }
     bool emailValid = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(_controllerEmail.text);
+    if (emailValid == false) {
+      addError("Check your email field");
+      return false;
+    }
 
-    if (emailValid == false) return;
+    if (_controllerPassword.text.isEmpty) {
+      addError("Check your password field");
+      return false;
+    }
+    return true;
+  }
+
+  void signInPressed() async {
+    if (!await checkError()) return;
+    reload();
     final responseSignUp = await register(
         username: _controllerUsername.text,
         host: widget.host,
         email: _controllerEmail.text,
         password: _controllerPassword.text);
-    if (responseSignUp.statusCode != 200) return; //ADD Alert BOX
-    String token = jsonDecode(responseSignUp.body)['token'];
+    if (responseSignUp.statusCode != 200) {
+      addError("Account already exists");
+      return;
+    }
+    String token = jsonDecode(responseSignUp.body)["user"]['token'];
     final responseUser = await getUser(token: token, host: widget.host);
     User user = User.fromJson(
         token: token, json: jsonDecode(responseUser.body)['user']);
+    print(user.toString());
+    reload();
   }
 
   void gButtonPressed() async {
-    final user = await GoogleSignInApi.login();
+    final user;
+    try {
+      user = await GoogleSignInApi.login();
+    } catch (e) {
+      return;
+    }
 
     if (user != null) {
       final token = await user.authentication;
@@ -84,6 +141,23 @@ class _SignupPageState extends State<SignupPage> {
       print(response.statusCode);
     } else {
       return;
+    }
+  }
+
+  Widget buildHeader() {
+    if (reloading) {
+      return CircularProgressIndicator(
+        value: _controllerCircular.value,
+        semanticsLabel: 'Linear progress indicator',
+      );
+    }
+    if (errorMessage.isEmpty) {
+      return const SizedBox.shrink();
+    } else {
+      return Text(
+        errorMessage,
+        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      );
     }
   }
 
@@ -108,6 +182,7 @@ class _SignupPageState extends State<SignupPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  buildHeader(),
                   const Text(
                     'Sign Up',
                     style: TextStyle(

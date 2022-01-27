@@ -37,9 +37,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(seconds: 5),
     )..addListener(() {
-        setState(() {
-          errorMessage = '';
-        });
+        setState(() {});
       });
     _controllerCircular.repeat();
   }
@@ -146,7 +144,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         semanticsLabel: 'Linear progress indicator',
       );
     }
-    if (errorMessage.isEmpty) {
+    if (errorMessage == '') {
       return const SizedBox.shrink();
     } else {
       return Text(
