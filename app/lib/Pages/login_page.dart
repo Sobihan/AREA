@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:area/API/google.dart';
+import 'package:area/Models/google.dart';
 import 'package:area/Models/user.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:area/Components/Login/background.dart';
@@ -11,7 +12,7 @@ import '../Components/Login/button.dart';
 import '../API/api.dart';
 import 'package:flutter/services.dart';
 import '../Components/Login/or.dart';
-import '../Components/Login/inputSection.dart';
+import '../Components/Login/input_section.dart';
 
 class LoginPage extends StatefulWidget {
   final String host;
@@ -23,6 +24,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late TextEditingController _controllerEmail;
   late TextEditingController _controllerPassword;
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -45,14 +47,39 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void signInPressed() async {
+  void addError(String message) {
+    setState(() {
+      errorMessage = message;
+    });
+  }
+
+  Future checkError() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) return; // Add Alert Box
+    if (connectivityResult == ConnectivityResult.none) {
+      addError("Check Internet connection");
+      return;
+    } // Add Alert Box
+    if (_controllerEmail.text.isEmpty) {
+      addError("Check your email field");
+      return;
+    }
     bool emailValid = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(_controllerEmail.text);
+    if (emailValid == false) {
+      addError("Check your email field");
+      return;
+    }
 
-    if (emailValid == false) return;
+    if (_controllerPassword.text.isEmpty) {
+      addError("Check your password field");
+      return;
+    }
+  }
+
+  void signInPressed() async {
+    await checkError();
+
     final responseLogin = await login(
         host: widget.host,
         email: _controllerEmail.text,
@@ -62,23 +89,31 @@ class _LoginPageState extends State<LoginPage> {
     final responseUser = await getUser(token: token, host: widget.host);
     User user = User.fromJson(
         token: token, json: jsonDecode(responseUser.body)['user']);
-    print(user);
+    print(user.toString());
   }
 
   void gButtonPressed() async {
     final user = await GoogleSignInApi.login();
 
     if (user != null) {
-      final auth = await user.authHeaders;
-      String token = auth['Authorization'] ?? '';
+      final token = await user.authentication;
 
-      var snackBar = SnackBar(
-        content: Text(token),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      print(auth['Authorization']);
+      Google googleUser =
+          Google.fromGoogleSignInAccount(google: user, token: token);
+      final response = await signInWithGoogle(
+          user: googleUser, host: widget.host); //Need to check with bend
+      print(response.body);
+      print(response.statusCode);
     } else {
       return;
+    }
+  }
+
+  Widget buildError() {
+    if (errorMessage.isEmpty) {
+      return const SizedBox.shrink();
+    } else {
+      return Text(errorMessage);
     }
   }
 
@@ -103,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  buildError(),
                   const Text(
                     'Sign In',
                     style: TextStyle(

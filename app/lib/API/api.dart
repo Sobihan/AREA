@@ -1,16 +1,12 @@
+import 'package:area/Models/google.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-void printer(String email) {
-  print(email);
-}
 
 Future<http.Response> login(
     {required String host,
     required String email,
     required String password}) async {
   Uri url = Uri.parse('http://$host:8080/api/v1/authenticate');
-  print(password);
   final response = await http.post(url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{'email': email, 'password': password}));
@@ -37,5 +33,16 @@ Future<http.Response> getUser(
     {required String token, required String host}) async {
   Uri url = Uri.parse('http://$host:8080/api/v1/get-user-data');
   final response = await http.get(url, headers: {'authToken': token});
+  return response;
+}
+
+Future<http.Response> signInWithGoogle(
+    {required Google user, required String host}) async {
+  Uri url = Uri.parse('http://$host:8080/api/v1/google-auth');
+  final response = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: user.toJson(),
+  );
   return response;
 }

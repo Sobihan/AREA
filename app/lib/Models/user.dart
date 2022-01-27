@@ -22,4 +22,18 @@ class User {
         name: json['name'] ?? '',
         avatar: json['avatar'] ?? '');
   }
+
+  @override
+  String toString() {
+    final Map<String, String> data = <String, String>{
+      'token': token,
+      'username': username,
+      'email': email,
+      'lastName': lastName,
+      'name': name,
+      'avatar': avatar
+    };
+
+    return data.toString();
+  }
 }

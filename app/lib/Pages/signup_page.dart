@@ -7,11 +7,12 @@ import '../Components/Login/button.dart';
 import '../API/api.dart';
 import 'package:flutter/services.dart';
 import '../Components/Login/or.dart';
-import '../Components/Login/inputSection.dart';
+import '../Components/Login/input_section.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:convert';
 import 'package:area/Models/user.dart';
 import 'package:area/API/google.dart';
+import 'package:area/Models/google.dart';
 
 class SignupPage extends StatefulWidget {
   final String host;
@@ -51,6 +52,7 @@ class _SignupPageState extends State<SignupPage> {
   void signInPressed() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) return;
+
     bool emailValid = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(_controllerEmail.text);
@@ -70,9 +72,16 @@ class _SignupPageState extends State<SignupPage> {
 
   void gButtonPressed() async {
     final user = await GoogleSignInApi.login();
+
     if (user != null) {
-      final auth = await user.authHeaders;
-      print(auth['Authorization']);
+      final token = await user.authentication;
+
+      Google googleUser =
+          Google.fromGoogleSignInAccount(google: user, token: token);
+      final response = await signInWithGoogle(
+          user: googleUser, host: widget.host); //Need to check with bend
+      print(response.body);
+      print(response.statusCode);
     } else {
       return;
     }
@@ -133,7 +142,7 @@ class _SignupPageState extends State<SignupPage> {
                   const SizedBox(height: 10),
                   or(),
                   const SizedBox(height: 20),
-                  gbutton(onTap: () => print('Gbutton pressed'))
+                  gbutton(onTap: () => gButtonPressed())
                 ],
               ),
             ),
