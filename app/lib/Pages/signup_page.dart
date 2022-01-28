@@ -1,3 +1,4 @@
+import 'package:area/Components/Common/bottombar.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/Login/gbutton.dart';
 import 'package:area/Components/Login/text_span.dart';
@@ -120,6 +121,11 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
         token: token, json: jsonDecode(responseUser.body)['user']);
     print(user.toString());
     reload();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BottomBar(host: widget.host, user: user)),
+    );
   }
 
   void gButtonPressed() async {
