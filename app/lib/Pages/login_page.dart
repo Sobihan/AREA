@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:area/API/google.dart';
+import 'package:area/Components/Common/bottombar.dart';
 import 'package:area/Models/google.dart';
 import 'package:area/Models/user.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -13,6 +14,7 @@ import '../API/api.dart';
 import 'package:flutter/services.dart';
 import '../Components/Login/or.dart';
 import '../Components/Login/input_section.dart';
+import 'package:delayed_display/delayed_display.dart';
 
 class LoginPage extends StatefulWidget {
   final String host;
@@ -113,6 +115,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         token: token, json: jsonDecode(responseUser.body)['user']);
     print(user.toString());
     reload();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BottomBar(host: widget.host, user: user)),
+    );
   }
 
   void gButtonPressed() async {
@@ -176,35 +183,54 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   buildHeader(),
-                  const Text(
-                    'Sign In',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  const DelayedDisplay(
+                      delay: Duration(microseconds: 10000),
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
                   const SizedBox(height: 50),
-                  inputSection(
-                      hintText: 'Email',
-                      icon: Icons.email,
-                      isSecure: false,
-                      controller: _controllerEmail),
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 15000),
+                      child: inputSection(
+                          hintText: 'Email',
+                          icon: Icons.email,
+                          isSecure: false,
+                          controller: _controllerEmail)),
                   const SizedBox(height: 20),
-                  inputSection(
-                      hintText: 'Password',
-                      icon: Icons.lock,
-                      isSecure: true,
-                      controller: _controllerPassword),
-                  button(name: 'Login', onPressed: () => signInPressed()),
-                  textSpan(
-                      description: 'Don\'t have an Account ? ',
-                      name: 'Sign Up',
-                      onTap: () => signupPressed()),
+                  DelayedDisplay(
+                    delay: const Duration(microseconds: 20000),
+                    child: inputSection(
+                        hintText: 'Password',
+                        icon: Icons.lock,
+                        isSecure: true,
+                        controller: _controllerPassword),
+                  ),
+                  DelayedDisplay(
+                    delay: const Duration(microseconds: 25000),
+                    child:
+                        button(name: 'Login', onPressed: () => signInPressed()),
+                  ),
+                  DelayedDisplay(
+                    delay: const Duration(microseconds: 30000),
+                    child: textSpan(
+                        description: 'Don\'t have an Account ? ',
+                        name: 'Sign Up',
+                        onTap: () => signupPressed()),
+                  ),
                   const SizedBox(height: 10),
-                  or(),
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 35000), child: or()),
+                  // or(),
                   const SizedBox(height: 20),
-                  gbutton(onTap: () => gButtonPressed())
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 35000),
+                      child: gbutton(onTap: () => gButtonPressed()))
+                  // gbutton(onTap: () => gButtonPressed())
                 ],
               ),
             ),

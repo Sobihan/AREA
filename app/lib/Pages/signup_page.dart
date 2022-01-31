@@ -1,3 +1,4 @@
+import 'package:area/Components/Common/bottombar.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/Login/gbutton.dart';
 import 'package:area/Components/Login/text_span.dart';
@@ -13,6 +14,7 @@ import 'dart:convert';
 import 'package:area/Models/user.dart';
 import 'package:area/API/google.dart';
 import 'package:area/Models/google.dart';
+import 'package:delayed_display/delayed_display.dart';
 
 class SignupPage extends StatefulWidget {
   final String host;
@@ -120,6 +122,11 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
         token: token, json: jsonDecode(responseUser.body)['user']);
     print(user.toString());
     reload();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BottomBar(host: widget.host, user: user)),
+    );
   }
 
   void gButtonPressed() async {
@@ -183,41 +190,58 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   buildHeader(),
-                  const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
+                  const DelayedDisplay(
+                    delay: Duration(microseconds: 10000),
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 40),
-                  inputSection(
-                      hintText: 'Username',
-                      icon: Icons.email,
-                      isSecure: false,
-                      controller: _controllerUsername),
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 15000),
+                      child: inputSection(
+                          hintText: 'Username',
+                          icon: Icons.email,
+                          isSecure: false,
+                          controller: _controllerUsername)),
                   const SizedBox(height: 20),
-                  inputSection(
-                      hintText: 'Email',
-                      icon: Icons.email,
-                      isSecure: false,
-                      controller: _controllerEmail),
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 20000),
+                      child: inputSection(
+                          hintText: 'Email',
+                          icon: Icons.email,
+                          isSecure: false,
+                          controller: _controllerEmail)),
                   const SizedBox(height: 20),
-                  inputSection(
-                      hintText: 'Password',
-                      icon: Icons.lock,
-                      isSecure: true,
-                      controller: _controllerPassword),
-                  button(name: 'Sign Up', onPressed: () => signInPressed()),
-                  textSpan(
-                      description: 'Already have an account ? ',
-                      name: 'Sign In',
-                      onTap: () => logInPressed()),
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 25000),
+                      child: inputSection(
+                          hintText: 'Password',
+                          icon: Icons.lock,
+                          isSecure: true,
+                          controller: _controllerPassword)),
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 30000),
+                      child: button(
+                          name: 'Sign Up', onPressed: () => signInPressed())),
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 35000),
+                      child: textSpan(
+                          description: 'Already have an account ? ',
+                          name: 'Sign In',
+                          onTap: () => logInPressed())),
                   const SizedBox(height: 10),
-                  or(),
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 40000), child: or()),
                   const SizedBox(height: 20),
-                  gbutton(onTap: () => gButtonPressed())
+                  DelayedDisplay(
+                      delay: const Duration(microseconds: 45000),
+                      child: gbutton(onTap: () => gButtonPressed()))
                 ],
               ),
             ),
