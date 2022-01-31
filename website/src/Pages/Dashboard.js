@@ -20,6 +20,9 @@ import ListItemText from '@mui/material/ListItemText';
 import RedditIcon from '@mui/icons-material/Reddit';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { User } from '../Account/User';
 
 const drawerWidth = 240;
@@ -72,9 +75,9 @@ export function Dashboard()
 {
   const [open, setOpen] = React.useState(true);
 
-  if (User.logged !== true) {
-    window.location = "/login";
-  }
+  //if (User.logged !== true) {
+  //  window.location = "/login";
+  //}
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -166,14 +169,16 @@ export function Dashboard()
             {/* News Get Country */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-
-              </Paper>
-            </Grid>
-            {/* News Get Category */}
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-
-              </Paper>
+                <Stack direction="row" alignItems="center" spacing={4}>
+                  <h3>IF</h3>
+                  <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>Action 1</div>
+                  <h3>THEN</h3>
+                  <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>Reaction 1</div>
+                  <Button variant="contained" color="error" startIcon={<DeleteIcon />}>
+                    Delete
+                  </Button>
+                </ Stack>
+              </ Paper>
             </Grid>
           </Grid>
         </Container>

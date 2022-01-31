@@ -54,6 +54,30 @@ export function Login()
       setShowError(true);
     }
   };
+  const OAuthGoogle = async (response) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({response})
+    };
+    const api_response = await fetch('/api/v1/google-auth', requestOptions);
+    if (api_response.status === 200) {
+      setShowError(false);
+      setShowSuccess(true);
+      const respdata = await api_response.json();
+      Sleep(2000).then(() => {
+        User.token = respdata.token;
+        User.logged = true;
+        navigate('/');
+      });
+    }
+    else {
+      setShowSuccess(false);
+      setShowError(true);
+    }
+  };
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
