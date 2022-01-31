@@ -40,30 +40,30 @@ model Job {
     jobToken  String   @unique @default(uuid())
     name      String
     action    String
-//    actionArg Action_arg[]
+    actionArg Action_arg[]
     reaction  String
-//    reactionArg Reaction_arg[]
+    reactionArg Reaction_arg[]
     interval  Int     //seconds
     user      User?    @relation(fields: [userToken], references: [token])
     userToken String?
     @@unique([jobToken, userToken])
 }
 
-// model Action_arg {
-//     id        Int      @id @default(autoincrement())
-//     key       String
-//     value     String
-//     job       Job?    @relation(fields: [jobToken], references: [jobToken])
-//     jobToken String?
-// }
+model Action_arg {
+    id        Int      @id @default(autoincrement())
+    key       String
+    value     String
+    job       Job?    @relation(fields: [jobToken], references: [jobToken])
+    jobToken String?
+}
 
-// model Reaction_arg {
-//     id        Int      @id @default(autoincrement())
-//     key       String
-//     value     String
-//     job       Job?    @relation(fields: [jobToken], references: [jobToken])
-//     jobToken String?
-// }
+model Reaction_arg {
+    id        Int      @id @default(autoincrement())
+    key       String
+    value     String
+    job       Job?    @relation(fields: [jobToken], references: [jobToken])
+    jobToken String?
+}
 
 enum Role {
     USER
