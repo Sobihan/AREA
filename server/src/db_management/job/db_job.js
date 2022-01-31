@@ -12,7 +12,7 @@ async function updateJob(authToken, jobToken, name, action, reaction, interval) 
                         name: name,
                         action: action,
                         reaction: reaction,
-                        interval: interval!= -1 ? interval : 600,
+                        interval: interval != 0 ? interval : 600,
                     },
                     update: {
                         name: name != '' ? name : undefined,
@@ -40,6 +40,80 @@ async function updateJob(authToken, jobToken, name, action, reaction, interval) 
                 }
             }
         }
+    })
+    return user;
+}
+
+async function updateActionArg(jobToken, key, value) {
+    const user = await main.prisma.job.update({
+        where: {
+            jobToken: jobToken,
+        },
+        data: {
+            /*actionArg: {
+                create: {
+                    key: key,
+                    value: value
+                }
+            }*/
+
+            actionArg: {
+                upsert: {
+                    create: {
+                        key: key,
+                        value: value
+                    },
+                    update: {
+                        value: value
+                    },
+                    where: {
+                        key_jobToken: {
+                            key: key,
+                            jobToken: jobToken,
+                        }
+                    },
+                }
+            }
+        },
+        /*select: {
+            job: {
+                select: {
+                    jobToken: true,
+                    name: true,
+                    action: true,
+                    reaction: true,
+                    interval: true,
+                }
+            }*/
+        //}
+    })
+    return user;
+}
+
+async function updateReactionArg(jobToken, key, value) {
+    const user = await main.prisma.job.update({
+        where: {
+            jobToken: jobToken,
+        },
+        data: {
+            reactionArg: {
+                upsert: {
+                    create: {
+                        key: key,
+                        value: value
+                    },
+                    update: {
+                        value: value
+                    },
+                    where: {
+                        key_jobToken: {
+                            key: key,
+                            jobToken: jobToken,
+                        }
+                    },
+                }
+            }
+        },
     })
     return user;
 }
@@ -298,5 +372,7 @@ async function findJob(authToken, name, action, reaction) {
 }
 
 module.exports.updateJob = updateJob;
+module.exports.updateActionArg = updateActionArg;
+module.exports.updateReactionArg = updateReactionArg;
 module.exports.deleteJob = deleteJob;
 module.exports.findJob = findJob;

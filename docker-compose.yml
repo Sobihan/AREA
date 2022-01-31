@@ -1,30 +1,30 @@
 version: "3"
 services:
-  app:
-    container_name: area_app
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    image: area/app
-    volumes:
-      - ./app-apk/:/usr/src/app/build/app/outputs/flutter-apk/
-    stdin_open: true
-  frontend:
-    container_name: area_webs
-    build:
-      context: ./website
-      dockerfile: Dockerfile
-    image: area/webs
-    ports:
-      - "8081:8081"
-    depends_on:
-      - backend
-    links:
-      - backend
-    volumes:
-#      - ./website/build:/usr/share/nginx/html
-      - ./app-apk/:/usr/share/nginx/html/app-apk
-    stdin_open: true
+#   app:
+#     container_name: area_app
+#     build:
+#       context: ./app
+#       dockerfile: Dockerfile
+#     image: area/app
+#     volumes:
+#       - ./app-apk/:/usr/src/app/build/app/outputs/flutter-apk/
+#     stdin_open: true
+#   frontend:
+#     container_name: area_webs
+#     build:
+#       context: ./website
+#       dockerfile: Dockerfile
+#     image: area/webs
+#     ports:
+#       - "8081:8081"
+#     depends_on:
+#       - backend
+#     links:
+#       - backend
+#     volumes:
+# #      - ./website/build:/usr/share/nginx/html
+#       - ./app-apk/:/usr/share/nginx/html/app-apk
+#     stdin_open: true
   backend:
     container_name: area_bend
     depends_on:

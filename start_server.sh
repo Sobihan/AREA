@@ -17,7 +17,7 @@ then
     sleep $sleep_time
     cd ./server/prisma
     sed -i 's/dbpostgres/172.17.0.1:5432/g' schema.prisma
-    npx prisma migrate dev --name init
+    sudo npx prisma migrate dev --name init
     sed -i 's/172.17.0.1:5432/dbpostgres/g' schema.prisma
     cd ../
     rm -rf ./node_modules
@@ -40,7 +40,7 @@ then
     sleep $sleep_time
     cd ./server/prisma
     sed -i 's/dbpostgres/172.17.0.1:5432/g' schema.prisma
-    npx prisma migrate dev --name init
+    sudo npx prisma migrate dev --name init
     sed -i 's/172.17.0.1:5432/dbpostgres/g' schema.prisma
     cd ../
     rm -rf ./node_modules
@@ -76,7 +76,7 @@ else
         sleep $sleep_time
         cd ./server/prisma
         sed -i 's/dbpostgres/172.17.0.1:5432/g' schema.prisma
-        npx prisma migrate dev --name init
+        sudo npx prisma migrate dev --name init
         sed -i 's/172.17.0.1:5432/dbpostgres/g' schema.prisma
         cd ../
         rm -rf ./node_modules

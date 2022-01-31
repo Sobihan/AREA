@@ -53,16 +53,18 @@ model Action_arg {
     id        Int      @id @default(autoincrement())
     key       String
     value     String
-    job       Job?    @relation(fields: [jobToken], references: [jobToken])
-    jobToken String?
+    job       Job?     @relation(fields: [jobToken], references: [jobToken])
+    jobToken  String?
+    @@unique([key, jobToken])
 }
 
 model Reaction_arg {
     id        Int      @id @default(autoincrement())
     key       String
     value     String
-    job       Job?    @relation(fields: [jobToken], references: [jobToken])
-    jobToken String?
+    job       Job?     @relation(fields: [jobToken], references: [jobToken])
+    jobToken  String?
+    @@unique([key, jobToken])
 }
 
 enum Role {
