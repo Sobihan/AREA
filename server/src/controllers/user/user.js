@@ -59,66 +59,17 @@ const authenticate = (req, res, next) => {
     console.log('Got body:', req.body);
 };
 
-// const googleRegisterOrAuthenticate = (req, res, next) => {
-//     const json_google = JSON.parse(req.body.google);
-//     let isSuccess = true;
-//     let isSuccess_2 = true;
-
-//     user_prisma.findUniqueAuthenticate(json_google.profileObj.email)
-//     .catch((e) => {
-//         isSuccess = false;
-//         console.log(e);
-//     })
-//     .then((user) => {
-//         if (isSuccess == true && user != null && json_google.profileObj.googleId == user.password){
-//             console.log('googleAuthenticate SUCESSFUL');
-//             res.status(200).json({
-//                 success: true,
-//                 body: 'googleAuthentication done!',
-//                 token: user.token,
-//             });
-//         }
-//         else {
-//             user_prisma.createUser(json_google.profileObj.email, json_google.profileObj.email, json_google.profileObj.googleId, json_google.profileObj.givenName, json_google.profileObj.familyName)
-//             .catch((e) => {
-//                 isSuccess_2 = false;
-//                 console.log(e);
-//             })
-//             .then((user) => {
-//                 if (isSuccess_2 == true){
-//                     console.log('googleRegister SUCESSFUL');
-//                     res.status(200).json({
-//                         success: true,
-//                         body: 'googleRegistration done!',
-//                         user
-//                     });
-//                 }
-//                 else {
-//                     console.log('googleRegisterOrAuthenticate FAIL');
-//                     res.status(401).json({
-//                         success: false,
-//                         body: 'googleRegisterOrAuthenticate Failed'
-//                     });
-//                 }
-//             });
-//         }
-//     });
-
-//     console.log('authenticate');
-//     console.log(req.body);
-// };
-
 const googleRegisterOrAuthenticate = (req, res, next) => {
     let isSuccess = true;
     let isSuccess_2 = true;
 
-    user_prisma.findUniqueAuthenticate(req.body.profileObj.email)
+    user_prisma.findUniqueAuthenticate(req.body.response.profileObj.email)
     .catch((e) => {
         isSuccess = false;
         console.log(e);
     })
     .then((user) => {
-        if (isSuccess == true && user != null && req.body.profileObj.googleId == user.password){
+        if (isSuccess == true && user != null && req.body.response.profileObj.googleId == user.password){
             console.log('googleAuthenticate SUCESSFUL');
             res.status(200).json({
                 success: true,
@@ -127,7 +78,7 @@ const googleRegisterOrAuthenticate = (req, res, next) => {
             });
         }
         else {
-            user_prisma.createUser(req.body.profileObj.email, req.body.profileObj.email, req.body.profileObj.googleId, req.body.profileObj.givenName, req.body.profileObj.familyName)
+            user_prisma.createUser(req.body.response.profileObj.email, req.body.response.profileObj.email, req.body.response.profileObj.googleId, req.body.response.profileObj.givenName, req.body.response.profileObj.familyName)
             .catch((e) => {
                 isSuccess_2 = false;
                 console.log(e);
