@@ -20,6 +20,7 @@ import ListItemText from '@mui/material/ListItemText';
 import RedditIcon from '@mui/icons-material/Reddit';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
+import { User } from '../Account/User';
 
 const drawerWidth = 240;
 
@@ -71,6 +72,9 @@ export function Dashboard()
 {
   const [open, setOpen] = React.useState(true);
 
+  if (User.logged !== true) {
+    window.location = "/login";
+  }
   const toggleDrawer = () => {
     setOpen(!open);
   };

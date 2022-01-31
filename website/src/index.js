@@ -12,9 +12,9 @@ ReactDOM.render(
     <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />}/>
+          <Route path="/oauth2_callback" element={<OAuthCallback />}/>
           <Route path="/login" element={<Login />}/>
           <Route path="/signup" element={<SignUp />}/>
-          <Route path="/oauth2_callback" element={<OAuthCallback />}/>
         </Routes>
     </BrowserRouter>
   </React.StrictMode>,
