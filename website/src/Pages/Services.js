@@ -72,7 +72,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export function Dashboard()
+export function Services()
 {
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
@@ -131,7 +131,7 @@ export function Dashboard()
         <Divider />
         <List>
           <div>
-            <ListItem button onClick={
+          <ListItem button onClick={
               () => {
                 navigate('/');
               }
@@ -180,17 +180,10 @@ export function Dashboard()
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={3}>
-            {/* Jobs List */}
+            {/* Services List */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                 <Stack direction="row" alignItems="center" spacing={4}>
-                  <h3>IF</h3>
-                  <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>Action 1</div>
-                  <h3>THEN</h3>
-                  <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>Reaction 1</div>
-                  <Button variant="contained" color="error" startIcon={<DeleteIcon />}>
-                    Delete
-                  </Button>
                 </ Stack>
               </ Paper>
             </Grid>

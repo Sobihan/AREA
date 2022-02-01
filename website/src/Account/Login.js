@@ -16,7 +16,6 @@ import GoogleLogin from 'react-google-login';
 
 import { Sleep } from '../Sleep';
 import { User } from './User';
-import { OAuthGoogle } from '../OAuth/OAuthGoogle';
 
 export function Login()
 {
@@ -165,9 +164,6 @@ export function Login()
                   onFailure={() => {setShowError(true)}}
                   cookiePolicy={'single_host_origin'}
                 />
-              </Grid>
-              <Grid item>
-                
               </Grid>
             </Grid>
             <Grid container>
