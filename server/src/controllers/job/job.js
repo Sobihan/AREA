@@ -14,6 +14,15 @@ function convertInt(x, base) {
     return parsed;
 }
 
+function isValidJson(data){
+    try {
+        JSON.parse(data);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
 const updateJob = (req, res, next) => {
     let isSuccess = true;
     let isSuccess_2 = true;
@@ -27,9 +36,13 @@ const updateJob = (req, res, next) => {
     .then((user) => {
         //console.log("test =", user.job);
         //console.log("test =", user.job[(user.job.length - 1)].jobToken);
-        const jobToken = user.job[(user.job.length - 1)].jobToken;
+        if (user != null && (user.job.length - 1) >= 0) {
+            var jobToken = user.job[(user.job.length - 1)].jobToken;
+        }
 
-        if (isSuccess == true && user != null && jobToken != '') {
+        if (isSuccess == true && user != null && jobToken != ''
+            && req.body.actionArg != '' && req.body.reactionArg != ''
+            && isValidJson(req.body.actionArg)&& isValidJson(req.body.reactionArg)) {
             const actionArgs = JSON.parse(req.body.actionArg);
             const reactionArgs = JSON.parse(req.body.reactionArg);
 
