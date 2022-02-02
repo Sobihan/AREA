@@ -72,6 +72,50 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+function JobsList()
+{
+  const [jobsList, setJobsList] = React.useState(null);
+  var test_json = { "test": {
+      "items": [
+        {"uuid": "Uuid 1", "action": "Action 1", "reaction": "Reaction 1"},
+        {"uuid": "Uuid 2", "action": "Action 2", "reaction": "Reaction 2"},
+        {"uuid": "Uuid 3", "action": "Action 3", "reaction": "Reaction 3"}
+      ]
+    }
+  };
+  const handleList = async () => {
+    const response = await JSON.parse(JSON.stringify(test_json));
+    setJobsList(response);
+  };
+  if (jobsList) {
+    return (
+      <Grid item xs={12}>
+        {jobsList.test.items.map(line => (
+          <Paper sx={{ mb: 2, p: 2, display: 'flex', flexDirection: 'column' }}>
+            <Stack direction="row" alignItems="center" spacing={4}>
+              <h3>IF</h3>
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{line.action}</div>
+              <h3>THEN</h3>
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{line.reaction}</div>
+              <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => {
+                console.log(line.uuid);
+            }}>
+                Delete
+              </Button>
+            </ Stack>
+        </ Paper>
+        ))}
+      </Grid>
+    );
+  }
+  else {
+    handleList();
+    return (
+      <h1>LOADING...</h1>
+    );
+  }
+}
+
 export function Dashboard()
 {
   let navigate = useNavigate();
@@ -181,19 +225,7 @@ export function Dashboard()
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={3}>
             {/* Jobs List */}
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Stack direction="row" alignItems="center" spacing={4}>
-                  <h3>IF</h3>
-                  <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>Action 1</div>
-                  <h3>THEN</h3>
-                  <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>Reaction 1</div>
-                  <Button variant="contained" color="error" startIcon={<DeleteIcon />}>
-                    Delete
-                  </Button>
-                </ Stack>
-              </ Paper>
-            </Grid>
+            <JobsList />
           </Grid>
         </Container>
       </Box>
