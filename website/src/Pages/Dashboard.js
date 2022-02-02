@@ -24,6 +24,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router';
+import CircularProgress from '@mui/material/CircularProgress';
 import { User } from '../Account/User';
 
 const drawerWidth = 240;
@@ -111,7 +112,9 @@ function JobsList()
   else {
     handleList();
     return (
-      <h1>LOADING...</h1>
+      <Grid container justifyContent="center" alignItems="center">
+        <CircularProgress />
+      </Grid>
     );
   }
 }
