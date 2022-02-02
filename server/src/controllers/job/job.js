@@ -24,16 +24,103 @@ const updateJob = (req, res, next) => {
         console.log(e);
     })
     .then((user) => {
+        const jobToken = user.job[(user.job.length - 1)].jobToken;
 
-        if (isSuccess == true && user != null) {
+        if (isSuccess == true && user != null && jobToken != '') {
+            let isSuccess_actionArg = true;
+            let isSuccess_reactionArg = true;
+
+
+            //console.log("test =", user.job);
+            //console.log("test =", user.job[(user.job.length - 1)].jobToken);
+
+
             const actionArgs = JSON.parse(req.body.actionArg);
             for (const actionArg in actionArgs) {
                 console.log(actionArgs[actionArg]);
                 for (const arg in actionArgs[actionArg]) {
-                    console.log("key =", arg);
-                    console.log("value =", actionArgs[actionArg][arg]);
+                    //console.log("key =", arg);
+                    //console.log("value =", actionArgs[actionArg][arg]);
+                    job.updateActionArg(jobToken, arg, actionArgs[actionArg][arg])
+                    .catch((e) => {
+                        isSuccess_actionArg = false;
+                        console.log(e);
+                    })
+                    .then((job) => {
+                        if (isSuccess_actionArg == true){
+                            console.log('updateActionArg SUCESSFUL');
+                        }
+                        else {
+                            console.log('updateActionArg FAIL');
+                        }
+                    });
                 }
             }
+
+
+            const reactionArgs = JSON.parse(req.body.reactionArg);
+            for (const reactionArg in reactionArgs) {
+                console.log(reactionArgs[reactionArg]);
+                for (const arg in reactionArgs[reactionArg]) {
+                    //console.log("key =", arg);
+                    //console.log("value =", reactionArgs[actionArg][arg]);
+                    job.updateReactionArg(jobToken, arg, reactionArgs[reactionArg][arg])
+                    .catch((e) => {
+                        isSuccess_reactionArg = false;
+                        console.log(e);
+                    })
+                    .then((job) => {
+                        /*if (isSuccess_actionArg && isSuccess_reactionArg && reactionArg == reactionArgs.length) {
+                            console.log('SUPER SUPER updateReactionArg SUCESSFUL');
+                        }
+                        else */if (isSuccess_reactionArg == true){
+                            console.log('updateReactionArg SUCESSFUL');
+                        }
+                        else {
+                            console.log('updateReactionArg FAIL');
+                        }
+                    });
+                }
+            }
+
+            if (isSuccess_actionArg && isSuccess_reactionArg) {
+
+
+                job.findUniqueJob(jobToken)
+                .catch((e) => {
+                    isSuccess_2 = false;
+                    console.log(e);
+                })
+                .then((good_job) => {
+                    if (isSuccess_2 == true){
+
+                        console.log('updateJob SUCESSFUL');
+                        res.status(200).json({
+                            success: true,
+                            body: 'Update of job done!',
+                            good_job
+                        });
+
+                    }
+                    else {
+                        console.log('updateJob FAIL');
+                        res.status(401).json({
+                            success: false,
+                            body: 'Update of job Failed'
+                        });
+                    }
+                });
+
+
+            }
+            else {
+                console.log('updateJob FAIL');
+                res.status(401).json({
+                    success: false,
+                    body: 'Update of job Failed'
+                });
+            }
+
         }
         else {
             console.log('updateJob FAIL');
@@ -42,45 +129,6 @@ const updateJob = (req, res, next) => {
                 body: 'Update of job Failed'
             });
         }
-
-/*
-        if (isSuccess == true && user != null && req.body.actionArg != '' && req.body.reactionArg != '') {
-            console.log("updateJob #1");
-
-        }
-        else if (isSuccess == true && user != null && req.body.actionArg == '' && req.body.reactionArg == '') {
-            console.log("updateJob #2");
-
-        }
-        else if (isSuccess == true && user != null && req.body.actionArg != '' && req.body.reactionArg == '') {
-            console.log("updateJob #3");
-
-        }
-        else if (isSuccess == true && user != null && req.body.actionArg == '' && req.body.reactionArg != '') {
-            console.log("updateJob #4");
-
-        }
-        else {
-            console.log("updateJob #5");
-
-        }
-*/
-
-        /*if (isSuccess == true){
-            console.log('updateJob SUCESSFUL');
-            res.status(200).json({
-                success: true,
-                body: 'Update of job done!',
-                user
-            });
-        }
-        else {
-            console.log('updateJob FAIL');
-            res.status(401).json({
-                success: false,
-                body: 'Update of job Failed'
-            });
-        }*/
     });
 
     console.log('update-job');

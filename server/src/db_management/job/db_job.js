@@ -50,13 +50,6 @@ async function updateActionArg(jobToken, key, value) {
             jobToken: jobToken,
         },
         data: {
-            /*actionArg: {
-                create: {
-                    key: key,
-                    value: value
-                }
-            }*/
-
             actionArg: {
                 upsert: {
                     create: {
@@ -64,7 +57,7 @@ async function updateActionArg(jobToken, key, value) {
                         value: value
                     },
                     update: {
-                        value: value
+                        value: value != '' ? value : undefined,
                     },
                     where: {
                         key_jobToken: {
@@ -75,17 +68,6 @@ async function updateActionArg(jobToken, key, value) {
                 }
             }
         },
-        /*select: {
-            job: {
-                select: {
-                    jobToken: true,
-                    name: true,
-                    action: true,
-                    reaction: true,
-                    interval: true,
-                }
-            }*/
-        //}
     })
     return user;
 }
@@ -103,7 +85,7 @@ async function updateReactionArg(jobToken, key, value) {
                         value: value
                     },
                     update: {
-                        value: value
+                        value: value != '' ? value : undefined,
                     },
                     where: {
                         key_jobToken: {
@@ -137,6 +119,34 @@ async function deleteJob(authToken, jobToken) {
     return user;
 }
 
+async function findUniqueJob(jobToken) {
+    const job = await main.prisma.job.findUnique({
+        where: {
+            jobToken: jobToken,
+        },
+        select: {
+            jobToken: true,
+            name: true,
+            action: true,
+            actionArg: {
+                select: {
+                    key: true,
+                    value: true,
+                },
+            },
+            reaction: true,
+            reactionArg: {
+                select: {
+                    key: true,
+                    value: true,
+                },
+            },
+            interval: true,
+        }
+    })
+    return job;
+}
+
 function findJobChoosePath(name, action, reaction) {
     if (name == '' && action == '' && reaction == '')
         return 0; //search without any constrains.
@@ -156,9 +166,6 @@ function findJobChoosePath(name, action, reaction) {
         return 7; //search by name, action and reaction.
 }
 
-//async function findUniqueJob(authToken, jobToken) {}
-
-
 async function findJob(authToken, name, action, reaction) {
     //console.log('authToken = ' + authToken);
 
@@ -174,7 +181,19 @@ async function findJob(authToken, name, action, reaction) {
                             jobToken: true,
                             name: true,
                             action: true,
+                            actionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             reaction: true,
+                            reactionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             interval: true,
                         }
                     }
@@ -198,7 +217,19 @@ async function findJob(authToken, name, action, reaction) {
                             jobToken: true,
                             name: true,
                             action: true,
+                            actionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             reaction: true,
+                            reactionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             interval: true,
                         }
                     }
@@ -222,7 +253,19 @@ async function findJob(authToken, name, action, reaction) {
                             jobToken: true,
                             name: true,
                             action: true,
+                            actionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             reaction: true,
+                            reactionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             interval: true,
                         }
                     }
@@ -249,7 +292,19 @@ async function findJob(authToken, name, action, reaction) {
                             jobToken: true,
                             name: true,
                             action: true,
+                            actionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             reaction: true,
+                            reactionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             interval: true,
                         }
                     }
@@ -273,7 +328,19 @@ async function findJob(authToken, name, action, reaction) {
                             jobToken: true,
                             name: true,
                             action: true,
+                            actionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             reaction: true,
+                            reactionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             interval: true,
                         }
                     }
@@ -300,7 +367,19 @@ async function findJob(authToken, name, action, reaction) {
                             jobToken: true,
                             name: true,
                             action: true,
+                            actionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             reaction: true,
+                            reactionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             interval: true,
                         }
                     }
@@ -327,7 +406,19 @@ async function findJob(authToken, name, action, reaction) {
                             jobToken: true,
                             name: true,
                             action: true,
+                            actionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             reaction: true,
+                            reactionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             interval: true,
                         }
                     }
@@ -357,7 +448,19 @@ async function findJob(authToken, name, action, reaction) {
                             jobToken: true,
                             name: true,
                             action: true,
+                            actionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             reaction: true,
+                            reactionArg: {
+                                select: {
+                                    key: true,
+                                    value: true,
+                                },
+                            },
                             interval: true,
                         }
                     }
@@ -375,4 +478,5 @@ module.exports.updateJob = updateJob;
 module.exports.updateActionArg = updateActionArg;
 module.exports.updateReactionArg = updateReactionArg;
 module.exports.deleteJob = deleteJob;
+module.exports.findUniqueJob = findUniqueJob;
 module.exports.findJob = findJob;
