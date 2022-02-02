@@ -1,5 +1,6 @@
 //const main = require('../../main');
 const job = require('../../db_management/job/db_job');
+const job_extra = require('./job_extra');
 const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
 
 const scheduler = new ToadScheduler()
@@ -27,8 +28,8 @@ const updateJob = (req, res, next) => {
         const jobToken = user.job[(user.job.length - 1)].jobToken;
 
         if (isSuccess == true && user != null && jobToken != '') {
-            let isSuccess_actionArg = true;
-            let isSuccess_reactionArg = true;
+//            let isSuccess_actionArg = true;
+//            let isSuccess_reactionArg = true;
 
 
             //console.log("test =", user.job);
@@ -36,6 +37,8 @@ const updateJob = (req, res, next) => {
 
 
             const actionArgs = JSON.parse(req.body.actionArg);
+
+/*
             for (const actionArg in actionArgs) {
                 console.log(actionArgs[actionArg]);
                 for (const arg in actionArgs[actionArg]) {
@@ -56,9 +59,11 @@ const updateJob = (req, res, next) => {
                     });
                 }
             }
-
+*/
 
             const reactionArgs = JSON.parse(req.body.reactionArg);
+
+/*
             for (const reactionArg in reactionArgs) {
                 console.log(reactionArgs[reactionArg]);
                 for (const arg in reactionArgs[reactionArg]) {
@@ -70,10 +75,10 @@ const updateJob = (req, res, next) => {
                         console.log(e);
                     })
                     .then((job) => {
-                        /*if (isSuccess_actionArg && isSuccess_reactionArg && reactionArg == reactionArgs.length) {
+                        /-*if (isSuccess_actionArg && isSuccess_reactionArg && reactionArg == reactionArgs.length) {
                             console.log('SUPER SUPER updateReactionArg SUCESSFUL');
                         }
-                        else */if (isSuccess_reactionArg == true){
+                        else *-/if (isSuccess_reactionArg == true){
                             console.log('updateReactionArg SUCESSFUL');
                         }
                         else {
@@ -82,9 +87,65 @@ const updateJob = (req, res, next) => {
                     });
                 }
             }
+*/
 
-            if (isSuccess_actionArg && isSuccess_reactionArg) {
 
+            //if (isSuccess_actionArg && isSuccess_reactionArg) {
+
+            job_extra.updateJob_extra_2(jobToken, actionArgs, reactionArgs)
+            .catch((e) => {
+                //isSuccess_2 = false;
+                console.log(e);
+            })
+            .then((arg_job) => {
+                console.log('updateJob_extra Done Confirmed =', arg_job);
+                if (arg_job == true/* && isSuccess_2 == true*/){
+
+                    job.findUniqueJob(jobToken)
+                    .catch((e) => {
+                        isSuccess_2 = false;
+                        console.log(e);
+                    })
+                    .then((good_job) => {
+                        if (isSuccess_2 == true){
+
+                            console.log('updateJob SUCESSFUL');
+                            res.status(200).json({
+                                success: true,
+                                body: 'Update of job done!',
+                                good_job
+                            });
+
+                        }
+                        else {
+                            console.log('updateJob FAIL');
+                            res.status(401).json({
+                                success: false,
+                                body: 'Update of job Failed'
+                            });
+                        }
+                    });
+/*
+                    console.log('updateJob_extra_2 SUCESSFUL');
+                    res.status(200).json({
+                        success: true,
+                        body: 'Update of job done!'
+                    });
+*/
+                }
+                else {
+                    console.log('updateJob_extra_2 FAIL');
+                    res.status(401).json({
+                        success: false,
+                        body: 'Update of job Failed'
+                    });
+                }
+            });
+
+/*
+
+            if (job_extra.updateJob_extra(jobToken, actionArgs, reactionArgs)) {
+                console.log('updateJob_extra Done Confirmed');
 
                 job.findUniqueJob(jobToken)
                 .catch((e) => {
@@ -120,6 +181,8 @@ const updateJob = (req, res, next) => {
                     body: 'Update of job Failed'
                 });
             }
+
+*/
 
         }
         else {
