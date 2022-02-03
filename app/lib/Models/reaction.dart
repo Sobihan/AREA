@@ -1,10 +1,10 @@
 class Reaction {
   final String name;
-  final dynamic config;
+  final List config;
 
   Reaction({required this.name, required this.config});
   factory Reaction.fromJson({required dynamic json}) {
-    return Reaction(name: json['name'], config: json['config']);
+    return Reaction(name: json['name'] ?? "Null", config: json['config'] ?? {});
   }
 
   @override

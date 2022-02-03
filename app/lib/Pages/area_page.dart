@@ -1,6 +1,8 @@
 import 'package:area/Components/Login/background.dart';
+import 'package:area/Models/area.dart';
 import 'package:area/Models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:area/Components/Area/job.dart';
 
 class AreaPage extends StatefulWidget {
   final String host;
@@ -13,6 +15,32 @@ class AreaPage extends StatefulWidget {
 }
 
 class _AreaPageState extends State<AreaPage> {
+  late Area area;
+
+  @override
+  void initState() {
+    super.initState();
+    Map<String, dynamic> data = {
+      "name": "Area Name",
+      "interval": 15,
+      "action": {
+        "name": "Action Name",
+        "config": [
+          {"set1": "settings"},
+          {"set2": "null"}
+        ]
+      },
+      "reaction": {
+        "name": "Reaction Name",
+        "config": [
+          {"set3": "settings"},
+          {"set4": "null"}
+        ]
+      }
+    };
+    area = Area.fromJson(json: data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -27,10 +55,13 @@ class _AreaPageState extends State<AreaPage> {
                 horizontal: 25,
                 vertical: 120,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text("Area Page")],
-              )))
+              child: Dismissible(
+                  background: Container(color: Colors.red),
+                  key: ObjectKey(area),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Job(host: widget.host, area: area)],
+                  ))))
     ]));
   }
 }
