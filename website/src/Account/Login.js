@@ -69,6 +69,7 @@ export function Login()
       Sleep(2000).then(() => {
         User.token = respdata.token;
         User.logged = true;
+        User.google = true;
         navigate('/');
       });
     }

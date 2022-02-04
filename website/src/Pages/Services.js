@@ -22,9 +22,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import WorkIcon from '@mui/icons-material/Work';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
+import GoogleIcon from '@mui/icons-material/Google';
+import GoogleLogin from 'react-google-login';
 import { useNavigate } from 'react-router';
 import { User } from '../Account/User';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 const drawerWidth = 240;
 
@@ -76,12 +78,34 @@ export function Services()
 {
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
+  const [showGoogle, setShowGoogle] = React.useState(User.google);
 
   //if (User.logged !== true) {
   //  window.location = "/login";
   //}
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+  const OAuthGoogle = async (response) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({response})
+    };
+    const api_response = await fetch('/api/v1/google-auth', requestOptions);
+    if (api_response.status === 200) {
+      //setShowError(false);
+      //setShowSuccess(true);
+      const respdata = await api_response.json();
+      User.google = true;
+      setShowGoogle(User.google);
+    }
+    else {
+      //setShowSuccess(false);
+      //setShowError(true);
+    }
   };
   return (
     <Box sx={{ display: 'flex' }}>
@@ -183,8 +207,29 @@ export function Services()
             {/* Services List */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Stack direction="row" alignItems="center" spacing={4}>
-                </ Stack>
+                { ! showGoogle ?
+                  <Stack direction="row" alignItems="center" spacing={4}>
+                    <GoogleIcon />
+                    <h3>Google</h3>
+                      <div style={{backgroundColor: "#FF9494", color: "white", padding: 4, "border-radius": 5}}>Status: Disconnected</div>
+                      <GoogleLogin
+                        clientId="789963154068-jq4283e019useue1vfa8d8a19go9istp.apps.googleusercontent.com"
+                        buttonText="Connect my Account"
+                        onSuccess={OAuthGoogle}
+                        onFailure={() => {console.log("fail")}}
+                        cookiePolicy={'single_host_origin'}
+                      />
+                  </ Stack>: <Stack direction="row" alignItems="center" spacing={4}>
+                    <GoogleIcon />
+                    <h3>Google</h3>
+                    <div style={{backgroundColor: "#9BE89B", color: "white", padding: 4, "border-radius": 5}}>Status: Connected</div>
+                    <Button variant="contained" color="error" startIcon={<RemoveCircleIcon />} onClick={() => {
+                      console.log("OK");
+                    }}>
+                      Disconnect
+                    </Button>
+                  </ Stack>
+                }
               </ Paper>
             </Grid>
           </Grid>
