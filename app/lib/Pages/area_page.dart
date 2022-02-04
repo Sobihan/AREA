@@ -1,3 +1,5 @@
+import 'package:area/Components/Area/dismiss.dart';
+import 'package:area/Components/Area/fbutton.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Models/area.dart';
 import 'package:area/Models/user.dart';
@@ -55,13 +57,15 @@ class _AreaPageState extends State<AreaPage> {
                 horizontal: 25,
                 vertical: 120,
               ),
-              child: Dismissible(
-                  background: Container(color: Colors.red),
-                  key: ObjectKey(area),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Job(host: widget.host, area: area)],
-                  ))))
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  dismiss(
+                      widget: Job(host: widget.host, area: area),
+                      onDismissed: () => print("hello")),
+                ],
+              ))),
+      fbutton(onPressed: () => print("Button Pressed"))
     ]));
   }
 }
