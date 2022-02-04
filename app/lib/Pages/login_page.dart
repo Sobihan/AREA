@@ -106,6 +106,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         email: _controllerEmail.text,
         password: _controllerPassword.text);
     if (responseLogin.statusCode != 200) {
+      print(responseLogin.statusCode);
       addError("Email or password is incorrect");
       return;
     }
