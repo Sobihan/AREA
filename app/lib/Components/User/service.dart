@@ -64,7 +64,7 @@ class _ServiceState extends State<Service> {
             widget.icon,
             Text(widget.name),
             widget.isConnect
-                ? rect("Status: Connected", Colors.green, 150, 40)
+                ? rect("Status: Connected", CustomColor.lightGreen, 150, 40)
                 : rect("Status: Disconnected", CustomColor.lightRed, 150, 40)
           ],
         ),
