@@ -19,9 +19,24 @@ class _DetailState extends State<Detail> {
   List<TextEditingController> controllersReaction = [];
   List<Widget> inputsReaction = [];
 
-  @override
-  void initState() {
-    super.initState();
+  void cleanData() {
+    int sizeAction = controllersAction.length;
+    int sizeReaction = controllersReaction.length;
+    if (sizeAction == 0 && sizeReaction == 0) return;
+    for (int i = 0; i < sizeAction; i += 1) {
+      controllersAction[i].dispose();
+    }
+    for (int i = 0; i < sizeReaction; i += 1) {
+      controllersReaction[i].dispose();
+    }
+    controllersAction = [];
+    controllersReaction = [];
+    inputsAction = [];
+    inputsReaction = [];
+  }
+
+  void getData() {
+    cleanData();
     actionConfig = widget.area.action.config.length;
     reactionConfig = widget.area.reaction.config.length;
     for (int i = 0; i < actionConfig; i += 1) {
@@ -63,6 +78,7 @@ class _DetailState extends State<Detail> {
   }
 
   List<Widget> buildActions() {
+    getData();
     List<Widget> actionSections = [
       Text(
         widget.area.action.name,
