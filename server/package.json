@@ -29,6 +29,7 @@
     "follow-redirects": "^1.14.5",
     "node-fetch": "^2.6.6",
     "node-twitch": "^0.4.5",
+    "twitter-webhooks": "^0.3.3",
     "utf8": "^3.0.0"
   }
 }
