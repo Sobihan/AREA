@@ -1,5 +1,5 @@
 import 'package:area/Components/Area/job_detail.dart';
-import 'package:area/Components/Area/rect.dart';
+import 'package:area/Components/Common/rect.dart';
 import 'package:area/Components/Common/color.dart';
 import 'package:area/Models/area.dart';
 import 'package:flutter/material.dart';
@@ -45,13 +45,13 @@ class _JobState extends State<Job> {
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: CustomColor.lightBlue),
             ),
-            rect(widget.area.action.name),
+            rect(widget.area.action.name, Colors.grey, 100, 40),
             const Text(
               "THEN",
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: CustomColor.darkBlue),
             ),
-            rect(widget.area.reaction.name),
+            rect(widget.area.reaction.name, Colors.grey, 100, 40),
           ]),
         ));
   }
