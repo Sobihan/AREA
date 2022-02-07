@@ -1,4 +1,7 @@
 const job = require('../../db_management/job/db_job');
+const actions = require('../../area/action');
+const reactions = require('../../area/reaction');
+const { Task, AsyncTask } = require('toad-scheduler')
 
 async function updateJob_extra(jobToken, actionArgJson, reactionArgJson) {
     for (const actionArg in actionArgJson) {
@@ -34,4 +37,32 @@ async function updateJob_extra(jobToken, actionArgJson, reactionArgJson) {
     return true;
 }
 
+function checkGetJob(action, actionArgs, reaction, reactionArgs)
+{
+    if (actions.checkAction.get(action)(actionArgs) == false || reactions.checkReaction(reaction)(reactionArgs) == false)
+        return false;
+    return true;
+}
+
+function getJob(action, actionArgs, reaction, reactionArgs)
+{
+/*
+    actions.action.get(action)(actionArgs, reactions.reaction.get(reaction), reactionArgs);
+
+    var job = new SimpleIntervalJob(
+        { seconds: 20, runImmediately: true },
+        task,
+        'id_1'
+    );
+*/
+    /*const test = actions.action.get(action)(actionArgs, reactions.reaction.get(reaction), reactionArgs);*/
+    //return test;
+
+    return new Task('test', () => {actions.action.get(action)(actionArgs, reactions.reaction.get(reaction), reactionArgs)});
+
+    //return actions.action.get(action)(actionArgs, reactions.reaction.get(reaction), reactionArgs);
+}
+
 module.exports.updateJob_extra = updateJob_extra;
+module.exports.checkGetJob = checkGetJob;
+module.exports.getJob = getJob;
