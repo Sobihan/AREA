@@ -26,6 +26,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router';
 import CircularProgress from '@mui/material/CircularProgress';
 import { User } from '../Account/User';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import CloseIcon from '@mui/icons-material/Close';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const drawerWidth = 240;
 
@@ -119,16 +133,60 @@ function JobsList()
   }
 }
 
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
+
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
 export function Dashboard()
 {
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [action, setAction] = React.useState('');
+  const handleAction = (event) => {
+    setAction(event.target.value);
+  };
+  const actions = [
+    { icon: <AddCircleIcon />, name: 'New Job' }
+  ];
 
   //if (User.logged !== true) {
   //  window.location = "/login";
   //}
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+  const closeDialog = () => {
+    setOpenDialog(false);
   };
   return (
     <Box sx={{ display: 'flex' }}>
@@ -230,8 +288,56 @@ export function Dashboard()
             {/* Jobs List */}
             <JobsList />
           </Grid>
+          <SpeedDial
+            ariaLabel="Menu"
+            sx={{ position: 'absolute', bottom: 16, right: 16 }}
+            icon={<SpeedDialIcon />}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                onClick={e => {
+                  setOpenDialog(true);
+                }}
+              />
+            ))}
+          </SpeedDial>
         </Container>
       </Box>
+      <div>
+      <BootstrapDialog
+        onClose={closeDialog}
+        aria-labelledby="create-jobs-title"
+        open={openDialog}
+      >
+        <BootstrapDialogTitle id="create-jobs-title" onClose={closeDialog}>
+          Create Jobs
+        </BootstrapDialogTitle>
+        <DialogContent dividers>
+        <FormControl fullWidth>
+          <InputLabel id="actionSelectLabel">Action</InputLabel>
+            <Select
+              labelId="actionSelectLabel"
+              id="actionSelect"
+              value={action}
+              label="Action"
+              onChange={handleAction}
+            >
+              <MenuItem value={10}>Action 1</MenuItem>
+              <MenuItem value={20}>Action 2</MenuItem>
+              <MenuItem value={30}>Action 3</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={closeDialog}>
+            Create Job
+          </Button>
+        </DialogActions>
+      </BootstrapDialog>
+    </div>
     </Box>
   );
 }
