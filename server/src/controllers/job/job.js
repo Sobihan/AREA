@@ -26,6 +26,7 @@ function isValidJson(data){
 const updateJob = (req, res, next) => {
     let isSuccess = true;
     let isSuccess_2 = true;
+    let isSuccess_3 = true;
     var interval = convertInt(req.body.interval, 10)
 
     job.updateJob(req.header('authtoken'), req.body.jobToken, req.body.name, req.body.action, req.body.reaction, interval)
@@ -52,7 +53,7 @@ const updateJob = (req, res, next) => {
             })
             .then((arg_job) => {
                 //console.log('updateJob_extra Done Confirmed =', arg_job);
-                if (arg_job == true){
+                if (arg_job == true) {
 
                     job.findUniqueJob(jobToken)
                     .catch((e) => {
@@ -60,15 +61,14 @@ const updateJob = (req, res, next) => {
                         console.log(e);
                     })
                     .then((good_job) => {
-                        if (isSuccess_2 == true){
-
+                        if (isSuccess_2 == true) {
                             console.log('updateJob SUCESSFUL');
                             res.status(200).json({
                                 success: true,
                                 body: 'Update of job done!',
                                 good_job
                             });
-
+                            //working here //--// toadscheduler
                         }
                         else {
                             console.log('updateJob FAIL');
@@ -81,9 +81,50 @@ const updateJob = (req, res, next) => {
                 }
                 else {
                     console.log('updateJob_extra FAIL');
+                    job.deleteJob(req.header('authtoken'), user.jobToken)
+                    .catch((e) => {
+                        isSuccess_3 = false;
+                        console.log(e);
+                    })
+                    .then((user) => {
+                        if (isSuccess_3 == true) {
+                            console.log('updateJob_extra deleteJob SUCESSFUL');
+                            res.status(200).json({
+                                success: true,
+                                body: 'updateJob_extra deletion of job done!'
+                            });
+                        }
+                        else {
+                            console.log('updateJob_extra deleteJob FAIL');
+                            res.status(401).json({
+                                success: false,
+                                body: 'updateJob_extra deletion of job Failed'
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        else if (isSuccess == true && user != null && jobToken != '') {
+            console.log('else if updateJob FAIL');
+            job.deleteJob(req.header('authtoken'), jobToken)
+            .catch((e) => {
+                isSuccess_3 = false;
+                console.log(e);
+            })
+            .then((user) => {
+                if (isSuccess_3 == true) {
+                    console.log('else if deleteJob SUCESSFUL');
+                    res.status(200).json({
+                        success: true,
+                        body: 'else if deletion of job done!'
+                    });
+                }
+                else {
+                    console.log('else if deleteJob FAIL');
                     res.status(401).json({
                         success: false,
-                        body: 'Update of job Failed'
+                        body: 'else if deletion of job Failed'
                     });
                 }
             });
