@@ -100,6 +100,24 @@ async function updateReactionArg(jobToken, key, value) {
     return user;
 }
 
+async function deleteActionArgs(jobToken) {
+    const user = await main.prisma.action_arg.deleteMany({
+        where: {
+            jobToken: jobToken,
+        },
+    })
+    return user;
+}
+
+async function deleteReactionArgs(jobToken) {
+    const user = await main.prisma.reaction_arg.deleteMany({
+        where: {
+            jobToken: jobToken,
+        },
+    })
+    return user;
+}
+
 async function deleteJob(authToken, jobToken) {
     const user = await main.prisma.user.update({
         where: {
@@ -477,6 +495,8 @@ async function findJob(authToken, name, action, reaction) {
 module.exports.updateJob = updateJob;
 module.exports.updateActionArg = updateActionArg;
 module.exports.updateReactionArg = updateReactionArg;
+module.exports.deleteActionArgs = deleteActionArgs;
+module.exports.deleteReactionArgs = deleteReactionArgs;
 module.exports.deleteJob = deleteJob;
 module.exports.findUniqueJob = findUniqueJob;
 module.exports.findJob = findJob;
