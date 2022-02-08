@@ -1,5 +1,7 @@
 import 'package:area/Components/Area/dismiss.dart';
 import 'package:area/Components/Area/fbutton.dart';
+import 'package:area/Components/Area/new_area.dart';
+import 'package:area/Components/Common/color.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Models/area.dart';
 import 'package:area/Models/user.dart';
@@ -43,6 +45,26 @@ class _AreaPageState extends State<AreaPage> {
     area = Area.fromJson(json: data);
   }
 
+  void newArea() async {
+    var result = await showGeneralDialog(
+        context: context,
+        pageBuilder: (BuildContext context, Animation animation,
+            Animation secondAnimation) {
+          return Center(
+              child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: CustomColor.lightBlue,
+            child: Scaffold(
+                body: Container(
+                    decoration: background(),
+                    child: NewArea(host: widget.host))),
+          ));
+        });
+    // var result = await showDialog(
+    //     context: context, builder: (_) => NewArea(host: widget.host));
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -65,7 +87,7 @@ class _AreaPageState extends State<AreaPage> {
                       onDismissed: () => print("hello")),
                 ],
               ))),
-      fbutton(onPressed: () => print("Button Pressed"))
+      fbutton(onPressed: () => newArea())
     ]));
   }
 }

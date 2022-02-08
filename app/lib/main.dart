@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import './Pages/login_page.dart';
 import 'package:flutter/foundation.dart';
 import './Pages/host_page.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
+      overlays: [SystemUiOverlay.top]);
   runApp(const MyApp());
 }
 
