@@ -44,6 +44,7 @@ model Job {
     reaction  String
     reactionArg Reaction_arg[]
     interval  Int     //seconds
+    is_stoped Boolean  @default(false)
     user      User?    @relation(fields: [userToken], references: [token])
     userToken String?
     @@unique([jobToken, userToken])
@@ -74,4 +75,6 @@ enum Role {
 
 enum Api_id {
     REDDIT
+    TWITTER
+    GOOGLE
 }

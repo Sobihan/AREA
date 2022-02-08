@@ -19,11 +19,11 @@
   "homepage": "https://github.com/EpitechPromo2024/B-DEV-500-PAR-5-1-dashboard-alexandre1.berthomier#readme",
   "devDependencies": {
     "express": "^4.17.1",
-    "prisma": "^3.8.1"
+    "prisma": "^3.9.1"
   },
   "proxy": "http://backend:5000",
   "dependencies": {
-    "@prisma/client": "^3.8.1",
+    "@prisma/client": "^3.9.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "follow-redirects": "^1.14.5",

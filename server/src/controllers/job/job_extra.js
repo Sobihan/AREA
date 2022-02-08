@@ -140,6 +140,19 @@ function getJob(action, actionArgs, reaction, reactionArgs)
     return new Task('test', () => {actions.action.get(action)(actionArgs, reactions.reaction.get(reaction), reactionArgs)});
 }
 
+function stopJob(jobToken, stop)
+{
+    if (stop) {
+        console.log("Stop");
+        scheduler.stopById(jobToken);
+    }
+    else if (!stop) {
+        console.log("Go");
+        scheduler.startById(jobToken);
+    }
+}
+
 module.exports.updateJob_extra = updateJob_extra;
 module.exports.checkGetJob = checkGetJob;
+module.exports.stopJob = stopJob;
 //module.exports.getJob = getJob;

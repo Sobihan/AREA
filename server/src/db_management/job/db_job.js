@@ -165,6 +165,18 @@ async function findUniqueJob(jobToken) {
     return job;
 }
 
+async function stopJob(jobToken, is_stoped) {
+    const job = await main.prisma.job.update({
+        where: {
+            jobToken: jobToken,
+        },
+        data: {
+            is_stoped: is_stoped
+        }
+    })
+    return job;
+}
+
 function findJobChoosePath(name, action, reaction) {
     if (name == '' && action == '' && reaction == '')
         return 0; //search without any constrains.
@@ -499,4 +511,5 @@ module.exports.deleteActionArgs = deleteActionArgs;
 module.exports.deleteReactionArgs = deleteReactionArgs;
 module.exports.deleteJob = deleteJob;
 module.exports.findUniqueJob = findUniqueJob;
+module.exports.stopJob = stopJob;
 module.exports.findJob = findJob;

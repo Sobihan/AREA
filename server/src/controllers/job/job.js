@@ -211,27 +211,41 @@ const searchJob = (req, res, next) => {
     console.log('search-job');
     console.log('Got body:', req.body);
 };
-/*
-const actions = require('../../area/action');
-const reactions = require('../../area/reaction');
 
-const testJob = (req, res, next) => {
-    const actionArgs = JSON.parse(req.body.actionArg);
-    const reactionArgs = JSON.parse(req.body.reactionArg);
+const stopJob = (req, res, next) => {
+    let isSuccess = true;
+    const stop = JSON.parse(req.body.stop)
+    const is_stop = Boolean(stop);
 
-    actions.action.get(req.body.action)(actionArgs, reactions.reaction.get(req.body.reaction), reactionArgs)
+    job_extra.stopJob(req.body.jobToken, is_stop);
 
-    res.status(401).json({
-        //success: false,
-        body: 'test job'
+    job.stopJob(req.body.jobToken, is_stop)
+    .catch((e) => {
+        isSuccess = false;
+        console.log(e);
+    })
+    .then((job) => {
+        if (isSuccess == true){
+            console.log('stopJob SUCESSFUL');
+            res.status(200).json({
+                success: true,
+                body: 'Stop job done!'
+            });
+        }
+        else {
+            console.log('stopJob FAIL');
+            res.status(401).json({
+                success: false,
+                body: 'Stop job Failed'
+            });
+        }
     });
 
-    console.log('test-job');
+    console.log('stop-job');
     console.log('Got body:', req.body);
 };
-*/
+
 module.exports.updateJob = updateJob;
 module.exports.deleteJob = deleteJob;
 module.exports.searchJob = searchJob;
-
-//module.exports.testJob = testJob;
+module.exports.stopJob = stopJob;
