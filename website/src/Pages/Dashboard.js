@@ -26,6 +26,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router';
 import CircularProgress from '@mui/material/CircularProgress';
 import { User } from '../Account/User';
+import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -137,6 +138,8 @@ function CreateJob()
 {
   const [jobsList, setJobsList] = React.useState(null);
   const [action, setAction] = React.useState('');
+  const [reaction, setReaction] = React.useState('');
+  const [argument, setArgument] = React.useState('');
   var test_json = { "test": {
       "items": [
         {"uuid": "Uuid 1", "action": "Action 1", "reaction": "Reaction 1"},
@@ -148,32 +151,69 @@ function CreateJob()
   const handleAction = (event) => {
     setAction(event.target.value);
   };
+  const handleReaction = (event) => {
+    setReaction(event.target.value);
+  };
+  const handleArgument = (event) => {
+    setArgument(event.target.value);
+  };
   const handleList = async () => {
     const response = await JSON.parse(JSON.stringify(test_json));
     setJobsList(response);
   };
   if (jobsList) {
     return (
-      <Grid container justifyContent="center" alignItems="center">
-        <FormControl fullWidth>
-        <InputLabel id="actionSelectLabel">Action</InputLabel>
-          <Select
-            labelId="actionSelectLabel"
-            id="actionSelect"
-            value={action}
-            label="Action"
-            onChange={handleAction}
-          >
-            {jobsList.test.items.map(line => (
-              <MenuItem
-              key={line.action}
-              value={line.action}
+      <Grid>
+        <Stack justifyContent="center" alignItems="center" direction="row" spacing={2}>
+          <h3>IF</h3>
+          <FormControl sx={{ width: 150 }}>
+          <InputLabel id="actionSelectLabel">Action</InputLabel>
+            <Select
+              labelId="actionSelectLabel"
+              id="actionSelect"
+              value={action}
+              label="Action"
+              onChange={handleAction}
             >
-              {line.action}
-            </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {jobsList.test.items.map(line => (
+                <MenuItem
+                key={line.action}
+                value={line.action}
+              >
+                {line.action}
+              </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <h3>THEN</h3>
+          <FormControl sx={{ width: 150 }}>
+          <InputLabel id="reactionSelectLabel">Reaction</InputLabel>
+            <Select
+              labelId="reactionSelectLabel"
+              id="reactionSelect"
+              value={reaction}
+              label="Reaction"
+              onChange={handleReaction}
+            >
+              {jobsList.test.items.map(line => (
+                <MenuItem
+                key={line.reaction}
+                value={line.reaction}
+              >
+                {line.reaction}
+              </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <h3>ARG</h3>
+          <TextField
+              margin="normal"
+              id="argument"
+              label="Argument"
+              name="argument"
+              onChange={handleArgument}
+            />
+        </Stack>
       </Grid>
     );
   }
