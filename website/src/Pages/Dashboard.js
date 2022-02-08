@@ -133,6 +133,60 @@ function JobsList()
   }
 }
 
+function CreateJob()
+{
+  const [jobsList, setJobsList] = React.useState(null);
+  const [action, setAction] = React.useState('');
+  var test_json = { "test": {
+      "items": [
+        {"uuid": "Uuid 1", "action": "Action 1", "reaction": "Reaction 1"},
+        {"uuid": "Uuid 2", "action": "Action 2", "reaction": "Reaction 2"},
+        {"uuid": "Uuid 3", "action": "Action 3", "reaction": "Reaction 3"}
+      ]
+    }
+  };
+  const handleAction = (event) => {
+    setAction(event.target.value);
+  };
+  const handleList = async () => {
+    const response = await JSON.parse(JSON.stringify(test_json));
+    setJobsList(response);
+  };
+  if (jobsList) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <FormControl fullWidth>
+        <InputLabel id="actionSelectLabel">Action</InputLabel>
+          <Select
+            labelId="actionSelectLabel"
+            id="actionSelect"
+            value={action}
+            label="Action"
+            onChange={handleAction}
+          >
+            {jobsList.test.items.map(line => (
+              <MenuItem
+              key={line.action}
+              value={line.action}
+            >
+              {line.action}
+            </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+    );
+  }
+  else {
+    handleList();
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <CircularProgress />
+      </Grid>
+    );
+  }
+}
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -171,10 +225,6 @@ export function Dashboard()
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [action, setAction] = React.useState('');
-  const handleAction = (event) => {
-    setAction(event.target.value);
-  };
   const actions = [
     { icon: <AddCircleIcon />, name: 'New Job' }
   ];
@@ -313,23 +363,10 @@ export function Dashboard()
         open={openDialog}
       >
         <BootstrapDialogTitle id="create-jobs-title" onClose={closeDialog}>
-          Create Jobs
+          Create Job
         </BootstrapDialogTitle>
         <DialogContent dividers>
-        <FormControl fullWidth>
-          <InputLabel id="actionSelectLabel">Action</InputLabel>
-            <Select
-              labelId="actionSelectLabel"
-              id="actionSelect"
-              value={action}
-              label="Action"
-              onChange={handleAction}
-            >
-              <MenuItem value={10}>Action 1</MenuItem>
-              <MenuItem value={20}>Action 2</MenuItem>
-              <MenuItem value={30}>Action 3</MenuItem>
-            </Select>
-          </FormControl>
+          <CreateJob />
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={closeDialog}>
