@@ -13,7 +13,7 @@ exports.init = async (app) => {
 	});
 
     const hooks = await userActivityWebhook.getWebhook();
-	if (webhooks.length == 0)
+	if (hooks.length == 0)
 		userActivityWebhook.register()
 	userActivityWebhook.on('event', (event, userId, data) => {
 		if (event == 'tweet_create') {
@@ -40,7 +40,7 @@ exports.subcribe_user = async (userId, accessToken, accessTokenSecret) => {
     });
 }
 
-async function unsubscribe_user(userId, userToken, secretToken) {
+exports.unsubscribe_user = async(userId, userToken, secretToken) => {
 	const userActivityWebhook = twitterWebhooks.userActivity({
         serverUrl: '127.0.0.1',
         route: '/twitter',
