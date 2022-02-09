@@ -33,14 +33,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
 import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
+import Fab from '@mui/material/Fab';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
 
 const drawerWidth = 240;
 
@@ -134,12 +131,58 @@ function JobsList()
   }
 }
 
+const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+
 function CreateJob()
 {
   const [jobsList, setJobsList] = React.useState(null);
   const [action, setAction] = React.useState('');
   const [reaction, setReaction] = React.useState('');
   const [argument, setArgument] = React.useState('');
+
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [skipped, setSkipped] = React.useState(new Set());
+
+  const isStepOptional = (step) => {
+    return step === 1;
+  };
+
+  const isStepSkipped = (step) => {
+    return skipped.has(step);
+  };
+
+  const handleNext = () => {
+    let newSkipped = skipped;
+    if (isStepSkipped(activeStep)) {
+      newSkipped = new Set(newSkipped.values());
+      newSkipped.delete(activeStep);
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped(newSkipped);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
   var test_json = { "test": {
       "items": [
         {"uuid": "Uuid 1", "action": "Action 1", "reaction": "Reaction 1"},
@@ -161,59 +204,55 @@ function CreateJob()
     const response = await JSON.parse(JSON.stringify(test_json));
     setJobsList(response);
   };
+
   if (jobsList) {
     return (
       <Grid>
-        <Stack justifyContent="center" alignItems="center" direction="row" spacing={2}>
-          <h3>IF</h3>
-          <FormControl sx={{ width: 150 }}>
-          <InputLabel id="actionSelectLabel">Action</InputLabel>
-            <Select
-              labelId="actionSelectLabel"
-              id="actionSelect"
-              value={action}
-              label="Action"
-              onChange={handleAction}
-            >
-              {jobsList.test.items.map(line => (
-                <MenuItem
-                key={line.action}
-                value={line.action}
-              >
-                {line.action}
-              </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <h3>THEN</h3>
-          <FormControl sx={{ width: 150 }}>
-          <InputLabel id="reactionSelectLabel">Reaction</InputLabel>
-            <Select
-              labelId="reactionSelectLabel"
-              id="reactionSelect"
-              value={reaction}
-              label="Reaction"
-              onChange={handleReaction}
-            >
-              {jobsList.test.items.map(line => (
-                <MenuItem
-                key={line.reaction}
-                value={line.reaction}
-              >
-                {line.reaction}
-              </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <h3>ARG</h3>
-          <TextField
-              margin="normal"
-              id="argument"
-              label="Argument"
-              name="argument"
-              onChange={handleArgument}
-            />
-        </Stack>
+        <Stepper activeStep={activeStep}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          if (isStepOptional(index)) {
+            labelProps.optional = (
+              <Typography variant="caption">Optional</Typography>
+            );
+          }
+          if (isStepSkipped(index)) {
+            stepProps.completed = false;
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+      {activeStep === 0 ? (
+        <React.Fragment>
+          <Typography sx={{ mt: 2, mb: 1 }}>
+            All steps completed - you&apos;re finished
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button onClick={handleNext}>
+              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+            </Button>
+          </Box>
+        </React.Fragment>
+      ): null}
+      {activeStep === 1 ? (
+        <React.Fragment>
+          <Typography sx={{ mt: 2, mb: 1 }}>
+            All steps completed - you&apos;re finished
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button onClick={handleNext}>
+              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+            </Button>
+          </Box>
+        </React.Fragment>
+      ): null}
       </Grid>
     );
   }
@@ -265,9 +304,10 @@ export function Dashboard()
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
   const [openDialog, setOpenDialog] = React.useState(false);
-  const actions = [
-    { icon: <AddCircleIcon />, name: 'New Job' }
-  ];
+
+  const closeDialog = () => {
+    setOpenDialog(false);
+  };
 
   //if (User.logged !== true) {
   //  window.location = "/login";
@@ -275,8 +315,8 @@ export function Dashboard()
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const closeDialog = () => {
-    setOpenDialog(false);
+  const handleButton  = () => {
+    console.log("coucou");
   };
   return (
     <Box sx={{ display: 'flex' }}>
@@ -372,49 +412,37 @@ export function Dashboard()
           overflow: 'auto',
         }}
       >
-        <Toolbar />
+      <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={3}>
             {/* Jobs List */}
             <JobsList />
           </Grid>
-          <SpeedDial
-            ariaLabel="Menu"
-            sx={{ position: 'absolute', bottom: 16, right: 16 }}
-            icon={<SpeedDialIcon />}
-          >
-            {actions.map((action) => (
-              <SpeedDialAction
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-                onClick={e => {
-                  setOpenDialog(true);
-                }}
-              />
-            ))}
-          </SpeedDial>
+          <Fab color="primary" sx={{ position: 'absolute', bottom: 16, right: 16 }} variant="extended" onClick={() => {setOpenDialog(true)}}>
+            <AddCircleIcon sx={{ mr: 1 }} />
+            New Job
+          </Fab>
         </Container>
-      </Box>
-      <div>
-      <BootstrapDialog
-        onClose={closeDialog}
-        aria-labelledby="create-jobs-title"
-        open={openDialog}
-      >
-        <BootstrapDialogTitle id="create-jobs-title" onClose={closeDialog}>
-          Create Job
-        </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <CreateJob />
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={closeDialog}>
+        <div>
+        <BootstrapDialog
+          onClose={closeDialog}
+          aria-labelledby="create-jobs-title"
+          open={openDialog}
+        >
+          <BootstrapDialogTitle id="create-jobs-title" onClose={closeDialog}>
             Create Job
-          </Button>
-        </DialogActions>
-      </BootstrapDialog>
-    </div>
+          </BootstrapDialogTitle>
+          <DialogContent dividers>
+            <CreateJob />
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleButton}>
+              Create Job
+            </Button>
+          </DialogActions>
+        </BootstrapDialog>
+      </div>
+      </Box>
     </Box>
   );
 }
