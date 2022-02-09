@@ -1,5 +1,17 @@
 const twitterWebhooks = require('twitter-webhooks');
 
+const twitterInfo = new Map();
+
+twitterInfo.set("tweet_create", {
+    name: "tweet_create",
+    description: "I am a description",
+    args: [
+        {userId: "The user id"}
+    ]
+});
+
+module.exports.twitterInfo = twitterInfo;
+
 exports.init = async (app) => {
 	const userActivityWebhook = twitterWebhooks.userActivity({
         serverUrl: '127.0.0.1',
@@ -56,15 +68,3 @@ exports.unsubscribe_user = async(userId, userToken, secretToken) => {
 		console.error(err)
 	});
 }
-
-const twitchInfo = new Map();
-
-twitchInfo.set("tweet_create", {
-    name: "tweet_create",
-    description: "I am a description",
-    args: [
-        {userId: "The user id"}
-    ]
-});
-
-module.exports.twitchInfo = twitchInfo;
