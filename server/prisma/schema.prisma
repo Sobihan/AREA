@@ -44,6 +44,7 @@ model Job {
     reaction  String
     reactionArg Reaction_arg[]
     interval  Int     //seconds
+    is_stoped Boolean  @default(false)
     user      User?    @relation(fields: [userToken], references: [token])
     userToken String?
     @@unique([jobToken, userToken])
@@ -53,16 +54,18 @@ model Action_arg {
     id        Int      @id @default(autoincrement())
     key       String
     value     String
-    job       Job?    @relation(fields: [jobToken], references: [jobToken])
-    jobToken String?
+    job       Job?     @relation(fields: [jobToken], references: [jobToken])
+    jobToken  String?
+    @@unique([key, jobToken])
 }
 
 model Reaction_arg {
     id        Int      @id @default(autoincrement())
     key       String
     value     String
-    job       Job?    @relation(fields: [jobToken], references: [jobToken])
-    jobToken String?
+    job       Job?     @relation(fields: [jobToken], references: [jobToken])
+    jobToken  String?
+    @@unique([key, jobToken])
 }
 
 enum Role {
@@ -72,4 +75,6 @@ enum Role {
 
 enum Api_id {
     REDDIT
+    TWITTER
+    GOOGLE
 }

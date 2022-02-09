@@ -1,8 +1,13 @@
 //const main = require('../../main');
 const job = require('../../db_management/job/db_job');
-const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
+const job_extra = require('./job_extra');
 
-const scheduler = new ToadScheduler()
+// const actions = require('../../area/action');
+// const reactions = require('../../area/reaction');
+
+// const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
+
+// const scheduler = new ToadScheduler()
 
 function convertInt(x, base) {
     const parsed = parseInt(x, base);
@@ -13,8 +18,19 @@ function convertInt(x, base) {
     return parsed;
 }
 
+function isValidJson(data){
+    try {
+        JSON.parse(data);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
 const updateJob = (req, res, next) => {
     let isSuccess = true;
+    let isSuccess_2 = true;
+    let is_failed = false;
     var interval = convertInt(req.body.interval, 10)
 
     job.updateJob(req.header('authtoken'), req.body.jobToken, req.body.name, req.body.action, req.body.reaction, interval)
@@ -23,12 +39,67 @@ const updateJob = (req, res, next) => {
         console.log(e);
     })
     .then((user) => {
-        if (isSuccess == true){
-            console.log('updateJob SUCESSFUL');
-            res.status(200).json({
-                success: true,
-                body: 'Update of job done!',
-                user
+        if (user != null && (user.job.length - 1) >= 0) {
+            var jobToken = user.job[(user.job.length - 1)].jobToken;
+        }
+
+        if (isSuccess == true && user != null && jobToken != ''
+            && req.body.actionArg != '' && req.body.reactionArg != ''
+            && isValidJson(req.body.actionArg) && isValidJson(req.body.reactionArg)) {
+            const actionArgs = JSON.parse(req.body.actionArg);
+            const reactionArgs = JSON.parse(req.body.reactionArg);
+
+            try {
+                var isJobChecked = job_extra.checkGetJob(req.body.action, actionArgs, req.body.reaction, reactionArgs);
+            }
+            catch (error) {
+                is_failed = true
+                var rslData = {code:401, json:{
+                    success: false,
+                    body: 'Full Fail 1'
+                    }
+                };
+            }
+            finally {
+                if (is_failed)
+                    res.status(rslData.code).json(rslData.json);
+                else if (!isJobChecked) {
+                    res.status(401).json({
+                        success: false,
+                        body: 'Full Fail 2'
+                    });
+                }
+                else {
+                    job_extra.updateJob_extra(jobToken, actionArgs, reactionArgs, req)
+                    .then((data) => {
+                        res.status(data.code).json(data.json);
+                    });
+                }
+            }
+        }
+        else if (isSuccess == true && user != null && jobToken != '') {
+            console.log('else if updateJob FAIL');
+            scheduler.removeById(jobToken);
+            job.deleteJob(req.header('authtoken'), jobToken)
+            .catch((e) => {
+                isSuccess_2 = false;
+                console.log(e);
+            })
+            .then((user) => {
+                if (isSuccess_2 == true) {
+                    console.log('else if deleteJob SUCESSFUL');
+                    res.status(200).json({
+                        success: true,
+                        body: 'else if deletion of job done!'
+                    });
+                }
+                else {
+                    console.log('else if deleteJob FAIL');
+                    res.status(401).json({
+                        success: false,
+                        body: 'else if deletion of job Failed'
+                    });
+                }
             });
         }
         else {
@@ -46,25 +117,63 @@ const updateJob = (req, res, next) => {
 
 const deleteJob = (req, res, next) => {
     let isSuccess = true;
+    let isSuccess_2 = true;
+    let isSuccess_3 = true;
 
-    job.deleteJob(req.header('authtoken'), req.body.jobToken)
+    job.deleteActionArgs(req.body.jobToken)
     .catch((e) => {
         isSuccess = false;
         console.log(e);
     })
     .then((user) => {
         if (isSuccess == true){
-            console.log('deleteJob SUCESSFUL');
-            res.status(200).json({
-                success: true,
-                body: 'deletion of job done!'
-            });
+            console.log('deleteActionArgs SUCESSFUL');
+
+            job.deleteReactionArgs(req.body.jobToken)
+                .catch((e) => {
+                    isSuccess_2 = false;
+                    console.log(e);
+                })
+                .then((user) => {
+                    if (isSuccess_2 == true){
+                        console.log('deleteReactionArgs SUCESSFUL');
+
+                        job.deleteJob(req.header('authtoken'), req.body.jobToken)
+                        .catch((e) => {
+                            isSuccess_3 = false;
+                            console.log(e);
+                        })
+                        .then((user) => {
+                            if (isSuccess_3 == true){
+                                console.log('deleteJob SUCESSFUL');
+                                res.status(200).json({
+                                    success: true,
+                                    body: 'deletion of job done!'
+                                });
+                            }
+                            else {
+                                console.log('deleteJob FAIL');
+                                res.status(401).json({
+                                    success: false,
+                                    body: 'deletion of job Failed'
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        console.log('deleteReactionArgs FAIL');
+                        res.status(401).json({
+                            success: false,
+                            body: "deletion of job's reaction args Failed!"
+                        });
+                    }
+                });
         }
         else {
-            console.log('deleteJob FAIL');
+            console.log('deleteActionArgs FAIL');
             res.status(401).json({
                 success: false,
-                body: 'deletion of job Failed'
+                body: "deletion of job's action args Failed!"
             });
         }
     });
@@ -103,23 +212,40 @@ const searchJob = (req, res, next) => {
     console.log('Got body:', req.body);
 };
 
-const actions = require('../../area/action');
-const reactions = require('../../area/reaction');
+const stopJob = (req, res, next) => {
+    let isSuccess = true;
+    const stop = JSON.parse(req.body.stop)
+    const is_stop = Boolean(stop);
 
-const testJob = (req, res, next) => {
-    actions.action.get(req.body.action)("skyrroztv", reactions.reaction.get(req.body.reaction))
+    job_extra.stopJob(req.body.jobToken, is_stop);
 
-    res.status(401).json({
-        //success: false,
-        body: 'test job'
+    job.stopJob(req.body.jobToken, is_stop)
+    .catch((e) => {
+        isSuccess = false;
+        console.log(e);
+    })
+    .then((job) => {
+        if (isSuccess == true){
+            console.log('stopJob SUCESSFUL');
+            res.status(200).json({
+                success: true,
+                body: 'Stop job done!'
+            });
+        }
+        else {
+            console.log('stopJob FAIL');
+            res.status(401).json({
+                success: false,
+                body: 'Stop job Failed'
+            });
+        }
     });
 
-    console.log('test-job');
+    console.log('stop-job');
     console.log('Got body:', req.body);
 };
 
 module.exports.updateJob = updateJob;
 module.exports.deleteJob = deleteJob;
 module.exports.searchJob = searchJob;
-
-module.exports.testJob = testJob;
+module.exports.stopJob = stopJob;
