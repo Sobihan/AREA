@@ -45,3 +45,11 @@ function checkGetStream(actionArgs)
 }
 
 module.exports.checkGetStream = checkGetStream;
+
+
+
+const twitchInfo = new Map();
+
+twitchInfo.set("getStream", {name:"getStream", description:"I am a description", args: [{channelName: "I describe an arg"}, {yolo: "I describe another arg"}]});
+
+module.exports.twitchInfo = twitchInfo;

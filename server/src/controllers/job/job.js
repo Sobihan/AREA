@@ -1,6 +1,7 @@
 //const main = require('../../main');
 const job = require('../../db_management/job/db_job');
 const job_extra = require('./job_extra');
+const {infoAction} = require('../../area/action');
 
 // const actions = require('../../area/action');
 // const reactions = require('../../area/reaction');
@@ -245,7 +246,89 @@ const stopJob = (req, res, next) => {
     console.log('Got body:', req.body);
 };
 
+
+
+// const testActionInfo = (req, res, next) => {
+//     let keys = Array.from(infoAction.keys());
+
+//     for(let i = 0; i < keys.length; i++) {
+//         console.log("i =", i, ", keys =", keys[i]);
+//         //console.log(infoAction.get(keys[i]));
+//         console.log(infoAction.get(keys[i]).name);
+//         console.log(infoAction.get(keys[i]).actions);
+//         console.log();
+
+//         let keys_2 = Array.from(infoAction.get(keys[i]).actions.keys());
+//         for(let j = 0; j < keys_2.length; j++) {
+//             console.log("j =", j, ", keys =", keys_2[j]);
+//             //console.log(infoAction.get(keys[i]).actions.get(keys_2[j]));
+//             console.log(infoAction.get(keys[i]).actions.get(keys_2[j]).name);
+//             console.log(infoAction.get(keys[i]).actions.get(keys_2[j]).description);
+//             console.log(infoAction.get(keys[i]).actions.get(keys_2[j]).args);
+//             console.log();
+//             for(let k = 0; k < infoAction.get(keys[i]).actions.get(keys_2[j]).args.length; k++) {
+//                 //console.log(infoAction.get(keys[i]).actions.get(keys_2[j]).args[k]);
+//                 //console.log();
+//                 //console.log(Object.keys(infoAction.get(keys[i]).actions.get(keys_2[j]).args[k]));
+//                 const key = Object.keys(infoAction.get(keys[i]).actions.get(keys_2[j]).args[k]);
+//                 console.log(key[0], " = ", infoAction.get(keys[i]).actions.get(keys_2[j]).args[k][key]);
+//                 //console.log(infoAction.get(keys[i]).actions.get(keys_2[j]).args[k][key]);
+//                 console.log();
+
+//             }
+//         }
+//     }
+
+//     res.status(200).json({
+//         success: true,
+//         body: 'Stop job done!'
+//     });
+// }
+
+
+const testActionInfo = (req, res, next) => {
+    let keys = Array.from(infoAction.keys());
+
+    for(let i = 0; i < keys.length; i++) {
+        console.log("i =", i, ", keys =", keys[i]);
+        //console.log(infoAction.get(keys[i]));
+        //console.log(keys[i], "=");
+        console.log("name =", infoAction.get(keys[i]).name);
+        console.log("actions =", infoAction.get(keys[i]).actions);
+        console.log();
+
+        let keys_2 = Array.from(infoAction.get(keys[i]).actions.keys());
+        for(let j = 0; j < keys_2.length; j++) {
+            console.log("j =", j, ", keys =", keys_2[j]);
+            //console.log(infoAction.get(keys[i]).actions.get(keys_2[j]));
+            //console.log(keys_2[j], "=");
+            console.log("name =", infoAction.get(keys[i]).actions.get(keys_2[j]).name);
+            console.log("description =", infoAction.get(keys[i]).actions.get(keys_2[j]).description);
+            console.log("args =", infoAction.get(keys[i]).actions.get(keys_2[j]).args);
+            console.log();
+
+            for(let k = 0; k < infoAction.get(keys[i]).actions.get(keys_2[j]).args.length; k++) {
+                //console.log(infoAction.get(keys[i]).actions.get(keys_2[j]).args[k]);
+                //console.log();
+                //console.log(Object.keys(infoAction.get(keys[i]).actions.get(keys_2[j]).args[k]));
+                const key = Object.keys(infoAction.get(keys[i]).actions.get(keys_2[j]).args[k]);
+                console.log(key[0], " = ", infoAction.get(keys[i]).actions.get(keys_2[j]).args[k][key]);
+                //console.log(infoAction.get(keys[i]).actions.get(keys_2[j]).args[k][key]);
+                console.log();
+
+            }
+        }
+    }
+
+    res.status(200).json({
+        success: true,
+        body: 'Stop job done!'
+    });
+}
+
 module.exports.updateJob = updateJob;
 module.exports.deleteJob = deleteJob;
 module.exports.searchJob = searchJob;
 module.exports.stopJob = stopJob;
+
+module.exports.testActionInfo = testActionInfo;

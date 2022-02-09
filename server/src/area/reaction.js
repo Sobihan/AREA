@@ -13,3 +13,11 @@ const checkReaction = new Map();
 checkReaction.set("testReaction", test.checkTestReaction);
 
 module.exports.checkReaction = checkReaction;
+
+
+
+const infoReaction = new Map();
+
+infoReaction.set("testReaction", test.checkTestReaction);
+
+module.exports.infoReaction = infoReaction;

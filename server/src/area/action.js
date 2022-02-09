@@ -14,3 +14,11 @@ const checkAction = new Map();
 checkAction.set("getStream", twitch.checkGetStream);
 
 module.exports.checkAction = checkAction;
+
+
+
+const infoAction = new Map();
+
+infoAction.set("twitch", {name: "twitch", actions: twitch.twitchInfo});
+
+module.exports.infoAction = infoAction;
