@@ -51,5 +51,6 @@ module.exports.checkGetStream = checkGetStream;
 const twitchInfo = new Map();
 
 twitchInfo.set("getStream", {name:"getStream", description:"I am a description", args: [{channelName: "I describe an arg"}, {yolo: "I describe another arg"}]});
+twitchInfo.set("testAction", {name:"testAction", description:"I am new description", args: []});
 
 module.exports.twitchInfo = twitchInfo;

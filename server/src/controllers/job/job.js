@@ -287,8 +287,44 @@ const stopJob = (req, res, next) => {
 
 
 const testActionInfo = (req, res, next) => {
+    //var jsonData = {};
+    var jsonArr = [];
     let keys = Array.from(infoAction.keys());
 
+
+    // for(let i = 0; i < keys.length; i++) {
+    //     var arr = [];
+    //     console.log("i =", i, ", keys =", keys[i]);
+    //     //console.log(infoAction.get(keys[i]));
+    //     //console.log(keys[i], "=");
+    //     //console.log("name =", infoAction.get(keys[i]).name);
+    //     //console.log("actions =", infoAction.get(keys[i]).actions);
+    //     //console.log();
+    //     jsonData["name"] = infoAction.get(keys[i]).name;
+    //     //jsonData["actions"] = infoAction.get(keys[i]).actions;
+    //     jsonData["actions"] = job_extra.getAction(infoAction.get(keys[i]).actions);
+    // }
+
+    for(let i = 0; i < keys.length; i++) {
+        let tmpJsonData = {}
+        //console.log("i =", i, ", keys =", keys[i]);
+        //console.log(infoAction.get(keys[i]));
+        //console.log(keys[i], "=");
+        //console.log("name =", infoAction.get(keys[i]).name);
+        //console.log("actions =", infoAction.get(keys[i]).actions);
+        //console.log();
+        tmpJsonData["name"] = infoAction.get(keys[i]).name;
+        //jsonData["actions"] = infoAction.get(keys[i]).actions;
+        tmpJsonData["actions"] = job_extra.getAction(infoAction.get(keys[i]).actions);
+        jsonArr.push(tmpJsonData);
+    }
+    //jsonData.push(jsonArr);
+
+
+
+
+    //let keys = Array.from(infoAction.keys());
+/*
     for(let i = 0; i < keys.length; i++) {
         console.log("i =", i, ", keys =", keys[i]);
         //console.log(infoAction.get(keys[i]));
@@ -319,10 +355,11 @@ const testActionInfo = (req, res, next) => {
             }
         }
     }
-
+*/
     res.status(200).json({
         success: true,
-        body: 'Stop job done!'
+        body: 'Stop job done!',
+        jsonArr
     });
 }
 

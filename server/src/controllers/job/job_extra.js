@@ -152,7 +152,24 @@ function stopJob(jobToken, stop)
     }
 }
 
+function getAction(actions)
+{
+    let keys = Array.from(actions.keys());
+    var rslData = [];
+
+    for(let i = 0; i < keys.length; i++) {
+        let tmpJsonData = {}
+        tmpJsonData["name"] = actions.get(keys[i]).name;
+        tmpJsonData["description"] = actions.get(keys[i]).description;
+        tmpJsonData["args"] = actions.get(keys[i]).args;
+        rslData.push(tmpJsonData);
+    }
+    return rslData;
+}
+
+
 module.exports.updateJob_extra = updateJob_extra;
 module.exports.checkGetJob = checkGetJob;
 module.exports.stopJob = stopJob;
+module.exports.getAction = getAction;
 //module.exports.getJob = getJob;
