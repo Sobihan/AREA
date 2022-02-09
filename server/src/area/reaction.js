@@ -18,6 +18,6 @@ module.exports.checkReaction = checkReaction;
 
 const infoReaction = new Map();
 
-infoReaction.set("testReaction", test.checkTestReaction);
+infoReaction.set("testInfo", {name: "testInfo", reactions: test.testInfo});
 
 module.exports.infoReaction = infoReaction;

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const api = require('./routes/routes');
+const about = require('./controllers/about')
 
 // const Twitch = require('./area/action/twitch');
 // Twitch.getStream("Sardoche");
@@ -47,6 +48,9 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
         res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
     });
 };
+
+app.get('/about', about.about);
+app.get('/about.json', about.about);
 
 // Catch any bad requests
 app.get('*', (req, res) => {

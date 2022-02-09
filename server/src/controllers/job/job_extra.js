@@ -152,16 +152,16 @@ function stopJob(jobToken, stop)
     }
 }
 
-function getAction(actions)
+function getReAction(re_actions)
 {
-    let keys = Array.from(actions.keys());
+    let keys = Array.from(re_actions.keys());
     var rslData = [];
 
-    for(let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         let tmpJsonData = {}
-        tmpJsonData["name"] = actions.get(keys[i]).name;
-        tmpJsonData["description"] = actions.get(keys[i]).description;
-        tmpJsonData["args"] = actions.get(keys[i]).args;
+        tmpJsonData["name"] = re_actions.get(keys[i]).name;
+        tmpJsonData["description"] = re_actions.get(keys[i]).description;
+        tmpJsonData["args"] = re_actions.get(keys[i]).args;
         rslData.push(tmpJsonData);
     }
     return rslData;
@@ -171,5 +171,5 @@ function getAction(actions)
 module.exports.updateJob_extra = updateJob_extra;
 module.exports.checkGetJob = checkGetJob;
 module.exports.stopJob = stopJob;
-module.exports.getAction = getAction;
+module.exports.getReAction = getReAction;
 //module.exports.getJob = getJob;
