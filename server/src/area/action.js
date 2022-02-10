@@ -5,10 +5,10 @@ const action = new Map();
 
 action.set("getStream", twitch.getStream);
 action.set("testAction", twitch.testAction);
-action.set("tweet_create", twitch.testAction);
-action.set("follow", twitch.testAction);
-action.set("direct_message", twitch.testAction);
-action.set("tweet_delete", twitch.testAction);
+// action.set("tweet_create", twitch.testAction);
+// action.set("follow", twitch.testAction);
+// action.set("direct_message", twitch.testAction);
+// action.set("tweet_delete", twitch.testAction);
 
 module.exports.action = action;
 

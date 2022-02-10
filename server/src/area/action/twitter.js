@@ -1,70 +1,70 @@
-const twitterWebhooks = require('twitter-webhooks');
+// const twitterWebhooks = require('twitter-webhooks');
 
-const twitterInfo = new Map();
+// const twitterInfo = new Map();
 
-twitterInfo.set("tweet_create", {
-    name: "tweet_create",
-    description: "I am a description",
-    args: [
-        {userId: "The user id"}
-    ]
-});
+// twitterInfo.set("tweet_create", {
+//     name: "tweet_create",
+//     description: "I am a description",
+//     args: [
+//         {userId: "The user id"}
+//     ]
+// });
 
-module.exports.twitterInfo = twitterInfo;
+// module.exports.twitterInfo = twitterInfo;
 
-exports.init = async (app) => {
-	const userActivityWebhook = twitterWebhooks.userActivity({
-        serverUrl: '127.0.0.1',
-        route: '/twitter',
-        consumerKey: 'placeholder',
-        consumerSecret: 'placeholder',
-		accessToken: 'placeholder',
-		accessTokenSecret: 'holder',
-		environment: 'yeayea',
-		app
-	});
+// exports.init = async (app) => {
+// 	const userActivityWebhook = twitterWebhooks.userActivity({
+//         serverUrl: '127.0.0.1',
+//         route: '/twitter',
+//         consumerKey: 'placeholder',
+//         consumerSecret: 'placeholder',
+// 		accessToken: 'placeholder',
+// 		accessTokenSecret: 'holder',
+// 		environment: 'yeayea',
+// 		app
+// 	});
 
-    const hooks = await userActivityWebhook.getWebhook();
-	if (hooks.length == 0)
-		userActivityWebhook.register()
-	userActivityWebhook.on('event', (event, userId, data) => {
-		if (event == 'tweet_create') {
-			const res = {user: userId, message: data.text}
-            // TODO call reaction
-		}
-	});
-}
+//     const hooks = await userActivityWebhook.getWebhook();
+// 	if (hooks.length == 0)
+// 		userActivityWebhook.register()
+// 	userActivityWebhook.on('event', (event, userId, data) => {
+// 		if (event == 'tweet_create') {
+// 			const res = {user: userId, message: data.text}
+//             // TODO call reaction
+// 		}
+// 	});
+// }
 
-exports.subcribe_user = async (userId, accessToken, accessTokenSecret) => {
-	const userActivityWebhook = twitterWebhooks.userActivity({
-        serverUrl: '127.0.0.1',
-        route: '/twitter',
-        consumerKey: 'placeholder',
-        consumerSecret: 'placeholder',
-    }).catch(err => {
-		console.error(err)
-	});
+// exports.subcribe_user = async (userId, accessToken, accessTokenSecret) => {
+// 	const userActivityWebhook = twitterWebhooks.userActivity({
+//         serverUrl: '127.0.0.1',
+//         route: '/twitter',
+//         consumerKey: 'placeholder',
+//         consumerSecret: 'placeholder',
+//     }).catch(err => {
+// 		console.error(err)
+// 	});
 
-    userActivityWebhook.subscribe({
-        userId: userId,
-        accessToken: accessToken,
-        accessTokenSecret: accessTokenSecret
-    });
-}
+//     userActivityWebhook.subscribe({
+//         userId: userId,
+//         accessToken: accessToken,
+//         accessTokenSecret: accessTokenSecret
+//     });
+// }
 
-exports.unsubscribe_user = async(userId, userToken, secretToken) => {
-	const userActivityWebhook = twitterWebhooks.userActivity({
-        serverUrl: '127.0.0.1',
-        route: '/twitter',
-        consumerKey: 'placeholder',
-        consumerSecret: 'placeholder',
-	});
+// exports.unsubscribe_user = async(userId, userToken, secretToken) => {
+// 	const userActivityWebhook = twitterWebhooks.userActivity({
+//         serverUrl: '127.0.0.1',
+//         route: '/twitter',
+//         consumerKey: 'placeholder',
+//         consumerSecret: 'placeholder',
+// 	});
 
-	userActivityWebhook.unsubscribe({
-		userId: userId,
-		accessToken: userToken,
-		accessTokenSecret: secretToken
-	}).catch(err => {
-		console.error(err)
-	});
-}
+// 	userActivityWebhook.unsubscribe({
+// 		userId: userId,
+// 		accessToken: userToken,
+// 		accessTokenSecret: secretToken
+// 	}).catch(err => {
+// 		console.error(err)
+// 	});
+// }
