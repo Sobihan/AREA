@@ -1,13 +1,8 @@
 //const main = require('../../main');
 const job = require('../../db_management/job/db_job');
 const job_extra = require('./job_extra');
-
-// const actions = require('../../area/action');
-// const reactions = require('../../area/reaction');
-
-// const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
-
-// const scheduler = new ToadScheduler()
+const {infoAction} = require('../../area/action');
+const {infoReaction} = require('../../area/reaction');
 
 function convertInt(x, base) {
     const parsed = parseInt(x, base);
@@ -79,7 +74,8 @@ const updateJob = (req, res, next) => {
         }
         else if (isSuccess == true && user != null && jobToken != '') {
             console.log('else if updateJob FAIL');
-            scheduler.removeById(jobToken);
+            job_extra.removeJob(jobToken)
+            //scheduler.removeById(jobToken);
             job.deleteJob(req.header('authtoken'), jobToken)
             .catch((e) => {
                 isSuccess_2 = false;
@@ -120,6 +116,8 @@ const deleteJob = (req, res, next) => {
     let isSuccess_2 = true;
     let isSuccess_3 = true;
 
+    job_extra.removeJob(req.body.jobToken);
+    //scheduler.removeById(req.body.jobToken);
     job.deleteActionArgs(req.body.jobToken)
     .catch((e) => {
         isSuccess = false;
@@ -245,7 +243,34 @@ const stopJob = (req, res, next) => {
     console.log('Got body:', req.body);
 };
 
+const getReActionInfo = (req, res, next) => {
+    var jsonArr = [];
+    let infoActionKeys = Array.from(infoAction.keys());
+    let infoReactionKeys = Array.from(infoReaction.keys());
+
+    for (let i = 0; i < infoActionKeys.length; i++) {
+        let tmpJsonData = {}
+        tmpJsonData["name"] = infoAction.get(infoActionKeys[i]).name;
+        tmpJsonData["actions"] = job_extra.getReAction(infoAction.get(infoActionKeys[i]).actions);
+        jsonArr.push(tmpJsonData);
+    }
+
+    for (let i = 0; i < infoReactionKeys.length; i++) {
+        let tmpJsonData = {}
+        tmpJsonData["name"] = infoReaction.get(infoReactionKeys[i]).name;
+        tmpJsonData["reactions"] = job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
+        jsonArr.push(tmpJsonData);
+    }
+
+    res.status(200).json({
+        success: true,
+        body: 'Stop job done!',
+        jsonArr
+    });
+}
+
 module.exports.updateJob = updateJob;
 module.exports.deleteJob = deleteJob;
 module.exports.searchJob = searchJob;
 module.exports.stopJob = stopJob;
+module.exports.getReActionInfo = getReActionInfo;

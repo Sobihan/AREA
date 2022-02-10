@@ -10,6 +10,7 @@
 | ---- | ---- | ---- |
 | Register user | `POST` | `/api/v1/register` |
 | Login user | `POST` | `/api/v1/authenticate` |
+| Login user | `POST` | `/api/v1/google-auth` |
 | Update the user's data | `POST` | `/api/v1/update-user-data` |
 | Get the user's data | `GET` | `/api/v1/get-user-data` |
 
@@ -76,6 +77,44 @@ Here is an example of a **response**:
     "success": true,
     "body": "Registration done!",
     "token": "250f87f8-6026-4fe6-8d96-75449cc768b1"
+}
+```
+____
+### **Login user with google**
+
+Request type: `POST`.
+
+URL: `/api/v1/google-auth`.
+
+Exemple of request in cURL:
+```bash
+curl --location --request POST 'http://localhost:8080/api/v1/google-auth' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'email=itjustworks@bugthesda.com' \
+--data-urlencode 'response={...google answer...}'
+```
+
+Here is an example of a **response**:
+```json
+{
+    "success": true,
+    "body": "Registration done!",
+    "user": {
+        "id": 3,
+        "createdAt": "2021-12-15T14:14:26.051Z",
+        "username": "itjustworks",
+        "email": "itjustworks@bugthesda.com",
+        "password": "bugthesda",
+        "name": null,
+        "lstName": null,
+        "token": "250f87f8-6026-4fe6-8d96-75449cc768b1",
+        "points": 0,
+        "distTrvl": 0,
+        "avatar": null,
+        "role": "USER",
+        "teamId": null,
+        "teamAdm": false
+    }
 }
 ```
 ____
