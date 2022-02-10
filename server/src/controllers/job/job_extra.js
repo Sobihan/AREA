@@ -167,9 +167,15 @@ function getReAction(re_actions)
     return rslData;
 }
 
+function removeJob(jobToken)
+{
+    scheduler.removeById(jobToken);
+}
+
 
 module.exports.updateJob_extra = updateJob_extra;
 module.exports.checkGetJob = checkGetJob;
 module.exports.stopJob = stopJob;
 module.exports.getReAction = getReAction;
+module.exports.removeJob = removeJob;
 //module.exports.getJob = getJob;
