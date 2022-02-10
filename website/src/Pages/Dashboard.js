@@ -30,7 +30,6 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
 import InputLabel from '@mui/material/InputLabel';
 import Fab from '@mui/material/Fab';
@@ -38,6 +37,10 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 
 const drawerWidth = 240;
 
@@ -131,95 +134,70 @@ function JobsList()
   }
 }
 
-const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-
 function CreateJob()
 {
-  const [jobsList, setJobsList] = React.useState(null);
+  const [actionsList, setActionsList] = React.useState(null);
+  const [reactionsList, setReactionsList] = React.useState(null);
   const [action, setAction] = React.useState('');
   const [reaction, setReaction] = React.useState('');
-  const [argument, setArgument] = React.useState('');
+  const [actionArg, setActionArg] = React.useState('');
+  const [reactionArg, setReactionArg] = React.useState('');
 
+  const steps = ['Select an action', 'Select a reaction', 'Review'];
   const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
-
-  const isStepOptional = (step) => {
-    return step === 1;
-  };
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
 
   const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    if (activeStep === steps.length - 1) {
+      console.log("coucou");
+      return;
+    }
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  var test_json = { "test": {
-      "items": [
-        {"uuid": "Uuid 1", "action": "Action 1", "reaction": "Reaction 1"},
-        {"uuid": "Uuid 2", "action": "Action 2", "reaction": "Reaction 2"},
-        {"uuid": "Uuid 3", "action": "Action 3", "reaction": "Reaction 3"}
-      ]
-    }
-  };
+  var actions_test_json = { "test": {
+    "items": [
+      {"uuid": "Uuid 1", "action": "Action 1", "actionArg": "ActionArg 1"},
+      {"uuid": "Uuid 2", "action": "Action 2", "actionArg": ""},
+      {"uuid": "Uuid 3", "action": "Action 3", "actionArg": "ActionArg 3"}
+    ]
+  }};
+  var reactions_test_json = { "test": {
+    "items": [
+      {"uuid": "Uuid 1", "reaction": "Reaction 1", "reactionArg": "ReactionArg 1"},
+      {"uuid": "Uuid 2", "reaction": "Reaction 2", "reactionArg": ""},
+      {"uuid": "Uuid 3", "reaction": "Reaction 3", "reactionArg": "ReactionArg 3"}
+    ]
+  }};
   const handleAction = (event) => {
     setAction(event.target.value);
   };
   const handleReaction = (event) => {
     setReaction(event.target.value);
   };
-  const handleArgument = (event) => {
-    setArgument(event.target.value);
+  const handleActionArg = (event) => {
+    setActionArg(event.target.value);
+  };
+  const handleReactionArg = (event) => {
+    setReactionArg(event.target.value);
   };
   const handleList = async () => {
-    const response = await JSON.parse(JSON.stringify(test_json));
-    setJobsList(response);
+    const actions_response = await JSON.parse(JSON.stringify(actions_test_json));
+    setActionsList(actions_response);
+    const reactions_response = await JSON.parse(JSON.stringify(reactions_test_json));
+    setReactionsList(reactions_response);
   };
 
-  if (jobsList) {
+  if (actionsList && reactionsList) {
     return (
       <Grid>
         <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
+        {steps.map((label) => {
           const stepProps = {};
           const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
-            );
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
           return (
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
@@ -229,23 +207,149 @@ function CreateJob()
       </Stepper>
       {activeStep === 0 ? (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
+          <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} sx={{ mt: 3 }}>
+            <h3>IF</h3>
+            <FormControl sx={{ width: 150 }} required>
+              <InputLabel id="actionSelectLabel">Action</InputLabel>
+              <Select
+                labelId="actionSelectLabel"
+                id="actionSelect"
+                value={action}
+                label="Action"
+                onChange={handleAction}
+              >
+                {actionsList.test.items.map(line => (
+                  <MenuItem
+                    key={line.action}
+                    value={line}
+                  >
+                    {line.action}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <h3>ARG</h3>
+            {action !== '' && action.actionArg !== '' ? (
+              <TextField
+                required
+                margin="normal"
+                id="argument"
+                label={action.actionArg}
+                name="argument"
+                onChange={handleActionArg}
+              />
+            ): <TextField
+                disabled
+                margin="normal"
+                id="argument"
+                label="Disabled"
+                name="argument"
+                onChange={handleActionArg}
+              />
+          }
+          </Stack>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
             <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} disabled={action === '' || (action.actionArg !== '' && actionArg === '')}>
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </Box>
         </React.Fragment>
       ): null}
+
+
       {activeStep === 1 ? (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
+          <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} sx={{ mt: 3 }}>
+            <h3>THEN</h3>
+            <FormControl sx={{ width: 150 }} required>
+              <InputLabel id="reactionSelectLabel">Reaction</InputLabel>
+              <Select
+                labelId="reactionSelectLabel"
+                id="reactionSelect"
+                value={reaction}
+                label="Reaction"
+                onChange={handleReaction}
+              >
+                {reactionsList.test.items.map(line => (
+                  <MenuItem
+                    key={line.reaction}
+                    value={line}
+                  >
+                    {line.reaction}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <h3>ARG</h3>
+            {reaction !== '' && reaction.reactionArg !== '' ? (
+              <TextField
+                required
+                margin="normal"
+                id="argument"
+                label={reaction.reactionArg}
+                name="argument"
+                onChange={handleReactionArg}
+              />
+            ): (<TextField
+              disabled
+              margin="normal"
+              id="argument"
+              label="Disabled"
+              name="argument"
+              onChange={handleReactionArg}
+            />
+          )}
+          </Stack>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button onClick={handleNext} disabled={reaction === ''}>
+              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+            </Button>
+          </Box>
+        </React.Fragment>
+      ): null}
+
+
+      {activeStep === 2 ? (
+        <React.Fragment>
+          <Stack justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 3 }}>
+              <h3>IF</h3>
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{action.action}</div>
+              {actionArg !== '' ? (
+                <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{actionArg}</div>
+              ): null}
+              <h3>THEN</h3>
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{reaction.reaction}</div>
+              {reactionArg !== '' ? (
+                <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{reactionArg}</div>
+              ): null}
+              </Stack>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
             <Box sx={{ flex: '1 1 auto' }} />
             <Button onClick={handleNext}>
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
@@ -435,11 +539,6 @@ export function Dashboard()
           <DialogContent dividers>
             <CreateJob />
           </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={handleButton}>
-              Create Job
-            </Button>
-          </DialogActions>
         </BootstrapDialog>
       </div>
       </Box>
