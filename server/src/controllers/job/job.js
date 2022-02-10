@@ -1,13 +1,8 @@
 //const main = require('../../main');
 const job = require('../../db_management/job/db_job');
 const job_extra = require('./job_extra');
-
-// const actions = require('../../area/action');
-// const reactions = require('../../area/reaction');
-
-// const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
-
-// const scheduler = new ToadScheduler()
+const {infoAction} = require('../../area/action');
+const {infoReaction} = require('../../area/reaction');
 
 function convertInt(x, base) {
     const parsed = parseInt(x, base);
@@ -245,7 +240,34 @@ const stopJob = (req, res, next) => {
     console.log('Got body:', req.body);
 };
 
+const getReActionInfo = (req, res, next) => {
+    var jsonArr = [];
+    let infoActionKeys = Array.from(infoAction.keys());
+    let infoReactionKeys = Array.from(infoReaction.keys());
+
+    for (let i = 0; i < infoActionKeys.length; i++) {
+        let tmpJsonData = {}
+        tmpJsonData["name"] = infoAction.get(infoActionKeys[i]).name;
+        tmpJsonData["actions"] = job_extra.getReAction(infoAction.get(infoActionKeys[i]).actions);
+        jsonArr.push(tmpJsonData);
+    }
+
+    for (let i = 0; i < infoReactionKeys.length; i++) {
+        let tmpJsonData = {}
+        tmpJsonData["name"] = infoReaction.get(infoReactionKeys[i]).name;
+        tmpJsonData["reactions"] = job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
+        jsonArr.push(tmpJsonData);
+    }
+
+    res.status(200).json({
+        success: true,
+        body: 'Stop job done!',
+        jsonArr
+    });
+}
+
 module.exports.updateJob = updateJob;
 module.exports.deleteJob = deleteJob;
 module.exports.searchJob = searchJob;
 module.exports.stopJob = stopJob;
+module.exports.getReActionInfo = getReActionInfo;
