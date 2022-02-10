@@ -74,7 +74,8 @@ const updateJob = (req, res, next) => {
         }
         else if (isSuccess == true && user != null && jobToken != '') {
             console.log('else if updateJob FAIL');
-            scheduler.removeById(jobToken);
+            job_extra.removeJob(jobToken)
+            //scheduler.removeById(jobToken);
             job.deleteJob(req.header('authtoken'), jobToken)
             .catch((e) => {
                 isSuccess_2 = false;
@@ -115,6 +116,8 @@ const deleteJob = (req, res, next) => {
     let isSuccess_2 = true;
     let isSuccess_3 = true;
 
+    job_extra.removeJob(req.body.jobToken);
+    //scheduler.removeById(req.body.jobToken);
     job.deleteActionArgs(req.body.jobToken)
     .catch((e) => {
         isSuccess = false;

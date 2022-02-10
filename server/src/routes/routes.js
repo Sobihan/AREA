@@ -15,7 +15,7 @@ router.post('/acess-api-token', api_access.getApiToken);
 
 router.post('/update-job', job.updateJob);
 router.post('/delete-job', job.deleteJob);
-router.get('/search-job', job.searchJob);
+router.post('/search-job', job.searchJob);
 router.post('/stop-job', job.stopJob);
 router.get('/re-action-info', job.getReActionInfo);
 
