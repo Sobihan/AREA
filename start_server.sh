@@ -2,7 +2,7 @@
 
 shopt -s lastpipe
 
-sleep_time=10
+sleep_time=20
 
 if [ "$1" = "recreate" ] || [ "$1" = "re" ]
 then
