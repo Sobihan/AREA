@@ -10,8 +10,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class BottomBar extends StatefulWidget {
   final String host;
   final User user;
+  final dynamic actionReaction;
 
-  const BottomBar({Key? key, required this.host, required this.user})
+  const BottomBar(
+      {Key? key,
+      required this.host,
+      required this.user,
+      required this.actionReaction})
       : super(key: key);
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -24,7 +29,10 @@ class _BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _pages = [
-      AreaPage(host: widget.host, user: widget.user),
+      AreaPage(
+          host: widget.host,
+          user: widget.user,
+          actionReaction: widget.actionReaction),
       UserPage(host: widget.host, user: widget.user),
       HelpPage(host: widget.host, user: widget.user)
     ];

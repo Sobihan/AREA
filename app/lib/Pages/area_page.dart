@@ -7,12 +7,18 @@ import 'package:area/Models/area.dart';
 import 'package:area/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:area/Components/Area/job.dart';
+import 'package:area/Models/action_list.dart';
 
 class AreaPage extends StatefulWidget {
   final String host;
   final User user;
+  final dynamic actionReaction;
 
-  const AreaPage({Key? key, required this.host, required this.user})
+  const AreaPage(
+      {Key? key,
+      required this.host,
+      required this.user,
+      required this.actionReaction})
       : super(key: key);
   @override
   State<AreaPage> createState() => _AreaPageState();
@@ -46,6 +52,9 @@ class _AreaPageState extends State<AreaPage> {
   }
 
   void newArea() async {
+    // print(widget.actionReaction);
+    var actions = actionFromJson(widget.actionReaction);
+    print(actions);
     var result = await showGeneralDialog(
         context: context,
         pageBuilder: (BuildContext context, Animation animation,
@@ -58,7 +67,10 @@ class _AreaPageState extends State<AreaPage> {
             child: Scaffold(
                 body: Container(
                     decoration: background(),
-                    child: NewArea(host: widget.host))),
+                    child: NewArea(
+                      host: widget.host,
+                      actions: actions,
+                    ))),
           ));
         });
     // var result = await showDialog(

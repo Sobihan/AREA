@@ -116,11 +116,15 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     User user = User.fromJson(
         token: token, json: jsonDecode(responseUser.body)['user']);
     print(user.toString());
+    final actionReaction = await getActionRea(host: widget.host);
     reload();
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => BottomBar(host: widget.host, user: user)),
+          builder: (context) => BottomBar(
+              host: widget.host,
+              user: user,
+              actionReaction: jsonDecode(actionReaction.body))),
     );
   }
 
@@ -130,8 +134,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     final user;
     try {
       user = await GoogleSignInApi.login();
-    } catch (e) {
-      print("Error goggle");
+    } on Exception catch (_) {
+      print("Error google");
       return;
     }
 
@@ -149,7 +153,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       addError("Please try Again");
       return;
     }
-    String userToken = jsonDecode(response.body)['token'];
+    String userToken;
+    if (jsonDecode(response.body)['token'] == null) {
+      userToken = jsonDecode(response.body)['user']['token'];
+    } else {
+      userToken = jsonDecode(response.body)['token'];
+    }
+
     final responseUser = await getUser(token: userToken, host: widget.host);
     User userConnect = User.fromJson(
         json: jsonDecode(responseUser.body)['user'], token: userToken);
@@ -157,12 +167,16 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     if (googleisConnect) {
       GoogleSignInApi.logout();
     }
+    final actionReaction = await getActionRea(host: widget.host);
     reload();
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              BottomBar(host: widget.host, user: userConnect)),
+          builder: (context) => BottomBar(
+                host: widget.host,
+                user: userConnect,
+                actionReaction: jsonDecode(actionReaction.body),
+              )),
     );
   }
 
