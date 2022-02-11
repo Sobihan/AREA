@@ -24,17 +24,33 @@ class Google {
 
   @override
   String toString() {
-    final Map<String, String> data = <String, String>{
-      'accessToken': accessToken,
-      'googleID': googleID,
-      'displayName': displayName,
-      'email': email
+    final Map<String, dynamic> data = <String, dynamic>{
+      'profileObj': {
+        'accessToken': accessToken,
+        'googleId': googleID,
+        'givenName': displayName.split(' ')[0],
+        'familyName': displayName.split(' ')[1],
+        'email': email
+      }
     };
-    return 'google=${data.toString()}';
+    return data.toString();
+  }
+
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = <String, dynamic>{
+      'profileObj': {
+        'accessToken': accessToken,
+        'googleId': googleID,
+        'givenName': displayName.split(' ')[0],
+        'familyName': displayName.split(' ')[1],
+        'email': email
+      }
+    };
+    return data;
   }
 
   String toJson() {
-    String data = toString();
-    return jsonEncode(data);
+    Map<String, dynamic> data = toMap();
+    return "{\"response\":${jsonEncode(data)}}";
   }
 }

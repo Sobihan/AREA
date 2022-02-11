@@ -46,3 +46,9 @@ Future<http.Response> signInWithGoogle(
   );
   return response;
 }
+
+Future<http.Response> getActionRea({required String host}) async {
+  Uri url = Uri.parse('http://$host:8080/api/v1/re-action-info');
+  final response = await http.get(url);
+  return response;
+}
