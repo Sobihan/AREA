@@ -72,12 +72,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     });
   }
 
-  Future<bool> checkError() async {
+  Future<bool> checkError(bool google) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       addError("Check Internet connection");
       return false;
-    } // Add Alert Box
+    }
+    if (google) return true;
     if (_controllerEmail.text.isEmpty) {
       addError("Check your email field");
       return false;
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }
 
   void signInPressed() async {
-    if (!await checkError()) return;
+    if (!await checkError(false)) return;
 
     reload();
     final responseLogin = await login(
@@ -124,6 +125,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }
 
   void gButtonPressed() async {
+    if (!await checkError(true)) return;
+    reload();
     final user;
     try {
       user = await GoogleSignInApi.login();
@@ -132,18 +135,35 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       return;
     }
 
-    if (user != null) {
-      final token = await user.authentication;
-      print(token.accessToken);
-      Google googleUser =
-          Google.fromGoogleSignInAccount(google: user, token: token);
-      final response = await signInWithGoogle(
-          user: googleUser, host: widget.host); //Need to check with bend
-      // print(response.body);
-      // print(response.statusCode);
-    } else {
+    if (user == null) return;
+    final token = await user.authentication;
+    print(token.accessToken);
+    Google googleUser =
+        Google.fromGoogleSignInAccount(google: user, token: token);
+    final response = await signInWithGoogle(
+        user: googleUser, host: widget.host); //Need to check with bend
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      print('Google Sign In Failed');
+      addError("Please try Again");
       return;
     }
+    String userToken = jsonDecode(response.body)['token'];
+    final responseUser = await getUser(token: userToken, host: widget.host);
+    User userConnect = User.fromJson(
+        json: jsonDecode(responseUser.body)['user'], token: userToken);
+    final googleisConnect = await GoogleSignInApi.isConnect();
+    if (googleisConnect) {
+      GoogleSignInApi.logout();
+    }
+    reload();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              BottomBar(host: widget.host, user: userConnect)),
+    );
   }
 
   Widget buildHeader() {

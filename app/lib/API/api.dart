@@ -39,10 +39,11 @@ Future<http.Response> getUser(
 Future<http.Response> signInWithGoogle(
     {required Google user, required String host}) async {
   Uri url = Uri.parse('http://$host:8080/api/v1/google-auth');
+  print(user.toJson());
   final response = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
-    body: user.toJson(),
+    body: "${user.toJson()}",
   );
   return response;
 }
