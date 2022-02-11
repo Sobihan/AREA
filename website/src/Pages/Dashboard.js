@@ -136,6 +136,7 @@ function JobsList()
 
 function CreateJob()
 {
+  const [areaList, setAreaList] = React.useState("");
   const [actionsList, setActionsList] = React.useState(null);
   const [reactionsList, setReactionsList] = React.useState(null);
   const [action, setAction] = React.useState('');
@@ -145,6 +146,18 @@ function CreateJob()
 
   const steps = ['Select an action', 'Select a reaction', 'Review'];
   const [activeStep, setActiveStep] = React.useState(0);
+
+  const getAreaList = async () => {
+    const requestOptions = {
+      method: 'GET',
+      //headers: {
+      //  'Content-Type': 'application/json'
+      //}
+    };
+    const api_response = await fetch('/api/v1/re-action-info', requestOptions);
+    const respdata = await api_response.json();
+    setAreaList(respdata);
+  }
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -165,6 +178,7 @@ function CreateJob()
       {"uuid": "Uuid 3", "action": "Action 3", "actionArg": "ActionArg 3"}
     ]
   }};
+
   var reactions_test_json = { "test": {
     "items": [
       {"uuid": "Uuid 1", "reaction": "Reaction 1", "reactionArg": "ReactionArg 1"},
@@ -172,18 +186,23 @@ function CreateJob()
       {"uuid": "Uuid 3", "reaction": "Reaction 3", "reactionArg": "ReactionArg 3"}
     ]
   }};
+
   const handleAction = (event) => {
     setAction(event.target.value);
   };
+
   const handleReaction = (event) => {
     setReaction(event.target.value);
   };
+
   const handleActionArg = (event) => {
     setActionArg(event.target.value);
   };
+
   const handleReactionArg = (event) => {
     setReactionArg(event.target.value);
   };
+
   const handleList = async () => {
     const actions_response = await JSON.parse(JSON.stringify(actions_test_json));
     setActionsList(actions_response);
@@ -191,7 +210,15 @@ function CreateJob()
     setReactionsList(reactions_response);
   };
 
-  if (actionsList && reactionsList) {
+  if (areaList === "") {
+    getAreaList();
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <CircularProgress />
+      </Grid>
+    );
+  }
+  else {
     return (
       <Grid>
         <Stepper activeStep={activeStep}>
@@ -218,14 +245,16 @@ function CreateJob()
                 label="Action"
                 onChange={handleAction}
               >
-                {actionsList.test.items.map(line => (
-                  <MenuItem
-                    key={line.action}
-                    value={line}
-                  >
-                    {line.action}
-                  </MenuItem>
-                ))}
+                {areaList.jsonArr.map(line => {
+                  return line.actions ? (
+                  line.actions.map(lineAction =>
+                    <MenuItem
+                      key={lineAction.name}
+                      value={lineAction.name}
+                    >
+                      {lineAction.name}
+                    </MenuItem>
+                )): null})}
               </Select>
             </FormControl>
             <h3>ARG</h3>
@@ -357,14 +386,6 @@ function CreateJob()
           </Box>
         </React.Fragment>
       ): null}
-      </Grid>
-    );
-  }
-  else {
-    handleList();
-    return (
-      <Grid container justifyContent="center" alignItems="center">
-        <CircularProgress />
       </Grid>
     );
   }
