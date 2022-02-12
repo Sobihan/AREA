@@ -1,5 +1,5 @@
+import 'package:area/Components/Area/new_action.dart';
 import 'package:area/Components/Common/color.dart';
-import 'package:area/Models/area.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,6 +19,10 @@ class _NewAreaState extends State<NewArea> {
 
   List<String> actionNames = [];
   String actionName = "";
+  late NewAction _newAction;
+  //New
+  int _stepIndex = 0;
+  //New
 
   @override
   void initState() {
@@ -27,6 +31,7 @@ class _NewAreaState extends State<NewArea> {
       actionNames.add(widget.actions[i]["ActionName"]);
     }
     actionName = actionNames[0];
+    _newAction = NewAction(actions: widget.actions);
   }
 
   void cleanData() {
@@ -158,14 +163,42 @@ class _NewAreaState extends State<NewArea> {
   @override
   Widget build(BuildContext context) {
     return Theme(
-        data: ThemeData(
-            buttonTheme:
-                const ButtonThemeData(textTheme: ButtonTextTheme.accent),
-            colorScheme:
-                const ColorScheme.light(primary: CustomColor.lightBlue)),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(children: childrens()),
-        ));
+      data: ThemeData(
+          buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.accent),
+          colorScheme: const ColorScheme.light(primary: CustomColor.lightBlue)),
+      child: Stepper(
+          onStepCancel: () {
+            Navigator.pop(context, "Cancel");
+          },
+          onStepContinue: () {
+            print(_newAction.action.toString());
+            if (_stepIndex < 2) {
+              setState(() {
+                _stepIndex += 1;
+              });
+            }
+          },
+          type: StepperType.horizontal,
+          currentStep: _stepIndex,
+          steps: [
+            Step(
+                isActive: _stepIndex >= 0,
+                title: const Text("Action"),
+                content: _newAction,
+                state:
+                    _stepIndex == 0 ? StepState.editing : StepState.complete),
+            Step(
+                isActive: _stepIndex >= 1,
+                title: const Text("Reaction"),
+                content: Container(),
+                state:
+                    _stepIndex <= 1 ? StepState.editing : StepState.complete),
+            Step(
+                isActive: _stepIndex == 2,
+                title: const Text("Trigger"),
+                content: Container(),
+                state: StepState.editing)
+          ]),
+    );
   }
 }

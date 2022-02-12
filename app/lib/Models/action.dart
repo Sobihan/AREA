@@ -1,10 +1,11 @@
-class Action {
-  final String name;
-  final List config;
+class CustomAction {
+  String name;
+  List config;
 
-  Action({required this.name, required this.config});
-  factory Action.fromJson({required dynamic json}) {
-    return Action(name: json['name'] ?? "Null", config: json['config'] ?? {});
+  CustomAction({required this.name, required this.config});
+  factory CustomAction.fromJson({required dynamic json}) {
+    return CustomAction(
+        name: json['name'] ?? "Null", config: json['config'] ?? {});
   }
 
   @override

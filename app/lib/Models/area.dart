@@ -3,7 +3,7 @@ import 'package:area/Models/reaction.dart';
 
 class Area {
   final String name;
-  final Action action;
+  final CustomAction action;
   final Reaction reaction;
   final int interval;
 
@@ -15,7 +15,7 @@ class Area {
 
   factory Area.fromJson({required dynamic json}) {
     return Area(
-        action: Action.fromJson(json: json["action"]),
+        action: CustomAction.fromJson(json: json["action"]),
         reaction: Reaction.fromJson(json: json["reaction"]),
         interval: json["interval"],
         name: json["name"]);
