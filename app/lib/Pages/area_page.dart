@@ -4,6 +4,7 @@ import 'package:area/Components/Area/new_area.dart';
 import 'package:area/Components/Common/color.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Models/area.dart';
+import 'package:area/Models/reaction_list.dart';
 import 'package:area/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:area/Components/Area/job.dart';
@@ -52,9 +53,8 @@ class _AreaPageState extends State<AreaPage> {
   }
 
   void newArea() async {
-    // print(widget.actionReaction);
     var actions = actionFromJson(widget.actionReaction);
-    print(actions);
+    var reactions = reactionFromJson(widget.actionReaction);
     var result = await showGeneralDialog(
         context: context,
         pageBuilder: (BuildContext context, Animation animation,
@@ -70,11 +70,10 @@ class _AreaPageState extends State<AreaPage> {
                     child: NewArea(
                       host: widget.host,
                       actions: actions,
+                      reactions: reactions,
                     ))),
           ));
         });
-    // var result = await showDialog(
-    //     context: context, builder: (_) => NewArea(host: widget.host));
   }
 
   @override

@@ -18,7 +18,6 @@ class _JobState extends State<Job> {
     var result = await showDialog(
         context: context,
         builder: (_) => Detail(area: widget.area, host: widget.host));
-    print(result);
   }
 
   @override

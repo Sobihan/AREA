@@ -24,15 +24,17 @@ List<Map<String, dynamic>> reactions = [
 
 List<Map<String, dynamic>> reactionFromJson(dynamic json) {
   List<Map<String, dynamic>> reactions = [];
-  int size = json['jsonArr'].lenght;
+  int size = json['jsonArr'].length;
   for (int i = 0; i < size; i += 1) {
     if (json['jsonArr'][i]["reactions"] == null) {
       continue;
     }
-    reactions.add({
-      "reactionName": json['jsonArr'][i]["reactions"]["name"],
-      "config": json['jsonArr'][i]["reactions"]["args"]
-    });
+    for (int j = 0; j < json['jsonArr'][i]["reactions"].length; j += 1) {
+      reactions.add({
+        "reactionName": json['jsonArr'][i]["reactions"][j]["name"],
+        "config": json['jsonArr'][i]["reactions"][j]["args"]
+      });
+    }
   }
   return reactions;
 }
