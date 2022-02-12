@@ -1,6 +1,6 @@
 class Reaction {
-  final String name;
-  final List config;
+  String name;
+  List config;
 
   Reaction({required this.name, required this.config});
   factory Reaction.fromJson({required dynamic json}) {
