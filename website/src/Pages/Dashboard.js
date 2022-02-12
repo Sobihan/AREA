@@ -137,11 +137,9 @@ function JobsList()
 function CreateJob()
 {
   const [areaList, setAreaList] = React.useState("");
-  const [actionsList, setActionsList] = React.useState(null);
-  const [reactionsList, setReactionsList] = React.useState(null);
   const [action, setAction] = React.useState('');
   const [reaction, setReaction] = React.useState('');
-  const [actionArg, setActionArg] = React.useState('');
+  const [actionArg, setActionArg] = React.useState([]);
   const [reactionArg, setReactionArg] = React.useState('');
 
   const steps = ['Select an action', 'Select a reaction', 'Review'];
@@ -171,22 +169,6 @@ function CreateJob()
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  var actions_test_json = { "test": {
-    "items": [
-      {"uuid": "Uuid 1", "action": "Action 1", "actionArg": "ActionArg 1"},
-      {"uuid": "Uuid 2", "action": "Action 2", "actionArg": ""},
-      {"uuid": "Uuid 3", "action": "Action 3", "actionArg": "ActionArg 3"}
-    ]
-  }};
-
-  var reactions_test_json = { "test": {
-    "items": [
-      {"uuid": "Uuid 1", "reaction": "Reaction 1", "reactionArg": "ReactionArg 1"},
-      {"uuid": "Uuid 2", "reaction": "Reaction 2", "reactionArg": ""},
-      {"uuid": "Uuid 3", "reaction": "Reaction 3", "reactionArg": "ReactionArg 3"}
-    ]
-  }};
-
   const handleAction = (event) => {
     setAction(event.target.value);
   };
@@ -195,19 +177,32 @@ function CreateJob()
     setReaction(event.target.value);
   };
 
-  const handleActionArg = (event) => {
-    setActionArg(event.target.value);
+  const handleActionArg = (event, argName) => {
+    for (var i = 0; i < actionArg.length; i += 1) {
+      if (actionArg[i].name === argName) {
+        actionArg[i].value = event.target.value;
+        return;
+      }
+    }
+    const newArg = {
+      name: argName,
+      value: event.target.value
+    };
+    setActionArg(actionArg => [...actionArg, newArg]);
   };
 
-  const handleReactionArg = (event) => {
-    setReactionArg(event.target.value);
-  };
-
-  const handleList = async () => {
-    const actions_response = await JSON.parse(JSON.stringify(actions_test_json));
-    setActionsList(actions_response);
-    const reactions_response = await JSON.parse(JSON.stringify(reactions_test_json));
-    setReactionsList(reactions_response);
+  const handleReactionArg = (event, argName) => {
+    for (var i = 0; i < reactionArg.length; i += 1) {
+      if (reactionArg[i].name === argName) {
+        reactionArg[i].value = event.target.value;
+        return;
+      }
+    }
+    const newArg = {
+      name: argName,
+      value: event.target.value
+    };
+    setReactionArg(reactionArg => [...reactionArg, newArg]);
   };
 
   if (areaList === "") {
@@ -232,6 +227,8 @@ function CreateJob()
           );
         })}
       </Stepper>
+
+
       {activeStep === 0 ? (
         <React.Fragment>
           <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} sx={{ mt: 3 }}>
@@ -246,11 +243,10 @@ function CreateJob()
                 onChange={handleAction}
               >
                 {areaList.jsonArr.map(line => {
-                  return line.actions ? (
-                  line.actions.map(lineAction =>
+                  return line.actions ? (line.actions.map(lineAction =>
                     <MenuItem
                       key={lineAction.name}
-                      value={lineAction.name}
+                      value={lineAction}
                     >
                       {lineAction.name}
                     </MenuItem>
@@ -258,23 +254,18 @@ function CreateJob()
               </Select>
             </FormControl>
             <h3>ARG</h3>
-            {action !== '' && action.actionArg !== '' ? (
-              <TextField
-                required
-                margin="normal"
-                id="argument"
-                label={action.actionArg}
-                name="argument"
-                onChange={handleActionArg}
-              />
-            ): <TextField
-                disabled
-                margin="normal"
-                id="argument"
-                label="Disabled"
-                name="argument"
-                onChange={handleActionArg}
-              />
+            {action !== '' && action.args ? (
+              action.args.map(lineActionArg =>
+                <TextField
+                  required
+                  margin="normal"
+                  id="argument"
+                  label={Object.keys(lineActionArg)}
+                  name="argument"
+                  onChange={(e) => handleActionArg(e, Object.keys(lineActionArg)[0])}
+                />
+              )
+            ): null
           }
           </Stack>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -287,7 +278,7 @@ function CreateJob()
               Back
             </Button>
             <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleNext} disabled={action === '' || (action.actionArg !== '' && actionArg === '')}>
+            <Button onClick={handleNext} disabled={action === '' || (action.args && (action.args.length !== actionArg.length))}>
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </Box>
@@ -308,35 +299,31 @@ function CreateJob()
                 label="Reaction"
                 onChange={handleReaction}
               >
-                {reactionsList.test.items.map(line => (
-                  <MenuItem
-                    key={line.reaction}
-                    value={line}
-                  >
-                    {line.reaction}
-                  </MenuItem>
-                ))}
+                {areaList.jsonArr.map(line => {
+                  return line.reactions ? (line.reactions.map(lineReaction =>
+                    <MenuItem
+                      key={lineReaction.name}
+                      value={lineReaction}
+                    >
+                      {lineReaction.name}
+                    </MenuItem>
+                )): null})}
               </Select>
             </FormControl>
             <h3>ARG</h3>
-            {reaction !== '' && reaction.reactionArg !== '' ? (
-              <TextField
-                required
-                margin="normal"
-                id="argument"
-                label={reaction.reactionArg}
-                name="argument"
-                onChange={handleReactionArg}
-              />
-            ): (<TextField
-              disabled
-              margin="normal"
-              id="argument"
-              label="Disabled"
-              name="argument"
-              onChange={handleReactionArg}
-            />
-          )}
+            {reaction !== '' && reaction.args ? (
+              reaction.args.map(lineReactionArg =>
+                <TextField
+                  required
+                  margin="normal"
+                  id="argument"
+                  label={Object.keys(lineReactionArg)}
+                  name="argument"
+                  onChange={(e) => handleReactionArg(e, Object.keys(lineReactionArg)[0])}
+                />
+              )
+            ): null
+          }
           </Stack>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
@@ -348,7 +335,7 @@ function CreateJob()
               Back
             </Button>
             <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleNext} disabled={reaction === ''}>
+            <Button onClick={handleNext} disabled={reaction === '' || (reaction.args && (reaction.args.length !== reactionArg.length))}>
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </Box>
@@ -360,15 +347,15 @@ function CreateJob()
         <React.Fragment>
           <Stack justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 3 }}>
               <h3>IF</h3>
-              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{action.action}</div>
-              {actionArg !== '' ? (
-                <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{actionArg}</div>
-              ): null}
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{action.name}</div>
+              {actionArg !== '' ? (actionArg.map(lineActionArg =>
+                <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{lineActionArg.value}</div>
+              )): null}
               <h3>THEN</h3>
-              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{reaction.reaction}</div>
-              {reactionArg !== '' ? (
-                <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{reactionArg}</div>
-              ): null}
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{reaction.name}</div>
+              {reactionArg !== '' ? (reactionArg.map(lineReactionArg =>
+                <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{lineReactionArg.value}</div>
+              )): null}
               </Stack>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
