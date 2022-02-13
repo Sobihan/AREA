@@ -1,3 +1,4 @@
+import 'package:area/Models/area.dart';
 import 'package:area/Models/google.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -50,5 +51,35 @@ Future<http.Response> signInWithGoogle(
 Future<http.Response> getActionRea({required String host}) async {
   Uri url = Uri.parse('http://$host:8080/api/v1/re-action-info');
   final response = await http.get(url);
+  return response;
+}
+
+Future<http.Response> createUpdate(
+    {required Area area, required String host, required String token}) async {
+  Uri url = Uri.parse('http://$host:8080/api/v1/update-job');
+  final response = await http.post(url,
+      headers: {'Content-Type': 'application/json', 'authToken': token},
+      body: jsonEncode(<String, dynamic>{
+        "jobToken": area.token,
+        "name": area.name,
+        "action": area.action.name,
+        "actionArg": area.action.config,
+        "reaction": area.reaction.name,
+        "reactionArg": area.reaction.config,
+        "interval": int.parse(area.interval),
+        "runNow": area.runNow
+      }));
+  return response;
+}
+
+Future<http.Response> getJobs(
+    {required String token, required String host}) async {
+  Uri url = Uri.parse("http://$host:8080/api/v1/search-job");
+  final response = await http.post(
+    url,
+    // body:
+    //     jsonEncode(<String, String>{'name': '', 'action': '', 'reaction': ''}),
+    headers: {'Content-Type': 'application/json', 'authToken': token},
+  );
   return response;
 }

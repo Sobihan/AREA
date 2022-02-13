@@ -7,7 +7,8 @@ import 'package:area/Components/Area/input_section.dart';
 //ignore: must_be_immutable
 class NewReaction extends StatefulWidget {
   final List<Map<String, dynamic>> reactions;
-  Reaction reaction = Reaction(name: "", config: [{}, {}, {}, {}, {}]);
+  Reaction reaction =
+      Reaction(name: "", config: ["empty", "empty", "empty", "empty", "empty"]);
   NewReaction({Key? key, required this.reactions}) : super(key: key);
 
   @override
@@ -25,7 +26,7 @@ class _NewReactionState extends State<NewReaction> {
   void initState() {
     super.initState();
     for (int i = 0; i < widget.reactions.length; i += 1) {
-      reactionNames.add(widget.reactions[i]["reactionName"]);
+      reactionNames.add(widget.reactions[i]["ReactionName"]);
     }
     currentreaction = reactionNames[0];
     for (int i = 0; i < 5; i += 1) {
@@ -33,6 +34,7 @@ class _NewReactionState extends State<NewReaction> {
       inputs.add(inputSection(controller: controllers[i]));
       controllers[i].addListener(() => saveConfig(i));
     }
+    widget.reaction.name = currentreaction;
   }
 
   void clean() {
@@ -44,7 +46,7 @@ class _NewReactionState extends State<NewReaction> {
   List<String> getConfigName() {
     List<String> configName = [];
     for (int i = 0; i < widget.reactions.length; i += 1) {
-      if (widget.reactions[i]["reactionName"] == currentreaction) {
+      if (widget.reactions[i]["ReactionName"] == currentreaction) {
         for (int j = 0; j < widget.reactions[i]["config"].length; j += 1) {
           configName.add(widget.reactions[i]["config"][j].keys.toList()[0]);
         }
@@ -62,9 +64,9 @@ class _NewReactionState extends State<NewReaction> {
   }
 
   void saveConfig(int index) {
-    widget.reaction.config[index] = {
-      getConfigName()[index]: controllers[index].text
-    };
+    List<String> config = getConfigName();
+    if (config.isEmpty) return;
+    widget.reaction.config[index] = {config[index]: controllers[index].text};
   }
 
   List<Widget> showInputs() {
@@ -107,12 +109,13 @@ class _NewReactionState extends State<NewReaction> {
             dropdownColor: CustomColor.lightBlue,
             style: const TextStyle(color: Colors.white),
             onChanged: (String? newValue) {
+              if (newValue == currentreaction) return;
+              setState(() {
+                currentreaction = newValue!;
+              });
               widget.reaction.config = [{}, {}, {}, {}, {}];
               clean();
               widget.reaction.name = newValue!;
-              setState(() {
-                currentreaction = newValue;
-              });
             },
             value: currentreaction,
             items: reactionNames.map<DropdownMenuItem<String>>((String value) {

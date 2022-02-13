@@ -6,7 +6,8 @@ class Area {
   CustomAction action;
   Reaction reaction;
   String interval;
-
+  String token = "";
+  bool runNow = true;
   Area(
       {required this.action,
       required this.reaction,
@@ -15,8 +16,8 @@ class Area {
 
   factory Area.fromJson({required dynamic json}) {
     return Area(
-        action: CustomAction.fromJson(json: json["action"]),
-        reaction: Reaction.fromJson(json: json["reaction"]),
+        action: CustomAction.fromJson(json: json),
+        reaction: Reaction.fromJson(json: json),
         interval: json["interval"],
         name: json["name"]);
   }
@@ -29,5 +30,18 @@ class Area {
       "Interval": interval.toString()
     };
     return data.toString();
+  }
+
+  factory Area.error() {
+    return Area(
+        action: CustomAction(config: ["Error"], name: "Error"),
+        reaction: Reaction(config: ["Error"], name: "Error"),
+        interval: "Error",
+        name: "Error");
+  }
+
+  void clean() {
+    action.clean();
+    reaction.clean();
   }
 }

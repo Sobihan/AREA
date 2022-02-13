@@ -4,7 +4,8 @@ class Reaction {
 
   Reaction({required this.name, required this.config});
   factory Reaction.fromJson({required dynamic json}) {
-    return Reaction(name: json['name'] ?? "Null", config: json['config'] ?? {});
+    return Reaction(
+        name: json['reaction'] ?? "Null", config: json['reactionArg'] ?? [{}]);
   }
 
   @override
@@ -14,5 +15,9 @@ class Reaction {
       'Action Config': config.toString()
     };
     return data.toString();
+  }
+
+  void clean() {
+    config.removeWhere((item) => item.toString() == "empty");
   }
 }

@@ -5,7 +5,7 @@ class CustomAction {
   CustomAction({required this.name, required this.config});
   factory CustomAction.fromJson({required dynamic json}) {
     return CustomAction(
-        name: json['name'] ?? "Null", config: json['config'] ?? {});
+        name: json['action'] ?? "Null", config: json['actionArg'] ?? [{}]);
   }
 
   @override
@@ -15,5 +15,9 @@ class CustomAction {
       'Action Config': config.toString()
     };
     return data.toString();
+  }
+
+  void clean() {
+    config.removeWhere((item) => item.toString() == "empty");
   }
 }

@@ -9,6 +9,7 @@ import 'package:area/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:area/Components/Area/job.dart';
 import 'package:area/Models/action_list.dart';
+import 'package:area/API/api.dart';
 
 class AreaPage extends StatefulWidget {
   final String host;
@@ -26,36 +27,41 @@ class AreaPage extends StatefulWidget {
 }
 
 class _AreaPageState extends State<AreaPage> {
-  late Area area;
+  void getData() async {
+    final response = await getJobs(host: widget.host, token: widget.user.token);
+    print(response.body);
+  }
 
   @override
   void initState() {
     super.initState();
-    Map<String, dynamic> data = {
-      "name": "Area Name",
-      "interval": "15",
-      "action": {
-        "name": "Action Name",
-        "config": [
-          {"set1": "settings"},
-          {"set2": "null"}
-        ]
-      },
-      "reaction": {
-        "name": "Reaction Name",
-        "config": [
-          {"set3": "settings"},
-          {"set4": "null"}
-        ]
-      }
-    };
-    area = Area.fromJson(json: data);
+    getData();
+    // await
+    // Map<String, dynamic> data = {
+    //   "name": "Area Name",
+    //   "interval": "15",
+    //   "action": {
+    //     "name": "Action Name",
+    //     "config": [
+    //       {"set1": "settings"},
+    //       {"set2": "null"}
+    //     ]
+    //   },
+    //   "reaction": {
+    //     "name": "Reaction Name",
+    //     "config": [
+    //       {"set3": "settings"},
+    //       {"set4": "null"}
+    //     ]
+    //   }
+    // };
+    // area = Area.fromJson(json: data);
   }
 
   void newArea() async {
     var actions = actionFromJson(widget.actionReaction);
     var reactions = reactionFromJson(widget.actionReaction);
-    var result = await showGeneralDialog(
+    Area result = await showGeneralDialog(
         context: context,
         pageBuilder: (BuildContext context, Animation animation,
             Animation secondAnimation) {
@@ -73,8 +79,12 @@ class _AreaPageState extends State<AreaPage> {
                       reactions: reactions,
                     ))),
           ));
-        });
-    print(result);
+        }) as Area;
+    if (result == Area.error()) return;
+    result.clean();
+    final response = await createUpdate(
+        area: result, host: widget.host, token: widget.user.token);
+    print(response.body);
   }
 
   @override
@@ -91,14 +101,15 @@ class _AreaPageState extends State<AreaPage> {
                 horizontal: 25,
                 vertical: 120,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  dismiss(
-                      widget: Job(host: widget.host, area: area),
-                      onDismissed: () => print("hello")),
-                ],
-              ))),
+              child: Text("hello"))),
+      // child: Column(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     dismiss(
+      //         widget: Job(host: widget.host, area: area),
+      //         onDismissed: () => print("hello")),
+      //   ],
+      // ))),
       fbutton(onPressed: () => newArea())
     ]));
   }
