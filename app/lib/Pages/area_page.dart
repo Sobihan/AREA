@@ -27,30 +27,35 @@ class AreaPage extends StatefulWidget {
 }
 
 class _AreaPageState extends State<AreaPage> {
-  late Area area;
+  void getData() async {
+    final response = await getJobs(host: widget.host, token: widget.user.token);
+    print(response.body);
+  }
 
   @override
   void initState() {
     super.initState();
-    Map<String, dynamic> data = {
-      "name": "Area Name",
-      "interval": "15",
-      "action": {
-        "name": "Action Name",
-        "config": [
-          {"set1": "settings"},
-          {"set2": "null"}
-        ]
-      },
-      "reaction": {
-        "name": "Reaction Name",
-        "config": [
-          {"set3": "settings"},
-          {"set4": "null"}
-        ]
-      }
-    };
-    area = Area.fromJson(json: data);
+    getData();
+    // await
+    // Map<String, dynamic> data = {
+    //   "name": "Area Name",
+    //   "interval": "15",
+    //   "action": {
+    //     "name": "Action Name",
+    //     "config": [
+    //       {"set1": "settings"},
+    //       {"set2": "null"}
+    //     ]
+    //   },
+    //   "reaction": {
+    //     "name": "Reaction Name",
+    //     "config": [
+    //       {"set3": "settings"},
+    //       {"set4": "null"}
+    //     ]
+    //   }
+    // };
+    // area = Area.fromJson(json: data);
   }
 
   void newArea() async {
@@ -78,7 +83,7 @@ class _AreaPageState extends State<AreaPage> {
     if (result == Area.error()) return;
     result.clean();
     final response = await createUpdate(
-        area: area, host: widget.host, token: widget.user.token);
+        area: result, host: widget.host, token: widget.user.token);
     print(response.body);
   }
 
@@ -96,14 +101,15 @@ class _AreaPageState extends State<AreaPage> {
                 horizontal: 25,
                 vertical: 120,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  dismiss(
-                      widget: Job(host: widget.host, area: area),
-                      onDismissed: () => print("hello")),
-                ],
-              ))),
+              child: Text("hello"))),
+      // child: Column(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     dismiss(
+      //         widget: Job(host: widget.host, area: area),
+      //         onDismissed: () => print("hello")),
+      //   ],
+      // ))),
       fbutton(onPressed: () => newArea())
     ]));
   }

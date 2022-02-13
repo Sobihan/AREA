@@ -71,3 +71,15 @@ Future<http.Response> createUpdate(
       }));
   return response;
 }
+
+Future<http.Response> getJobs(
+    {required String token, required String host}) async {
+  Uri url = Uri.parse("http://$host:8080/api/v1/search-job");
+  final response = await http.post(
+    url,
+    // body:
+    //     jsonEncode(<String, String>{'name': '', 'action': '', 'reaction': ''}),
+    headers: {'Content-Type': 'application/json', 'authToken': token},
+  );
+  return response;
+}
