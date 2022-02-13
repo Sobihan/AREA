@@ -40,6 +40,7 @@ import StepLabel from '@mui/material/StepLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { Sleep } from '../Sleep';
 
 
 const drawerWidth = 240;
@@ -91,22 +92,45 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 function JobsList()
 {
   const [jobsList, setJobsList] = React.useState(null);
-  var test_json = { "test": {
-      "items": [
-        {"uuid": "Uuid 1", "action": "Action 1", "reaction": "Reaction 1"},
-        {"uuid": "Uuid 2", "action": "Action 2", "reaction": "Reaction 2"},
-        {"uuid": "Uuid 3", "action": "Action 3", "reaction": "Reaction 3"}
-      ]
-    }
-  };
+
   const handleList = async () => {
-    const response = await JSON.parse(JSON.stringify(test_json));
-    setJobsList(response);
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': User.token
+      },
+      body: JSON.stringify({
+        name: "",
+        action: "",
+        reaction: ""
+      })
+    };
+    const response = await fetch('/api/v1/search-job', requestOptions);
+    const respdata = await response.json();
+    console.log(respdata);
+    setJobsList(respdata);
   };
+
+  const handleDelete = async (jobToken) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': User.token
+      },
+      body: JSON.stringify({
+        jobToken: jobToken
+      })
+    };
+    const response = await fetch('/api/v1/delete-job', requestOptions);
+    const respdata = await response.json();
+  }
+
   if (jobsList) {
     return (
       <Grid item xs={12}>
-        {jobsList.test.items.map(line => (
+        {jobsList.job.map(line => (
           <Paper sx={{ mb: 2, p: 2, display: 'flex', flexDirection: 'column' }}>
             <Stack direction="row" alignItems="center" spacing={4}>
               <h3>IF</h3>
@@ -114,7 +138,10 @@ function JobsList()
               <h3>THEN</h3>
               <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{line.reaction}</div>
               <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => {
-                console.log(line.uuid);
+                handleDelete(line.jobToken);
+                Sleep(1000).then(() => {
+                  handleList();
+                });
             }}>
                 Delete
               </Button>
@@ -142,25 +169,44 @@ function CreateJob()
   const [actionArg, setActionArg] = React.useState([]);
   const [reactionArg, setReactionArg] = React.useState('');
 
-  const steps = ['Select an action', 'Select a reaction', 'Review'];
+  const steps = ['New AREA', 'Select an action', 'Select a reaction', 'Review'];
   const [activeStep, setActiveStep] = React.useState(0);
 
   const getAreaList = async () => {
     const requestOptions = {
       method: 'GET',
-      //headers: {
-      //  'Content-Type': 'application/json'
-      //}
+      headers: {
+        'Content-Type': 'application/json'
+      }
     };
     const api_response = await fetch('/api/v1/re-action-info', requestOptions);
     const respdata = await api_response.json();
     setAreaList(respdata);
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     if (activeStep === steps.length - 1) {
-      console.log("coucou");
+      console.log(User.token);
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authToken': User.token
+        },
+        body: JSON.stringify({
+          jobToken: "",
+          name: "lololol",
+          action: action.name,
+          actionArg: actionArg,
+          reaction: reaction.name,
+          reactionArg: reactionArg,
+          interval: 5,
+          runNow: true
+        })
+      };
+      const response = await fetch('/api/v1/update-job', requestOptions);
+      console.log(response);
       return;
     }
   };
@@ -179,28 +225,26 @@ function CreateJob()
 
   const handleActionArg = (event, argName) => {
     for (var i = 0; i < actionArg.length; i += 1) {
-      if (actionArg[i].name === argName) {
-        actionArg[i].value = event.target.value;
+      if (Object.keys(actionArg[i])[0] === argName) {
+        actionArg[i][argName] = event.target.value;
         return;
       }
     }
     const newArg = {
-      name: argName,
-      value: event.target.value
+      [argName]: event.target.value
     };
     setActionArg(actionArg => [...actionArg, newArg]);
   };
 
   const handleReactionArg = (event, argName) => {
     for (var i = 0; i < reactionArg.length; i += 1) {
-      if (reactionArg[i].name === argName) {
-        reactionArg[i].value = event.target.value;
+      if (Object.keys(reactionArg[i])[0] === argName) {
+        reactionArg[i][argName] = event.target.value;
         return;
       }
     }
     const newArg = {
-      name: argName,
-      value: event.target.value
+      [argName]: event.target.value
     };
     setReactionArg(reactionArg => [...reactionArg, newArg]);
   };
@@ -532,7 +576,7 @@ export function Dashboard()
           </Grid>
           <Fab color="primary" sx={{ position: 'absolute', bottom: 16, right: 16 }} variant="extended" onClick={() => {setOpenDialog(true)}}>
             <AddCircleIcon sx={{ mr: 1 }} />
-            New Job
+            New AREA
           </Fab>
         </Container>
         <div>
@@ -542,7 +586,7 @@ export function Dashboard()
           open={openDialog}
         >
           <BootstrapDialogTitle id="create-jobs-title" onClose={closeDialog}>
-            Create Job
+            Create AREA
           </BootstrapDialogTitle>
           <DialogContent dividers>
             <CreateJob />
