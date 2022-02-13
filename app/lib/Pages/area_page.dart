@@ -9,6 +9,7 @@ import 'package:area/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:area/Components/Area/job.dart';
 import 'package:area/Models/action_list.dart';
+import 'package:area/API/api.dart';
 
 class AreaPage extends StatefulWidget {
   final String host;
@@ -55,7 +56,7 @@ class _AreaPageState extends State<AreaPage> {
   void newArea() async {
     var actions = actionFromJson(widget.actionReaction);
     var reactions = reactionFromJson(widget.actionReaction);
-    var result = await showGeneralDialog(
+    Area result = await showGeneralDialog(
         context: context,
         pageBuilder: (BuildContext context, Animation animation,
             Animation secondAnimation) {
@@ -73,8 +74,12 @@ class _AreaPageState extends State<AreaPage> {
                       reactions: reactions,
                     ))),
           ));
-        });
-    print(result);
+        }) as Area;
+    if (result == Area.error()) return;
+    result.clean();
+    final response = await createUpdate(
+        area: area, host: widget.host, token: widget.user.token);
+    print(response.body);
   }
 
   @override

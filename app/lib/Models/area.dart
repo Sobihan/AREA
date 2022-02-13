@@ -6,7 +6,8 @@ class Area {
   CustomAction action;
   Reaction reaction;
   String interval;
-
+  String token = "";
+  bool runNow = true;
   Area(
       {required this.action,
       required this.reaction,
@@ -37,5 +38,10 @@ class Area {
         reaction: Reaction(config: ["Error"], name: "Error"),
         interval: "Error",
         name: "Error");
+  }
+
+  void clean() {
+    action.clean();
+    reaction.clean();
   }
 }

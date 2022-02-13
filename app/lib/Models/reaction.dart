@@ -15,4 +15,8 @@ class Reaction {
     };
     return data.toString();
   }
+
+  void clean() {
+    config.removeWhere((item) => item.toString() == "empty");
+  }
 }

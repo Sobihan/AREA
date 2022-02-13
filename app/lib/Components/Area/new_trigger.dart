@@ -58,7 +58,7 @@ class _NewTriggerState extends State<NewTrigger> {
           const Align(
             alignment: Alignment.topLeft,
             child: Text(
-              "Action Name:",
+              "Area Name:",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,

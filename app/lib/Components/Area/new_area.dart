@@ -77,7 +77,6 @@ class _NewAreaState extends State<NewArea> {
 
   bool getLength(List<dynamic> list, List<String> config) {
     int len = 5;
-    print(config);
     if (config.isEmpty) return true;
     for (int i = 0; i < list.length; i += 1) {
       if (list[i] == "empty") {
