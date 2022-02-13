@@ -4,7 +4,7 @@ import './input.dart';
 Container inputSection({required TextEditingController controller}) {
   return Container(
       alignment: Alignment.center,
-      height: 60,
+      height: 50,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),

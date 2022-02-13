@@ -2,10 +2,10 @@ import 'package:area/Models/action.dart';
 import 'package:area/Models/reaction.dart';
 
 class Area {
-  final String name;
-  final CustomAction action;
-  final Reaction reaction;
-  final int interval;
+  String name;
+  CustomAction action;
+  Reaction reaction;
+  String interval;
 
   Area(
       {required this.action,

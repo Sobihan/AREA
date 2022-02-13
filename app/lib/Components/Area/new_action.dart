@@ -62,7 +62,9 @@ class _NewActionState extends State<NewAction> {
   }
 
   void saveConfig(int index) {
-    widget.action.config[index] = controllers[index].text;
+    widget.action.config[index] = {
+      getConfigName()[index]: controllers[index].text
+    };
   }
 
   List<Widget> showInputs() {
@@ -76,7 +78,7 @@ class _NewActionState extends State<NewAction> {
             child: Text(configName[i],
                 style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w700)),
             alignment: Alignment.topLeft,
           ),
@@ -94,7 +96,7 @@ class _NewActionState extends State<NewAction> {
         const Text(
           "Choose the action",
           style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
+              color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700),
         ),
         DropdownButton<String>(
             icon: const Icon(

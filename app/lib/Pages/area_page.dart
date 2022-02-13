@@ -33,7 +33,7 @@ class _AreaPageState extends State<AreaPage> {
     super.initState();
     Map<String, dynamic> data = {
       "name": "Area Name",
-      "interval": 15,
+      "interval": "15",
       "action": {
         "name": "Action Name",
         "config": [
@@ -74,6 +74,7 @@ class _AreaPageState extends State<AreaPage> {
                     ))),
           ));
         });
+    print(result);
   }
 
   @override
