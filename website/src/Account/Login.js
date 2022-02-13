@@ -122,10 +122,10 @@ export function Login()
             }
             { showError ?
               <Grid item xs={12}>
-                  <Alert severity="error">
+                <Alert severity="error">
                   <AlertTitle>Error</AlertTitle>
                   Login failed — <strong>please retry</strong>
-                  </Alert>
+                </Alert>
               </Grid>: null
             }
             <TextField

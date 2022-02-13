@@ -40,6 +40,10 @@ import StepLabel from '@mui/material/StepLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import { Sleep } from '../Sleep';
 
 
@@ -133,18 +137,53 @@ function JobsList()
         {jobsList.job.map(line => (
           <Paper sx={{ mb: 2, p: 2, display: 'flex', flexDirection: 'column' }}>
             <Stack direction="row" alignItems="center" spacing={4}>
-              <h3>IF</h3>
-              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{line.action}</div>
-              <h3>THEN</h3>
-              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{line.reaction}</div>
+              <h3>{line.name.toUpperCase()}</h3>
+              <TextField
+                disabled
+                id="outlined-disabled"
+                label="Interval"
+                defaultValue={line.interval + " Seconds"}
+              />
               <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => {
                 handleDelete(line.jobToken);
                 Sleep(1000).then(() => {
                   handleList();
                 });
-            }}>
+              }}>
                 Delete
               </Button>
+            </Stack>
+            <Stack direction="row" alignItems="center" spacing={4} sx={{ mt: 3 }}>
+              <h3>IF</h3>
+              <TextField
+                disabled
+                id="outlined-disabled"
+                label="Action"
+                defaultValue={line.action}
+              />
+              {line.actionArg !== '' ? (line.actionArg.map(lineActionArg =>
+                <TextField
+                  disabled
+                  id="outlined-disabled"
+                  label={Object.keys(lineActionArg)[0]}
+                  defaultValue={Object.values(lineActionArg)[0]}
+                />
+              )): null}
+              <h3>THEN</h3>
+              <TextField
+                disabled
+                id="outlined-disabled"
+                label="Action"
+                defaultValue={line.reaction}
+              />
+              {line.reactionArg !== '' ? (line.reactionArg.map(lineReactionArg =>
+                <TextField
+                  disabled
+                  id="outlined-disabled"
+                  label={Object.keys(lineReactionArg)[0]}
+                  defaultValue={Object.values(lineReactionArg)[0]}
+                />
+              )): null}
             </ Stack>
         </ Paper>
         ))}
@@ -164,10 +203,15 @@ function JobsList()
 function CreateJob()
 {
   const [areaList, setAreaList] = React.useState("");
+  const [areaName, setAreaName] = React.useState("");
+  const [areaInterval, setAreaInterval] = React.useState(0);
   const [action, setAction] = React.useState('');
   const [reaction, setReaction] = React.useState('');
   const [actionArg, setActionArg] = React.useState([]);
   const [reactionArg, setReactionArg] = React.useState('');
+  const [areaRunNow, setAreaRunNow] = React.useState(true);
+  const [runNowLabel, setRunNowLabel] = React.useState("Enabled");
+  const [createJob, setCreateJob] = React.useState("l");
 
   const steps = ['New AREA', 'Select an action', 'Select a reaction', 'Review'];
   const [activeStep, setActiveStep] = React.useState(0);
@@ -196,23 +240,41 @@ function CreateJob()
         },
         body: JSON.stringify({
           jobToken: "",
-          name: "lololol",
+          name: areaName,
           action: action.name,
           actionArg: actionArg,
           reaction: reaction.name,
           reactionArg: reactionArg,
-          interval: 5,
-          runNow: true
+          interval: areaInterval,
+          runNow: areaRunNow
         })
       };
       const response = await fetch('/api/v1/update-job', requestOptions);
-      console.log(response);
+      if (response.status === 200) {
+        setCreateJob("t");
+      }
+      else {
+        setCreateJob("f");
+      }
       return;
     }
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleAreaName = (event) => {
+    setAreaName(event.target.value);
+  };
+
+  const handleAreaInterval = (event) => {
+    if (event.target.value !== "" && !isNaN(+event.target.value)) {
+      setAreaInterval(event.target.value);
+    }
+    else if (event.target.value === "") {
+      setAreaInterval(0);
+    }
   };
 
   const handleAction = (event) => {
@@ -249,6 +311,16 @@ function CreateJob()
     setReactionArg(reactionArg => [...reactionArg, newArg]);
   };
 
+  const handleRunNow = (event) => {
+    if (event.target.checked) {
+      setRunNowLabel("Enabled")
+    }
+    else {
+      setRunNowLabel("Disabled")
+    }
+    setAreaRunNow(event.target.checked);
+  }
+
   if (areaList === "") {
     getAreaList();
     return (
@@ -275,6 +347,46 @@ function CreateJob()
 
       {activeStep === 0 ? (
         <React.Fragment>
+          <Stack justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 3 }}>
+            <h3>NAME</h3>
+            <TextField
+              required
+              margin="normal"
+              id="areaName"
+              label="Name"
+              name="areaName"
+              onChange={handleAreaName}
+            />
+            <h3>INTERVAL</h3>
+            <TextField
+              required
+              margin="normal"
+              id="areaInterval"
+              label="Seconds"
+              name="areaInterval"
+              onChange={handleAreaInterval}
+            />
+          </Stack>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button onClick={handleNext} disabled={areaName === "" || areaInterval === 0}>
+              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+            </Button>
+          </Box>
+        </React.Fragment>
+      ): null}
+
+
+      {activeStep === 1 ? (
+        <React.Fragment>
           <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} sx={{ mt: 3 }}>
             <h3>IF</h3>
             <FormControl sx={{ width: 150 }} required>
@@ -297,20 +409,21 @@ function CreateJob()
                 )): null})}
               </Select>
             </FormControl>
-            <h3>ARG</h3>
+            {action !== '' && action.args && action.args.length !== 0 ? (
+              <h3>ARG</h3>
+            ): null}
             {action !== '' && action.args ? (
               action.args.map(lineActionArg =>
                 <TextField
                   required
                   margin="normal"
-                  id="argument"
+                  id="actionArg"
                   label={Object.keys(lineActionArg)}
-                  name="argument"
+                  name="actionArg"
                   onChange={(e) => handleActionArg(e, Object.keys(lineActionArg)[0])}
                 />
               )
-            ): null
-          }
+            ): null}
           </Stack>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
@@ -330,7 +443,7 @@ function CreateJob()
       ): null}
 
 
-      {activeStep === 1 ? (
+      {activeStep === 2 ? (
         <React.Fragment>
           <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} sx={{ mt: 3 }}>
             <h3>THEN</h3>
@@ -354,15 +467,17 @@ function CreateJob()
                 )): null})}
               </Select>
             </FormControl>
-            <h3>ARG</h3>
+            {reaction !== '' && reaction.args && reaction.args.length !== 0 ? (
+              <h3>ARG</h3>
+            ): null}
             {reaction !== '' && reaction.args ? (
               reaction.args.map(lineReactionArg =>
                 <TextField
                   required
                   margin="normal"
-                  id="argument"
+                  id="reactionArg"
                   label={Object.keys(lineReactionArg)}
-                  name="argument"
+                  name="reactionArg"
                   onChange={(e) => handleReactionArg(e, Object.keys(lineReactionArg)[0])}
                 />
               )
@@ -387,20 +502,52 @@ function CreateJob()
       ): null}
 
 
-      {activeStep === 2 ? (
+      {activeStep === 3 ? (
         <React.Fragment>
+          <Stack justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 6 }}>
+            <h3>{areaName.toUpperCase()}</h3>
+            <TextField
+              disabled
+              id="outlined-disabled"
+              label="Interval"
+              defaultValue={areaInterval + " Seconds"}
+            />
+            <FormControlLabel control={<Switch checked={areaRunNow} onChange={handleRunNow} />} label={runNowLabel} />
+          </Stack>
           <Stack justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 3 }}>
-              <h3>IF</h3>
-              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{action.name}</div>
-              {actionArg !== '' ? (actionArg.map(lineActionArg =>
-                <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{lineActionArg.value}</div>
-              )): null}
-              <h3>THEN</h3>
-              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{reaction.name}</div>
-              {reactionArg !== '' ? (reactionArg.map(lineReactionArg =>
-                <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{lineReactionArg.value}</div>
-              )): null}
-              </Stack>
+            <h3>IF</h3>
+            <TextField
+              disabled
+              id="outlined-disabled"
+              label="Action"
+              defaultValue={action.name}
+            />
+            {actionArg !== '' ? (actionArg.map(lineActionArg =>
+              <TextField
+                disabled
+                id="outlined-disabled"
+                label={Object.keys(lineActionArg)[0]}
+                defaultValue={Object.values(lineActionArg)[0]}
+              />
+            )): null}
+          </Stack>
+          <Stack justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 3 }}>
+          <h3>THEN</h3>
+            <TextField
+              disabled
+              id="outlined-disabled"
+              label="Reaction"
+              defaultValue={reaction.name}
+            />
+            {reactionArg !== '' ? (reactionArg.map(lineReactionArg =>
+              <TextField
+                disabled
+                id="outlined-disabled"
+                label={Object.keys(lineReactionArg)[0]}
+                defaultValue={Object.values(lineReactionArg)[0]}
+              />
+            )): null}
+          </Stack>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"
@@ -415,6 +562,33 @@ function CreateJob()
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </Box>
+        </React.Fragment>
+      ): null}
+
+
+      {activeStep === 4 ? (
+        <React.Fragment>
+          {createJob === "l" ? (
+            <Grid container justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }} >
+              <CircularProgress />
+            </Grid>
+          ): null}
+          {createJob === "t" ? (
+            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }} >
+              <Alert severity="success">
+                <AlertTitle>Success</AlertTitle>
+                AREA — <strong>Created successfully !</strong>
+              </Alert>
+            </ Grid>
+          ): null}
+          {createJob === "f" ? (
+            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }} >
+              <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                AREA — <strong>Creation failed !</strong>
+              </Alert>
+            </Grid>
+          ): null}
         </React.Fragment>
       ): null}
       </Grid>
@@ -470,9 +644,6 @@ export function Dashboard()
   //}
   const toggleDrawer = () => {
     setOpen(!open);
-  };
-  const handleButton  = () => {
-    console.log("coucou");
   };
   return (
     <Box sx={{ display: 'flex' }}>
@@ -579,8 +750,9 @@ export function Dashboard()
             New AREA
           </Fab>
         </Container>
-        <div>
         <BootstrapDialog
+          fullWidth={true}
+          maxWidth={"lg"}
           onClose={closeDialog}
           aria-labelledby="create-jobs-title"
           open={openDialog}
@@ -592,7 +764,6 @@ export function Dashboard()
             <CreateJob />
           </DialogContent>
         </BootstrapDialog>
-      </div>
       </Box>
     </Box>
   );
