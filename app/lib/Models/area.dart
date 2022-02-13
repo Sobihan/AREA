@@ -30,4 +30,12 @@ class Area {
     };
     return data.toString();
   }
+
+  factory Area.error() {
+    return Area(
+        action: CustomAction(config: ["Error"], name: "Error"),
+        reaction: Reaction(config: ["Error"], name: "Error"),
+        interval: "Error",
+        name: "Error");
+  }
 }

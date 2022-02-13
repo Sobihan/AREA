@@ -7,7 +7,8 @@ import 'package:area/Components/Area/input_section.dart';
 //ignore: must_be_immutable
 class NewAction extends StatefulWidget {
   final List<Map<String, dynamic>> actions;
-  CustomAction action = CustomAction(name: "", config: [{}, {}, {}, {}, {}]);
+  CustomAction action = CustomAction(
+      name: "", config: ["empty", "empty", "empty", "empty", "empty"]);
   NewAction({Key? key, required this.actions}) : super(key: key);
 
   @override
@@ -33,6 +34,7 @@ class _NewActionState extends State<NewAction> {
       inputs.add(inputSection(controller: controllers[i]));
       controllers[i].addListener(() => saveConfig(i));
     }
+    widget.action.name = currentAction;
   }
 
   void clean() {
@@ -62,9 +64,11 @@ class _NewActionState extends State<NewAction> {
   }
 
   void saveConfig(int index) {
-    widget.action.config[index] = {
-      getConfigName()[index]: controllers[index].text
-    };
+    List<String> config = getConfigName();
+    if (config.isEmpty) return;
+    print(config);
+    print(index);
+    widget.action.config[index] = {config[index]: controllers[index].text};
   }
 
   List<Widget> showInputs() {
@@ -107,12 +111,19 @@ class _NewActionState extends State<NewAction> {
             dropdownColor: CustomColor.lightBlue,
             style: const TextStyle(color: Colors.white),
             onChanged: (String? newValue) {
-              widget.action.config = [{}, {}, {}, {}, {}];
+              if (newValue == currentAction) return;
+              setState(() {
+                currentAction = newValue!;
+              });
+              widget.action.config = [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ];
               clean();
               widget.action.name = newValue!;
-              setState(() {
-                currentAction = newValue;
-              });
             },
             value: currentAction,
             items: actionNames.map<DropdownMenuItem<String>>((String value) {
