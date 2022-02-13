@@ -5,7 +5,7 @@ class CustomAction {
   CustomAction({required this.name, required this.config});
   factory CustomAction.fromJson({required dynamic json}) {
     return CustomAction(
-        name: json['name'] ?? "Null", config: json['config'] ?? {});
+        name: json['action'] ?? "Null", config: json['actionArg'] ?? [{}]);
   }
 
   @override

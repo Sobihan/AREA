@@ -16,8 +16,8 @@ class Area {
 
   factory Area.fromJson({required dynamic json}) {
     return Area(
-        action: CustomAction.fromJson(json: json["action"]),
-        reaction: Reaction.fromJson(json: json["reaction"]),
+        action: CustomAction.fromJson(json: json),
+        reaction: Reaction.fromJson(json: json),
         interval: json["interval"],
         name: json["name"]);
   }
