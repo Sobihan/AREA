@@ -140,21 +140,16 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
     try {
       user = await GoogleSignInApi.login();
     } catch (e) {
-      print("Error goggle");
       return;
     }
 
     if (user == null) return;
     final token = await user.authentication;
-    print(token.accessToken);
     Google googleUser =
         Google.fromGoogleSignInAccount(google: user, token: token);
     final response = await signInWithGoogle(
         user: googleUser, host: widget.host); //Need to check with bend
-    print(response.body);
-    print(response.statusCode);
     if (response.statusCode != 200) {
-      print('Google Sign In Failed');
       addError("Please try Again");
       return;
     }

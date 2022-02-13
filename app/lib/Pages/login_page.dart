@@ -107,7 +107,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         email: _controllerEmail.text,
         password: _controllerPassword.text);
     if (responseLogin.statusCode != 200) {
-      print(responseLogin.statusCode);
       addError("Email or password is incorrect");
       return;
     }
@@ -115,7 +114,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     final responseUser = await getUser(token: token, host: widget.host);
     User user = User.fromJson(
         token: token, json: jsonDecode(responseUser.body)['user']);
-    print(user.toString());
     final actionReaction = await getActionRea(host: widget.host);
     reload();
     Navigator.push(
@@ -135,21 +133,17 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     try {
       user = await GoogleSignInApi.login();
     } on Exception catch (_) {
-      print("Error google");
       return;
     }
 
     if (user == null) return;
     final token = await user.authentication;
-    print(token.accessToken);
+    (token.accessToken);
     Google googleUser =
         Google.fromGoogleSignInAccount(google: user, token: token);
     final response = await signInWithGoogle(
         user: googleUser, host: widget.host); //Need to check with bend
-    print(response.body);
-    print(response.statusCode);
     if (response.statusCode != 200) {
-      print('Google Sign In Failed');
       addError("Please try Again");
       return;
     }

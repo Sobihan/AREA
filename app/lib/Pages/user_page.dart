@@ -1,4 +1,3 @@
-import 'package:area/API/api.dart';
 import 'package:area/API/google.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/User/service.dart';
@@ -30,7 +29,6 @@ class _UserPageState extends State<UserPage> {
 
     if (user != null) {
       final token = await user.authentication;
-      print(token.accessToken);
       Google googleUser =
           Google.fromGoogleSignInAccount(google: user, token: token);
     } else {

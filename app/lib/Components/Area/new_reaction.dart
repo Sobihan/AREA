@@ -62,7 +62,9 @@ class _NewReactionState extends State<NewReaction> {
   }
 
   void saveConfig(int index) {
-    widget.reaction.config[index] = controllers[index].text;
+    widget.reaction.config[index] = {
+      getConfigName()[index]: controllers[index].text
+    };
   }
 
   List<Widget> showInputs() {
@@ -76,7 +78,7 @@ class _NewReactionState extends State<NewReaction> {
             child: Text(configName[i],
                 style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w700)),
             alignment: Alignment.topLeft,
           ),
@@ -94,7 +96,7 @@ class _NewReactionState extends State<NewReaction> {
         const Text(
           "Choose the reaction",
           style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
+              color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700),
         ),
         DropdownButton<String>(
             icon: const Icon(

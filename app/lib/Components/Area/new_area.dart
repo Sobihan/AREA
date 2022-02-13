@@ -1,6 +1,9 @@
 import 'package:area/Components/Area/new_action.dart';
 import 'package:area/Components/Area/new_reaction.dart';
+import 'package:area/Components/Area/new_trigger.dart';
+
 import 'package:area/Components/Common/color.dart';
+import 'package:area/Models/area.dart';
 import 'package:flutter/material.dart';
 
 class NewArea extends StatefulWidget {
@@ -20,6 +23,7 @@ class NewArea extends StatefulWidget {
 class _NewAreaState extends State<NewArea> {
   late NewAction _newAction;
   late NewReaction _newReaction;
+  late NewTrigger _newTrigger;
   int _stepIndex = 0;
 
   @override
@@ -27,6 +31,16 @@ class _NewAreaState extends State<NewArea> {
     super.initState();
     _newAction = NewAction(actions: widget.actions);
     _newReaction = NewReaction(reactions: widget.reactions);
+    _newTrigger = NewTrigger();
+  }
+
+  void createArea() {
+    Area area = Area(
+        action: _newAction.action,
+        reaction: _newReaction.reaction,
+        interval: _newTrigger.timer,
+        name: _newTrigger.areaName);
+    Navigator.pop(context, area.toString());
   }
 
   @override
@@ -40,6 +54,10 @@ class _NewAreaState extends State<NewArea> {
             Navigator.pop(context, "Cancel");
           },
           onStepContinue: () {
+            if (_stepIndex == 2) {
+              createArea();
+              return;
+            }
             if (_stepIndex < 2) {
               setState(() {
                 _stepIndex += 1;
@@ -64,7 +82,7 @@ class _NewAreaState extends State<NewArea> {
             Step(
                 isActive: _stepIndex == 2,
                 title: const Text("Trigger"),
-                content: Container(),
+                content: _newTrigger,
                 state: StepState.editing)
           ]),
     );
