@@ -13,15 +13,6 @@ function convertInt(x, base) {
     return parsed;
 }
 
-function isValidJson(data){
-    try {
-        JSON.parse(data);
-        return true;
-    } catch {
-        return false;
-    }
-}
-
 const updateJob = (req, res, next) => {
     let isSuccess = true;
     let isSuccess_2 = true;
@@ -39,13 +30,10 @@ const updateJob = (req, res, next) => {
         }
 
         if (isSuccess == true && user != null && jobToken != ''
-            && req.body.actionArg != '' && req.body.reactionArg != ''
-            && isValidJson(req.body.actionArg) && isValidJson(req.body.reactionArg)) {
-            const actionArgs = JSON.parse(req.body.actionArg);
-            const reactionArgs = JSON.parse(req.body.reactionArg);
+            && req.body.actionArg != '' && req.body.reactionArg != '') {
 
             try {
-                var isJobChecked = job_extra.checkGetJob(req.body.action, actionArgs, req.body.reaction, reactionArgs);
+                var isJobChecked = job_extra.checkGetJob(req.body.action, req.body.actionArg, req.body.reaction, req.body.reactionArg);
             }
             catch (error) {
                 is_failed = true
@@ -65,7 +53,7 @@ const updateJob = (req, res, next) => {
                     });
                 }
                 else {
-                    job_extra.updateJob_extra(jobToken, actionArgs, reactionArgs, req)
+                    job_extra.updateJob_extra(jobToken, req.body.actionArg, req.body.reactionArg, req)
                     .then((data) => {
                         res.status(data.code).json(data.json);
                     });

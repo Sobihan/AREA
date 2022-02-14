@@ -26,10 +26,27 @@ function getStream(actionArgs, callback, reactionArgs)
     });
 }
 
-function testAction()
+function testAction(actionArgs, callback, reactionArgs)
 {
+    //var test = search.args(actionArgs, "test");
+    //var test = 0;
     //console.log("Hello world" + text);
-    console.log("\nHello action world\n");
+    //test += 1;
+
+    /*if (!isNaN(search.args(actionArgs, "test")))
+        var test = parseInt(search.args(actionArgs, "test"));
+
+    test += 1;*/
+
+    //var test = parseInt(search.args(actionArgs, "test"));
+    //search.args(actionArgs, "test") += 1;
+
+/*
+    var test = search.args(actionArgs, "test");
+    test += 1;
+    search.changeArgs(actionArgs, "test", test);
+*/
+    console.log("\nHello action world " + test + "\n");
 }
 
 module.exports.getStream = getStream;
@@ -44,7 +61,13 @@ function checkGetStream(actionArgs)
     return true;
 }
 
+function checktestAction(actionArgs)
+{
+    return true;
+}
+
 module.exports.checkGetStream = checkGetStream;
+module.exports.checktestAction = checktestAction;
 
 
 
