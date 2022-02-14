@@ -28,24 +28,10 @@ function getStream(actionArgs, callback, reactionArgs)
 
 function testAction(actionArgs, callback, reactionArgs)
 {
-    //var test = search.args(actionArgs, "test");
-    //var test = 0;
-    //console.log("Hello world" + text);
-    //test += 1;
-
-    /*if (!isNaN(search.args(actionArgs, "test")))
-        var test = parseInt(search.args(actionArgs, "test"));
-
-    test += 1;*/
-
-    //var test = parseInt(search.args(actionArgs, "test"));
-    //search.args(actionArgs, "test") += 1;
-
-/*
     var test = search.args(actionArgs, "test");
     test += 1;
     search.changeArgs(actionArgs, "test", test);
-*/
+
     console.log("\nHello action world " + test + "\n");
 }
 
@@ -63,6 +49,8 @@ function checkGetStream(actionArgs)
 
 function checktestAction(actionArgs)
 {
+    if (search.args(actionArgs, "test") == null)
+        search.AddArgs(actionArgs, "test", 0);
     return true;
 }
 
