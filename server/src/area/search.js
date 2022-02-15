@@ -10,4 +10,18 @@ function args(argList, search)
     return null;
 }
 
+function changeArgs(argList, search, newData)
+{
+    for (const args in argList) {
+        console.log(argList[args]);
+        for (const arg in argList[args]) {
+            if (arg == search) {
+                argList[args][arg] = newData;
+            }
+        }
+    }
+    return null;
+}
+
 module.exports.args = args;
+module.exports.changeArgs = changeArgs;

@@ -37,6 +37,7 @@ async function updateJob(authToken, jobToken, name, action, reaction, interval) 
                     action: true,
                     reaction: true,
                     interval: true,
+                    is_stoped: true,
                 }
             }
         }
@@ -160,6 +161,7 @@ async function findUniqueJob(jobToken) {
                 },
             },
             interval: true,
+            is_stoped: true,
         }
     })
     return job;
@@ -225,6 +227,7 @@ async function findJob(authToken, name, action, reaction) {
                                 },
                             },
                             interval: true,
+                            is_stoped: true,
                         }
                     }
                 }
@@ -261,6 +264,7 @@ async function findJob(authToken, name, action, reaction) {
                                 },
                             },
                             interval: true,
+                            is_stoped: true,
                         }
                     }
                 }
@@ -297,6 +301,7 @@ async function findJob(authToken, name, action, reaction) {
                                 },
                             },
                             interval: true,
+                            is_stoped: true,
                         }
                     }
                 },
@@ -336,6 +341,7 @@ async function findJob(authToken, name, action, reaction) {
                                 },
                             },
                             interval: true,
+                            is_stoped: true,
                         }
                     }
                 },
@@ -372,6 +378,7 @@ async function findJob(authToken, name, action, reaction) {
                                 },
                             },
                             interval: true,
+                            is_stoped: true,
                         }
                     }
                 },
@@ -411,6 +418,7 @@ async function findJob(authToken, name, action, reaction) {
                                 },
                             },
                             interval: true,
+                            is_stoped: true,
                         }
                     }
                 },
@@ -450,6 +458,7 @@ async function findJob(authToken, name, action, reaction) {
                                 },
                             },
                             interval: true,
+                            is_stoped: true,
                         }
                     }
                 },
@@ -492,6 +501,7 @@ async function findJob(authToken, name, action, reaction) {
                                 },
                             },
                             interval: true,
+                            is_stoped: true,
                         }
                     }
                 },
