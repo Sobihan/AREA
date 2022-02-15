@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:area/API/google.dart';
 import 'package:area/Components/Common/bottombar.dart';
+import 'package:area/Components/Login/rbutton.dart';
 import 'package:area/Models/google.dart';
 import 'package:area/Models/user.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -259,7 +260,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   const SizedBox(height: 20),
                   DelayedDisplay(
                       delay: const Duration(microseconds: 35000),
-                      child: gbutton(onTap: () => gButtonPressed()))
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          gbutton(onTap: () => gButtonPressed()),
+                          rbutton(onTap: () => print("hello"))
+                        ],
+                      ))
                   // gbutton(onTap: () => gButtonPressed())
                 ],
               ),

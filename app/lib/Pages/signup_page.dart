@@ -1,6 +1,7 @@
 import 'package:area/Components/Common/bottombar.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/Login/gbutton.dart';
+import 'package:area/Components/Login/rbutton.dart';
 import 'package:area/Components/Login/text_span.dart';
 import 'package:area/Pages/login_page.dart';
 import 'package:flutter/material.dart';
@@ -270,7 +271,13 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
                   const SizedBox(height: 20),
                   DelayedDisplay(
                       delay: const Duration(microseconds: 45000),
-                      child: gbutton(onTap: () => gButtonPressed()))
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          gbutton(onTap: () => gButtonPressed()),
+                          rbutton(onTap: () => print("hello"))
+                        ],
+                      ))
                 ],
               ),
             ),
