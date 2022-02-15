@@ -19,4 +19,7 @@ router.post('/search-job', job.searchJob);
 router.post('/stop-job', job.stopJob);
 router.get('/re-action-info', job.getReActionInfo);
 
+
+router.get('/test-token-api', job.testTokenApi);
+
 module.exports = router;

@@ -258,8 +258,25 @@ const getReActionInfo = (req, res, next) => {
     });
 }
 
+const api_getter = require('../api_access/api_getter');
+
+const testTokenApi = (req, res, next) => {
+
+    api_getter.apiGetter(req.header('authtoken'), req.body.type);
+
+    res.status(200).json({
+        success: true,
+        body: 'testTokenApi'
+    });
+}
+
+
 module.exports.updateJob = updateJob;
 module.exports.deleteJob = deleteJob;
 module.exports.searchJob = searchJob;
 module.exports.stopJob = stopJob;
 module.exports.getReActionInfo = getReActionInfo;
+
+
+
+module.exports.testTokenApi = testTokenApi;

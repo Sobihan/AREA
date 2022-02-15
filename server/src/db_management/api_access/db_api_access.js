@@ -1,4 +1,6 @@
 const main = require('../../main');
+const http_r = require('../../api/http_requester');
+const utf8 = require('utf8');
 
 /*
 function convertInt(x, base) {
@@ -11,27 +13,38 @@ function convertInt(x, base) {
 }
 */
 
-async function findUniqueApiToken(token, type) {
-    const user = await main.prisma.user.findMany({
+async function findUniqueApiTokenSimple(token, type) {
+    const user = await main.prisma.eX_API.findUnique({
         where: {
-            token: token,
-            exApi: {
-                some: {
-                    type: type,
-                }
+            type_userToken: {
+                type: type,
+                userToken: token,
+            }
+        },
+        select: {
+            //token: true,
+            disableAt: true,
+            acstoken: true,
+            rfstoken: true,
+        }
+    })
+    return user;
+}
+
+async function findUniqueApiToken(token, type) {
+    const user = await main.prisma.eX_API.findUnique({
+        where: {
+            type_userToken: {
+                type: type,
+                userToken: token,
             }
         },
         select: {
             token: true,
-            exApi: {
-                select: {
-                    token: true,
-                    type: true,
-                    disableAt: true,
-                    acstoken: true,
-                    rfstoken: true,
-                }
-            }
+            type: true,
+            disableAt: true,
+            acstoken: true,
+            rfstoken: true,
         }
     })
     return user;
@@ -69,10 +82,16 @@ async function updateApiToken(authToken, token, type) {
     return user;
 }
 
-async function updateApiAccessToken(token, acstoken, rfstoken, disableAt) {
+async function updateApiAccessToken(type, token, acstoken, rfstoken, disableAt) {
     const user = await main.prisma.eX_API.update({
-        where: {
+        /*where: {
             token: token,
+        },*/
+        where: {
+            type_userToken: {
+                type: type,
+                userToken: token,
+            }
         },
         data: {
             acstoken: acstoken,
@@ -82,6 +101,23 @@ async function updateApiAccessToken(token, acstoken, rfstoken, disableAt) {
     });
     return user;
 }
+
+function redditRefreshAcessToken(refreshToken, callback, type, userToken, returnCallback) {
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+
+    var options = {
+        'method': 'POST',
+        'hostname': 'www.reddit.com',
+        'path': '/api/v1/access_token?grant_type=refresh_token&refresh_token=' + refreshToken + '&redirect_uri=http://localhost/oauth2_callback',
+        'headers': {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': basicAuth
+        },
+        'maxRedirects': 20
+    };
+
+    http_r.http_reqRefresh(options, callback, type, userToken, returnCallback);
+};
 
 /*
 function redditGetAcessToken(token, callback) {
@@ -118,6 +154,8 @@ function redditRefreshAcessToken(token, callback) {
 };
 */
 
+module.exports.findUniqueApiTokenSimple = findUniqueApiTokenSimple;
 module.exports.findUniqueApiToken = findUniqueApiToken;
 module.exports.updateApiToken = updateApiToken;
 module.exports.updateApiAccessToken = updateApiAccessToken;
+module.exports.redditRefreshAcessToken = redditRefreshAcessToken;
