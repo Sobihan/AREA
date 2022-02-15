@@ -14,8 +14,9 @@ module.exports.testReaction = testReaction;
 
 
 
-function checkTestReaction(reactionArgs)
+function checkTestReaction(userToken, reactionArgs)
 {
+    search.AddArgs(reactionArgs, "userToken", userToken);
     if (search.args(reactionArgs, "text") == null)
         return false;
     return true;

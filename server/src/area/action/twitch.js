@@ -28,10 +28,18 @@ function getStream(actionArgs, callback, reactionArgs)
 
 function testAction(actionArgs, callback, reactionArgs)
 {
+//    console.log(actionArgs);
+
     var test = search.args(actionArgs, "test");
     test += 1;
     search.changeArgs(actionArgs, "test", test);
+/*
+    var data = search.args(actionArgs, "data");
+    console.log("data = ", data);
+    console.log("data.test = ", data.test);
 
+    search.args(actionArgs, "chedg")();
+*/
     console.log("\nHello action world " + test + "\n");
 }
 
@@ -40,17 +48,62 @@ module.exports.testAction = testAction;
 
 
 
-function checkGetStream(actionArgs)
+function checkGetStream(userToken, actionArgs)
 {
+    search.AddArgs(actionArgs, "userToken", userToken);
     if (search.args(actionArgs, "channelName") == null)
         return false;
     return true;
 }
-
-function checktestAction(actionArgs)
+/*
+function testtt(actionArgs, callback)
 {
-    if (search.args(actionArgs, "test") == null)
-        search.AddArgs(actionArgs, "test", 0);
+    function makeid(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    function fn60sec(actionArgs, callback)
+    {
+        callback(actionArgs, "data", makeid(5))
+        //data = makeid(5);
+        //console.log("origin data = ", data);
+    }
+
+
+    //fn60sec(data.test);
+    //setInterval(fn60sec, 3*1000);
+    setInterval(fn60sec, 3*1000, actionArgs, callback);
+}
+
+function helloTestt()
+{
+    console.log("sfvghjkiolmp");
+}
+*/
+function checktestAction(userToken, actionArgs)
+{
+    //search.AddArgs(actionArgs, "data", '');
+    //search.AddArgs(actionArgs, "chedg", helloTestt);
+    //var data = {test:''};
+
+    //testtt(actionArgs, search.changeArgs);
+
+/*    let data = '';
+
+    testtt(data)*/
+
+    // if (search.args(actionArgs, "test") == null)
+    //     search.AddArgs(actionArgs, "test", 0);
+
+
+    search.AddArgs(actionArgs, "userToken", userToken);
+
     return true;
 }
 
