@@ -1,3 +1,4 @@
+import 'package:area/API/reddit.dart';
 import 'package:area/Components/Common/bottombar.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/Login/gbutton.dart';
@@ -198,6 +199,18 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
     }
   }
 
+  void rButtonPressed() async {
+    if (!await checkError(true)) return;
+    reload();
+    String accessToken = await signInReddit();
+    if (accessToken == "error") {
+      addError("Please Try Again");
+      return;
+    }
+    reload();
+    print(accessToken);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -275,7 +288,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           gbutton(onTap: () => gButtonPressed()),
-                          rbutton(onTap: () => print("hello"))
+                          rbutton(onTap: () => rButtonPressed())
                         ],
                       ))
                 ],
