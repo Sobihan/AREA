@@ -10,7 +10,7 @@ async function updateJobAddArgs(jobToken, actionArgJson, reactionArgJson) {
     for (const actionArg in actionArgJson) {
         console.log(actionArgJson[actionArg]);
         for (const arg in actionArgJson[actionArg]) {
-            let argJob = await job.updateActionArg(jobToken, arg, actionArgJson[actionArg][arg]); //good
+            let argJob = await job.updateActionArg(jobToken, arg, actionArgJson[actionArg][arg].toString()); //good
             //let argJob = await job.updateActionArg("nop", arg, actionArgJson[actionArg][arg]); //crash test
             if (!argJob.id) {
                 console.log('updateActionArg FAIL');
@@ -25,7 +25,7 @@ async function updateJobAddArgs(jobToken, actionArgJson, reactionArgJson) {
     for (const reactionArg in reactionArgJson) {
         console.log(reactionArgJson[reactionArg]);
         for (const arg in reactionArgJson[reactionArg]) {
-            let argJob_2 = await job.updateReactionArg(jobToken, arg, reactionArgJson[reactionArg][arg]); //good
+            let argJob_2 = await job.updateReactionArg(jobToken, arg, reactionArgJson[reactionArg][arg].toString()); //good
             //let argJob_2 = await job.updateReactionArg("nop", arg, reactionArgJson[reactionArg][arg]); //crash test
             if (!argJob_2.id) {
                 console.log('updateReactionArg FAIL');
@@ -43,24 +43,9 @@ async function updateJobAddArgs(jobToken, actionArgJson, reactionArgJson) {
 async function updateJob_extra(jobToken, actionArgJson, reactionArgJson, req)
 {
     let is_failed = false;
-    var strActionArgJson = JSON.stringify(actionArgJson);
-    var strReactionArgJson = JSON.stringify(reactionArgJson);
-    /*var check = JSON.stringify(actionArgJson);
-    console.log("check =", check);
-    var cheka = JSON.parse(check)
-    console.log("cheka =", cheka);
-    for (const actionArg in actionArgJson) {
-        for (const arg in actionArgJson[actionArg]) {
-            if (arg == "test") {
-                console.log("actionArgJson[actionArg][arg] =", actionArgJson[actionArg][arg]);
-                actionArgJson[actionArg][arg] += 1;
-                console.log("actionArgJson[actionArg][arg] =", actionArgJson[actionArg][arg]);
-            }
-        }
-    }*/
 
     try {
-        var is_updateJobAddArgs = await updateJobAddArgs(jobToken, strActionArgJson, strReactionArgJson);
+        var is_updateJobAddArgs = await updateJobAddArgs(jobToken, actionArgJson, reactionArgJson);
     }
     catch (error) {
         console.log(error);
@@ -145,9 +130,9 @@ async function updateJob_extra(jobToken, actionArgJson, reactionArgJson, req)
     }
 }
 
-function checkGetJob(action, actionArgs, reaction, reactionArgs)
+function checkGetJob(userToken, action, actionArgs, reaction, reactionArgs)
 {
-    if (actions.checkAction.get(action)(actionArgs) == false || reactions.checkReaction.get(reaction)(reactionArgs) == false)
+    if (actions.checkAction.get(action)(userToken, actionArgs) == false || reactions.checkReaction.get(reaction)(userToken, reactionArgs) == false)
         return false;
     return true;
 }

@@ -10,6 +10,12 @@ function args(argList, search)
     return null;
 }
 
+function AddArgs(argList, newDataName, newData)
+{
+    console.log(argList[0]);
+    argList[0][newDataName] = newData;
+}
+
 function changeArgs(argList, search, newData)
 {
     for (const args in argList) {
@@ -24,4 +30,5 @@ function changeArgs(argList, search, newData)
 }
 
 module.exports.args = args;
+module.exports.AddArgs = AddArgs;
 module.exports.changeArgs = changeArgs;
