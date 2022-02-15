@@ -33,9 +33,10 @@ const updateJob = (req, res, next) => {
             && req.body.actionArg != '' && req.body.reactionArg != '') {
 
             try {
-                var isJobChecked = job_extra.checkGetJob(req.body.action, req.body.actionArg, req.body.reaction, req.body.reactionArg);
+                var isJobChecked = job_extra.checkGetJob(req.header('authtoken'), req.body.action, req.body.actionArg, req.body.reaction, req.body.reactionArg);
             }
             catch (error) {
+                console.log(error);
                 is_failed = true
                 var rslData = {code:401, json:{
                     success: false,
