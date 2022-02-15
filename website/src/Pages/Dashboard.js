@@ -358,10 +358,10 @@ function CreateJob()
 
   const handleRunNow = (event) => {
     if (event.target.checked) {
-      setRunNowLabel("Enabled")
+      setRunNowLabel("Enabled");
     }
     else {
-      setRunNowLabel("Disabled")
+      setRunNowLabel("Disabled");
     }
     setAreaRunNow(event.target.checked);
   }
@@ -668,14 +668,32 @@ function EditJob(jobJson)
   const [activeStep, setActiveStep] = React.useState(0);
 
   const getAreaList = async () => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
+    var respdata = "";
+
+    if (areaList === "") {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      const api_response = await fetch('/api/v1/re-action-info', requestOptions);
+      respdata = await api_response.json();
+    }
+    for (var i = 0; respdata.jsonArr && i < respdata.jsonArr.length; i++) {
+      for (var j = 0; respdata.jsonArr[i].actions && j < respdata.jsonArr[i].actions.length; j++) {
+        if (respdata.jsonArr[i].actions[j].name === action) {
+          setAction(respdata.jsonArr[i].actions[j]);
+        }
       }
-    };
-    const api_response = await fetch('/api/v1/re-action-info', requestOptions);
-    const respdata = await api_response.json();
+    }
+    for (var i = 0; respdata.jsonArr && i < respdata.jsonArr.length; i++) {
+      for (var j = 0; respdata.jsonArr[i].reactions && j < respdata.jsonArr[i].reactions.length; j++) {
+        if (respdata.jsonArr[i].reactions[j].name === reaction) {
+          setReaction(respdata.jsonArr[i].reactions[j]);
+        }
+      }
+    }
     setAreaList(respdata);
   }
 
@@ -911,7 +929,11 @@ function EditJob(jobJson)
                 id="reactionSelect"
                 value={reaction}
                 label="Reaction"
-                defaultValue={reaction}
+                defaultValue={areaList.jsonArr.map(line => {
+                  return line.reactions ? (line.reactions.map(lineReaction => {
+                    return lineReaction.name == reaction ? lineReaction: ""
+                  })): null
+                })}
                 onChange={handleReaction}
               >
                 {areaList.jsonArr.map(line => {
