@@ -625,13 +625,13 @@ function CreateJob()
 function EditJob(jobJson)
 {
   const [areaList, setAreaList] = React.useState("");
-  const [areaName, setAreaName] = React.useState(line.name);
-  const [areaInterval, setAreaInterval] = React.useState(line.interval);
-  const [action, setAction] = React.useState(line.action);
-  const [reaction, setReaction] = React.useState(line.reaction);
-  const [actionArg, setActionArg] = React.useState([]);
-  const [reactionArg, setReactionArg] = React.useState('');
-  const [areaRunNow, setAreaRunNow] = React.useState(true);
+  const [areaName, setAreaName] = React.useState(jobJson.name);
+  const [areaInterval, setAreaInterval] = React.useState(jobJson.interval);
+  const [action, setAction] = React.useState(jobJson.action);
+  const [reaction, setReaction] = React.useState(jobJson.reaction);
+  const [actionArg, setActionArg] = React.useState(jobJson.actionArg);
+  const [reactionArg, setReactionArg] = React.useState(jobJson.reactionArg);
+  const [areaRunNow, setAreaRunNow] = React.useState(jobJson);
   const [runNowLabel, setRunNowLabel] = React.useState("Enabled");
   const [createJob, setCreateJob] = React.useState("l");
 
