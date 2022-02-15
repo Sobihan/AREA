@@ -1,7 +1,8 @@
 const job = require('../../db_management/job/db_job');
 const actions = require('../../area/action');
 const reactions = require('../../area/reaction');
-const { ToadScheduler, SimpleIntervalJob, Task, AsyncTask } = require('toad-scheduler')
+const { ToadScheduler, SimpleIntervalJob, Task, AsyncTask } = require('toad-scheduler');
+//const { json } = require('body-parser');
 
 const scheduler = new ToadScheduler()
 
@@ -42,11 +43,27 @@ async function updateJobAddArgs(jobToken, actionArgJson, reactionArgJson) {
 async function updateJob_extra(jobToken, actionArgJson, reactionArgJson, req)
 {
     let is_failed = false;
+    var strActionArgJson = JSON.stringify(actionArgJson);
+    var strReactionArgJson = JSON.stringify(reactionArgJson);
+    /*var check = JSON.stringify(actionArgJson);
+    console.log("check =", check);
+    var cheka = JSON.parse(check)
+    console.log("cheka =", cheka);
+    for (const actionArg in actionArgJson) {
+        for (const arg in actionArgJson[actionArg]) {
+            if (arg == "test") {
+                console.log("actionArgJson[actionArg][arg] =", actionArgJson[actionArg][arg]);
+                actionArgJson[actionArg][arg] += 1;
+                console.log("actionArgJson[actionArg][arg] =", actionArgJson[actionArg][arg]);
+            }
+        }
+    }*/
 
     try {
-        var is_updateJobAddArgs = await updateJobAddArgs(jobToken, actionArgJson, reactionArgJson);
+        var is_updateJobAddArgs = await updateJobAddArgs(jobToken, strActionArgJson, strReactionArgJson);
     }
     catch (error) {
+        console.log(error);
         is_failed = true
     }
     finally {

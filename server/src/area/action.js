@@ -17,6 +17,7 @@ module.exports.action = action;
 const checkAction = new Map();
 
 checkAction.set("getStream", twitch.checkGetStream);
+checkAction.set("testAction", twitch.checktestAction);
 
 module.exports.checkAction = checkAction;
 
