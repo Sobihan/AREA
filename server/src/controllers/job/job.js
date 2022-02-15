@@ -261,13 +261,38 @@ const getReActionInfo = (req, res, next) => {
 const api_getter = require('../api_access/api_getter');
 
 const testTokenApi = (req, res, next) => {
+    let isSuccess = true;
 
-    api_getter.apiGetter(req.header('authtoken'), req.body.type);
+    api_getter.apiGetter(req.header('authtoken'), req.body.type)
+    .catch((e) => {
+        isSuccess = false;
+        console.log(e);
+    })
+    .then((resul) => {
+        if (isSuccess == true){
+            console.log('testTokenApi SUCESSFUL');
+            console.log("api_getter.apiTokens.get(req.header('authtoken')) =", api_getter.apiTokens.get(req.header('authtoken')));
+            //api_getter.apiTokens.get(req.header('authtoken'));
+            //console.log("resul =", resul);
+            res.status(200).json({
+                success: true,
+                body: 'testTokenApi done'
+            });
+        }
+        else {
+            console.log('testTokenApi FAIL');
+            res.status(401).json({
+                success: false,
+                body: 'testTokenApi failed'
+            });
+        }
+    });
 
-    res.status(200).json({
+
+    /*res.status(200).json({
         success: true,
         body: 'testTokenApi'
-    });
+    });*/
 }
 
 

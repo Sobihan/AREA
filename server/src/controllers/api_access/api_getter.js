@@ -2,7 +2,7 @@ const api_access = require('../../db_management/api_access/db_api_access');
 
 const apiTokens = new Map();
 
-async function apiGetter(userToken, type)
+async function apiGetter(userToken, type /* callback */)
 {
     /*
     {
@@ -55,12 +55,28 @@ async function apiGetter(userToken, type)
                 if (apiToken.disableAt <= Date.now()) {
                     //refresh token
                     if (type == 'REDDIT') {
-                        /*var data = */ api_access.redditRefreshAcessToken(apiToken.rfstoken, refreshReddit, type, userToken, function(res, disableAt) {
+                        /*await api_access.redditRefreshAcessToken(apiToken.rfstoken, refreshReddit, type, userToken, function(res, disableAt) {
                             console.log("res = ", res);
                             apiTokens.set(userToken, {[type]: {disableAt: disableAt, acstoken: res.access_token}});
-                        });
+                            //return res;
+                        });*/
 
-                        console.log("apiToken.rfstoken =", apiToken.rfstoken);
+                        try {
+                            api_access.redditRefreshAcessToken(apiToken.rfstoken, refreshReddit, type, userToken, function(res, disableAt) {
+                                console.log("res = ", res);
+                                apiTokens.set(userToken, {[type]: {disableAt: disableAt, acstoken: res.access_token}});
+                                //return res;
+                            });
+                        }
+                        catch (error) {
+                            console.log(error);
+                            is_failed = true
+                        }
+                        finally {
+
+                        }
+
+                        //console.log("apiToken.rfstoken =", apiToken.rfstoken);
 
                         //api_access.redditRefreshAcessToken(apiToken.rfstoken, refreshReddit, type, userToken);
 
@@ -96,20 +112,12 @@ function refreshReddit(responce, type, userToken, returnCallback)
     //api_access.redditRefreshAcessToken(rfstoken, refreshReddit);
     //resfesh token
     //update db
-
-
-
     //return { token: 'LOL', disableAt: null }
 
     const json_responce = JSON.parse(responce);
     let isSuccess = true;
     const disableAt = (Date.now() + ((json_responce.expires_in - 200) * 1000));
 
-    /*console.log("json_responce.expires_in = ", json_responce.expires_in);
-    console.log("Date.now() = ", Date.now());
-    console.log("disableAt = ", disableAt);*/
-
-    //api_access.updateApiAccessToken(type, userToken, json_responce.access_token, json_responce.refresh_token, (Date.now() + ((json_responce.expires_in - 200) * 1000)))
     api_access.updateApiAccessToken(type, userToken, json_responce.access_token, json_responce.refresh_token, disableAt)
     .catch((e) => {
         isSuccess = false;
@@ -122,8 +130,6 @@ function refreshReddit(responce, type, userToken, returnCallback)
         if (isSuccess == true){
             console.log('refreshReddit SUCESS');
             returnCallback(json_responce, disableAt);
-            //return 'dataaa';//{ access_token: json_responce.access_token, disableAt: (Date.now() + ((json_responce.expires_in - 200) * 1000)) }
-            //callback(json_responce.access_token);
         }
         else {
             console.log('refreshReddit FAIL');
@@ -133,3 +139,4 @@ function refreshReddit(responce, type, userToken, returnCallback)
 }
 
 module.exports.apiGetter = apiGetter;
+module.exports.apiTokens = apiTokens;
