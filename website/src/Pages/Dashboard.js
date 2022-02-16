@@ -17,6 +17,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import EditIcon from '@mui/icons-material/Edit';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import WorkIcon from '@mui/icons-material/Work';
@@ -164,7 +165,7 @@ function JobsList()
                 label="Interval"
                 defaultValue={line.interval + " Seconds"}
               />
-              <Button variant="contained" color="primary" startIcon={<DeleteIcon />} onClick={() => {
+              <Button variant="contained" color="primary" startIcon={<EditIcon />} onClick={() => {
                 setEditJob(line);
                 setOpenDialog(true);
               }}>
@@ -178,6 +179,24 @@ function JobsList()
               }}>
                 Delete
               </Button>
+              <FormControlLabel control={<Switch checked={!line.is_stoped} onChange={async () => {
+                  const requestOptions = {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'authToken': User.token
+                    },
+                    body: JSON.stringify({
+                      jobToken: line.jobToken,
+                      stop: !line.is_stoped
+                    })
+                  };
+                  const response = await fetch('/api/v1/stop-job', requestOptions);
+                  const respdata = await response.json();
+                  console.log(respdata);
+                  handleList();
+                }
+              }/>} label={line.is_stoped ? "Disabled": "Enabled"} />
             </Stack>
             <Stack direction="row" alignItems="center" spacing={4} sx={{ mt: 3 }}>
               <h3>IF</h3>
@@ -339,10 +358,10 @@ function CreateJob()
 
   const handleRunNow = (event) => {
     if (event.target.checked) {
-      setRunNowLabel("Enabled")
+      setRunNowLabel("Enabled");
     }
     else {
-      setRunNowLabel("Disabled")
+      setRunNowLabel("Disabled");
     }
     setAreaRunNow(event.target.checked);
   }
@@ -381,6 +400,7 @@ function CreateJob()
               id="areaName"
               label="Name"
               name="areaName"
+              defaultValue={areaName}
               onChange={handleAreaName}
             />
             <h3>INTERVAL</h3>
@@ -390,6 +410,7 @@ function CreateJob()
               id="areaInterval"
               label="Seconds"
               name="areaInterval"
+              defaultValue={areaInterval !== 0 ? areaInterval: ""}
               onChange={handleAreaInterval}
             />
           </Stack>
@@ -422,6 +443,7 @@ function CreateJob()
                 id="actionSelect"
                 value={action}
                 label="Action"
+                defaultValue={action}
                 onChange={handleAction}
               >
                 {areaList.jsonArr.map(line => {
@@ -439,13 +461,16 @@ function CreateJob()
               <h3>ARG</h3>
             ): null}
             {action !== '' && action.args ? (
-              action.args.map(lineActionArg =>
+              action.args.map((lineActionArg, index) =>
                 <TextField
                   required
                   margin="normal"
                   id="actionArg"
                   label={Object.keys(lineActionArg)}
                   name="actionArg"
+                  defaultValue={
+                    actionArg[index] ? Object.values(actionArg[index]): ""
+                  }
                   onChange={(e) => handleActionArg(e, Object.keys(lineActionArg)[0])}
                 />
               )
@@ -480,6 +505,7 @@ function CreateJob()
                 id="reactionSelect"
                 value={reaction}
                 label="Reaction"
+                defaultValue={reaction}
                 onChange={handleReaction}
               >
                 {areaList.jsonArr.map(line => {
@@ -497,13 +523,16 @@ function CreateJob()
               <h3>ARG</h3>
             ): null}
             {reaction !== '' && reaction.args ? (
-              reaction.args.map(lineReactionArg =>
+              reaction.args.map((lineReactionArg, index) =>
                 <TextField
                   required
                   margin="normal"
                   id="reactionArg"
                   label={Object.keys(lineReactionArg)}
                   name="reactionArg"
+                  defaultValue={
+                    reactionArg[index] ? Object.values(reactionArg[index]): ""
+                  }
                   onChange={(e) => handleReactionArg(e, Object.keys(lineReactionArg)[0])}
                 />
               )
@@ -625,28 +654,46 @@ function CreateJob()
 function EditJob(jobJson)
 {
   const [areaList, setAreaList] = React.useState("");
-  const [areaName, setAreaName] = React.useState(jobJson.name);
-  const [areaInterval, setAreaInterval] = React.useState(jobJson.interval);
-  const [action, setAction] = React.useState(jobJson.action);
-  const [reaction, setReaction] = React.useState(jobJson.reaction);
-  const [actionArg, setActionArg] = React.useState(jobJson.actionArg);
-  const [reactionArg, setReactionArg] = React.useState(jobJson.reactionArg);
-  const [areaRunNow, setAreaRunNow] = React.useState(jobJson);
-  const [runNowLabel, setRunNowLabel] = React.useState("Enabled");
+  const [areaName, setAreaName] = React.useState(jobJson.jobJson.name);
+  const [areaInterval, setAreaInterval] = React.useState(jobJson.jobJson.interval);
+  const [action, setAction] = React.useState(jobJson.jobJson.action);
+  const [reaction, setReaction] = React.useState(jobJson.jobJson.reaction);
+  const [actionArg, setActionArg] = React.useState(jobJson.jobJson.actionArg);
+  const [reactionArg, setReactionArg] = React.useState(jobJson.jobJson.reactionArg);
+  const [areaRunNow, setAreaRunNow] = React.useState(jobJson.jobJson.is_stoped);
+  const [runNowLabel, setRunNowLabel] = React.useState(areaRunNow ? "Enabled": "Disabled");
   const [createJob, setCreateJob] = React.useState("l");
 
   const steps = ['New AREA', 'Select an action', 'Select a reaction', 'Review'];
   const [activeStep, setActiveStep] = React.useState(0);
 
   const getAreaList = async () => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
+    var respdata = "";
+
+    if (areaList === "") {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      const api_response = await fetch('/api/v1/re-action-info', requestOptions);
+      respdata = await api_response.json();
+    }
+    for (var i = 0; respdata.jsonArr && i < respdata.jsonArr.length; i++) {
+      for (var j = 0; respdata.jsonArr[i].actions && j < respdata.jsonArr[i].actions.length; j++) {
+        if (respdata.jsonArr[i].actions[j].name === action) {
+          setAction(respdata.jsonArr[i].actions[j]);
+        }
       }
-    };
-    const api_response = await fetch('/api/v1/re-action-info', requestOptions);
-    const respdata = await api_response.json();
+    }
+    for (var i = 0; respdata.jsonArr && i < respdata.jsonArr.length; i++) {
+      for (var j = 0; respdata.jsonArr[i].reactions && j < respdata.jsonArr[i].reactions.length; j++) {
+        if (respdata.jsonArr[i].reactions[j].name === reaction) {
+          setReaction(respdata.jsonArr[i].reactions[j]);
+        }
+      }
+    }
     setAreaList(respdata);
   }
 
@@ -661,7 +708,7 @@ function EditJob(jobJson)
           'authToken': User.token
         },
         body: JSON.stringify({
-          jobToken: jobJson.jobToken,
+          jobToken: jobJson.jobJson.jobToken,
           name: areaName,
           action: action.name,
           actionArg: actionArg,
@@ -777,6 +824,7 @@ function EditJob(jobJson)
               id="areaName"
               label="Name"
               name="areaName"
+              defaultValue={areaName}
               onChange={handleAreaName}
             />
             <h3>INTERVAL</h3>
@@ -786,6 +834,7 @@ function EditJob(jobJson)
               id="areaInterval"
               label="Seconds"
               name="areaInterval"
+              defaultValue={areaInterval}
               onChange={handleAreaInterval}
             />
           </Stack>
@@ -818,6 +867,7 @@ function EditJob(jobJson)
                 id="actionSelect"
                 value={action}
                 label="Action"
+                defaultValue={action}
                 onChange={handleAction}
               >
                 {areaList.jsonArr.map(line => {
@@ -835,13 +885,16 @@ function EditJob(jobJson)
               <h3>ARG</h3>
             ): null}
             {action !== '' && action.args ? (
-              action.args.map(lineActionArg =>
+              action.args.map((lineActionArg, index) =>
                 <TextField
                   required
                   margin="normal"
                   id="actionArg"
                   label={Object.keys(lineActionArg)}
                   name="actionArg"
+                  defaultValue={
+                    actionArg[index] ? Object.values(actionArg[index]): ""
+                  }
                   onChange={(e) => handleActionArg(e, Object.keys(lineActionArg)[0])}
                 />
               )
@@ -876,6 +929,11 @@ function EditJob(jobJson)
                 id="reactionSelect"
                 value={reaction}
                 label="Reaction"
+                defaultValue={areaList.jsonArr.map(line => {
+                  return line.reactions ? (line.reactions.map(lineReaction => {
+                    return lineReaction.name == reaction ? lineReaction: ""
+                  })): null
+                })}
                 onChange={handleReaction}
               >
                 {areaList.jsonArr.map(line => {
@@ -893,13 +951,16 @@ function EditJob(jobJson)
               <h3>ARG</h3>
             ): null}
             {reaction !== '' && reaction.args ? (
-              reaction.args.map(lineReactionArg =>
+              reaction.args.map((lineReactionArg, index) =>
                 <TextField
                   required
                   margin="normal"
                   id="reactionArg"
                   label={Object.keys(lineReactionArg)}
                   name="reactionArg"
+                  defaultValue={
+                    reactionArg[index] ? Object.values(reactionArg[index]): ""
+                  }
                   onChange={(e) => handleReactionArg(e, Object.keys(lineReactionArg)[0])}
                 />
               )

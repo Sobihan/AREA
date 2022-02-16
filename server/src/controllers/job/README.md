@@ -29,15 +29,21 @@ If `jobToken` is equal to an existing job said job will be updated otherwise it 
 ```bash
 curl --location --request POST 'http://localhost:8080/api/v1/update-job' \
 --header 'authToken: f9b9ffc1-c151-4521-9769-a58ed9201658' \
---header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'jobToken=' \
---data-urlencode 'name=chmmma' \
---data-urlencode 'action=getStream' \
---data-urlencode 'actionArg=[{"channelName":"ponce"}]' \
---data-urlencode 'reaction=testReaction' \
---data-urlencode 'reactionArg=[{"text":"tonton"}]' \
---data-urlencode 'interval=5' \
---data-urlencode 'runNow=true'
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "jobToken": "",
+    "name": "chmmma",
+    "action": "getStream",
+    "actionArg": [{"channelName":"ponce"}],
+    "reaction": "testReaction",
+    "reactionArg": [
+        {
+            "text": "tonton"
+        }
+    ],
+    "interval": "5",
+    "runNow": "true"
+}'
 ```
 
 Here is an example of a **response**:
