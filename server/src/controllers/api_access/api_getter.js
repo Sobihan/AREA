@@ -2,7 +2,7 @@ const api_access = require('../../db_management/api_access/db_api_access');
 
 const apiTokens = new Map();
 
-async function apiGetter(userToken, type /* callback */)
+async function apiGetter(userToken, type)
 {
     /*
     {
@@ -21,6 +21,7 @@ async function apiGetter(userToken, type /* callback */)
 
     if (apiTokens.get(userToken) != undefined) {
         console.log("if get map");
+        //console.log("map = ", apiTokens.get(userToken));
         /*if (apiTokens.get(userToken)[type] != undefined) {
             if (apiTokens.get(userToken)[type].disableAt > Date.now()) {
                 //return apiTokens.get(userToken).get(type).token;
@@ -49,38 +50,15 @@ async function apiGetter(userToken, type /* callback */)
         }
         finally {
             if (!is_failed) {
-                console.log("success");
+                console.log("success"); //token found in db.
 
                 if (apiToken.disableAt <= Date.now()) {
                     //refresh token
                     if (type == 'REDDIT') {
-                        console.log("INSIDE");
-                        /*await api_access.redditRefreshAcessToken(apiToken.rfstoken, refreshReddit, type, userToken, function(res, disableAt) {
-                            console.log("res = ", res);
-                            apiTokens.set(userToken, {[type]: {disableAt: disableAt, acstoken: res.access_token}});
-                            //return res;
-                        });*/
-/*
-                        try {
-                            api_access.redditRefreshAcessToken(apiToken.rfstoken, refreshReddit, type, userToken, function(res, disableAt) {
-                                console.log("res = ", res);
-                                apiTokens.set(userToken, {[type]: {disableAt: disableAt, acstoken: res.access_token}});
-                                //return res;
-                            });
-                        }
-                        catch (error) {
-                            console.log(error);
-                            is_failed = true
-                        }
-                        finally {
-                            //console.log("resaaal = ", res);
-                        }
-*/
 
                         let is_failed_2 = false;
 
                         try {
-                            //var data = await api_access.redditRefreshAcessToken(apiToken.rfstoken);
                             var data = await refreshReddit(type, userToken, apiToken.rfstoken);
                         }
                         catch (error) {
@@ -89,25 +67,18 @@ async function apiGetter(userToken, type /* callback */)
                         }
                         finally {
                             if (!is_failed_2) {
-                                console.log("data = ", data);
-                                //apiTokens.set(userToken, {[type]: {disableAt: disableAt, acstoken: res.access_token}});
-                                apiTokens.set(userToken, data);
+                                apiTokens.set(userToken, {[type]: data});
+                                return data;
                             }
                             else {
                                 console.log("FAIL");
+                                return null;
                             }
-                            //console.log("resaaal = ", res);
                         }
-
-
-                        //console.log("apiToken.rfstoken =", apiToken.rfstoken);
-
-                        //api_access.redditRefreshAcessToken(apiToken.rfstoken, refreshReddit, type, userToken);
-
-                        //console.log("data =", data);
                     }
                     else if (type == 'GOOGLE') {
-
+                        console.log("GOOGLE is under construction");
+                        return null;
                     }
                 }
                 else{
@@ -119,6 +90,7 @@ async function apiGetter(userToken, type /* callback */)
             else {
                 //fail getting token, so no token in db found.
                 console.log("fail");
+                return null;
             }
         }
 
@@ -146,7 +118,7 @@ async function refreshReddit(type, userToken, refreshToken)
     finally {
         if (!is_failed) {
             //working
-            console.log("data = ", data);
+            //console.log("data = ", data);
             const disableAt = (Date.now() + ((data.expires_in - 200) * 1000));
 
             try {
@@ -165,42 +137,11 @@ async function refreshReddit(type, userToken, refreshToken)
                     console.log('refreshReddit FAIL');
                 }
             }
-
         }
         else {
             console.log("FAIL");
         }
     }
-
-
-    //api_access.redditRefreshAcessToken(rfstoken, refreshReddit);
-    //resfesh token
-    //update db
-    //return { token: 'LOL', disableAt: null }
-/*
-    const json_responce = JSON.parse(responce);
-    let isSuccess = true;
-    const disableAt = (Date.now() + ((json_responce.expires_in - 200) * 1000));
-
-    api_access.updateApiAccessToken(type, userToken, json_responce.access_token, json_responce.refresh_token, disableAt)
-    .catch((e) => {
-        isSuccess = false;
-        console.log(e);
-        console.log('refreshReddit ERROR');
-        //console.logTEST ' + isSuccess);
-    })
-    .then((user) => {
-        //console.logTEST22 ' + isSuccess);
-        if (isSuccess == true){
-            console.log('refreshReddit SUCESS');
-            //returnCallback(json_responce, disableAt);
-        }
-        else {
-            console.log('refreshReddit FAIL');
-            //callback(null);
-        }
-    });
-*/
 }
 
 module.exports.apiGetter = apiGetter;
