@@ -9,6 +9,7 @@
 | Action | Method | Route |
 | ---- | ---- | ---- |
 | Update api token | `POST` | `/update-api-token` |
+| Get user's logedin APIs | `POST` | `/get-user-loged-api` |
 
 ## **Routes description**
 
@@ -43,5 +44,26 @@ Here is an example of a **response**:
         "avatar": "aaa",
         "role": "USER"
     }
+}
+```
+____
+### **Get user's logedin APIs**
+
+Request type: `POST`.
+
+URL: `/get-user-loged-api`.
+
+Exemple of request in cURL:
+```bash
+curl --location --request POST 'http://localhost:8080/api/v1/get-user-loged-api' \
+--header 'authToken: db413c52-2f13-4033-9a94-8562402d9dbc'
+```
+
+Here is an example of a **response**:
+```json
+{
+    "body": "getLogedIn done!",
+    "reddit": true,
+    "google": false
 }
 ```

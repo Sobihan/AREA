@@ -91,6 +91,18 @@ async function updateApiAccessToken(type, token, acstoken, rfstoken, disableAt) 
     return user;
 }
 
+async function getUserApiToken(authToken) {
+    const user = await main.prisma.user.findUnique({
+        where: {
+            token: authToken,
+        },
+        select: {
+            exApi: true,
+        }
+    })
+    return user;
+}
+
 const fetch = require('node-fetch');
 
 async function redditGetAcessToken(redditToken)
@@ -133,5 +145,6 @@ module.exports.findUniqueApiTokenSimple = findUniqueApiTokenSimple;
 module.exports.findUniqueApiToken = findUniqueApiToken;
 module.exports.updateApiToken = updateApiToken;
 module.exports.updateApiAccessToken = updateApiAccessToken;
+module.exports.getUserApiToken = getUserApiToken;
 module.exports.redditGetAcessToken = redditGetAcessToken;
 module.exports.redditRefreshAcessToken = redditRefreshAcessToken;

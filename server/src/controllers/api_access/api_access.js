@@ -73,4 +73,41 @@ const ApiAuth = (req, res, next) => {
     }
 };
 
+const getLogedIn = (req, res, next) => {
+    let isSuccess = true;
+
+    api_access.getUserApiToken(req.header('authtoken'))
+        .catch((e) => {
+            isSuccess = false;
+            console.log(e);
+        })
+        .then((user) => {
+            if (isSuccess == true){
+                console.log('getUserApiToken SUCESS');
+                let is_reddit_logedin = false;
+                let is_google_logedin = false;
+
+                for (const APIs in user.exApi) {
+                    if (user.exApi[APIs].type == 'REDDIT')
+                        is_reddit_logedin = true;
+                    else if (user.exApi[APIs].type == 'GOOGGLE')
+                        is_google_logedin = true;
+                }
+
+                res.status(200).json({
+                    body: 'getLogedIn done!',
+                    reddit: is_reddit_logedin,
+                    google: is_google_logedin,
+                });
+            }
+            else {
+                console.log('getUserApiToken FAIL');
+                res.status(401).json({
+                    body: 'getLogedIn Failed'
+                });
+            }
+        });
+}
+
 module.exports.ApiAuth = ApiAuth;
+module.exports.getLogedIn = getLogedIn;
