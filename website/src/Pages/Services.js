@@ -27,6 +27,8 @@ import GoogleLogin from 'react-google-login';
 import { useNavigate } from 'react-router';
 import { User } from '../Account/User';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { OAuthReddit } from '../OAuth/OAuthReddit';
+import RedditIcon from '@mui/icons-material/Reddit';
 
 const drawerWidth = 240;
 
@@ -79,10 +81,11 @@ export function Services()
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
   const [showGoogle, setShowGoogle] = React.useState(User.google);
+  const [showReddit, setShowReddit] = React.useState(User.reddit);
 
-  //if (User.logged !== true) {
-  //  window.location = "/login";
-  //}
+  if (User.logged !== true) {
+    window.location = "/login";
+  }
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -206,7 +209,7 @@ export function Services()
           <Grid container spacing={3}>
             {/* Services List */}
             <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+              <Paper sx={{ mb: 2, p: 2, display: 'flex', flexDirection: 'column' }}>
                 { ! showGoogle ?
                   <Stack direction="row" alignItems="center" spacing={4}>
                     <GoogleIcon />
@@ -222,6 +225,29 @@ export function Services()
                   </ Stack>: <Stack direction="row" alignItems="center" spacing={4}>
                     <GoogleIcon />
                     <h3>Google</h3>
+                    <div style={{backgroundColor: "#9BE89B", color: "white", padding: 4, "border-radius": 5}}>Status: Connected</div>
+                    <Button variant="contained" color="error" startIcon={<RemoveCircleIcon />} onClick={() => {
+                      console.log("OK");
+                    }}>
+                      Disconnect
+                    </Button>
+                  </ Stack>
+                }
+              </ Paper>
+              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                { ! showReddit ?
+                  <Stack direction="row" alignItems="center" spacing={4}>
+                    <RedditIcon />
+                    <h3>Reddit</h3>
+                      <div style={{backgroundColor: "#FF9494", color: "white", padding: 4, "border-radius": 5}}>Status: Disconnected</div>
+                      <Button variant="contained" style={{backgroundColor: "#ff4500"}} startIcon={<RedditIcon />} onClick={() => {
+                        OAuthReddit();
+                      }}>
+                        Connect my Account
+                      </Button>
+                  </ Stack>: <Stack direction="row" alignItems="center" spacing={4}>
+                    <RedditIcon />
+                    <h3>Reddit</h3>
                     <div style={{backgroundColor: "#9BE89B", color: "white", padding: 4, "border-radius": 5}}>Status: Connected</div>
                     <Button variant="contained" color="error" startIcon={<RemoveCircleIcon />} onClick={() => {
                       console.log("OK");

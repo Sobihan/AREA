@@ -121,6 +121,9 @@ function JobsList()
     const respdata = await response.json();
     console.log(respdata);
     setJobsList(respdata);
+    Sleep(5000).then(() => {
+      handleList();
+    });
   };
 
   const handleDelete = async (jobToken) => {
@@ -134,11 +137,10 @@ function JobsList()
         jobToken: jobToken
       })
     };
-    const response = await fetch('/api/v1/delete-job', requestOptions);
-    const respdata = await response.json();
+    await fetch('/api/v1/delete-job', requestOptions);
   }
 
-  if (jobsList) {
+  if (jobsList && jobsList.job.length > 0) {
     return (
       <Grid item xs={12}>
         <BootstrapDialog
@@ -173,9 +175,6 @@ function JobsList()
               </Button>
               <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => {
                 handleDelete(line.jobToken);
-                Sleep(1000).then(() => {
-                  handleList();
-                });
               }}>
                 Delete
               </Button>
@@ -234,6 +233,13 @@ function JobsList()
         ))}
       </Grid>
     );
+  }
+  else if (jobsList) {
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <h3>You don't have any active AREA !</h3>
+      </Grid>
+    )
   }
   else {
     handleList();
@@ -624,12 +630,12 @@ function CreateJob()
       {activeStep === 4 ? (
         <React.Fragment>
           {createJob === "l" ? (
-            <Grid container justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }} >
+            <Grid container justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }}>
               <CircularProgress />
             </Grid>
           ): null}
           {createJob === "t" ? (
-            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }} >
+            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }}>
               <Alert severity="success">
                 <AlertTitle>Success</AlertTitle>
                 AREA — <strong>Created successfully !</strong>
@@ -637,7 +643,7 @@ function CreateJob()
             </ Grid>
           ): null}
           {createJob === "f" ? (
-            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }} >
+            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }}>
               <Alert severity="error">
                 <AlertTitle>Error</AlertTitle>
                 AREA — <strong>Creation failed !</strong>
@@ -687,10 +693,10 @@ function EditJob(jobJson)
         }
       }
     }
-    for (var i = 0; respdata.jsonArr && i < respdata.jsonArr.length; i++) {
-      for (var j = 0; respdata.jsonArr[i].reactions && j < respdata.jsonArr[i].reactions.length; j++) {
-        if (respdata.jsonArr[i].reactions[j].name === reaction) {
-          setReaction(respdata.jsonArr[i].reactions[j]);
+    for (var k = 0; respdata.jsonArr && k < respdata.jsonArr.length; k++) {
+      for (var l = 0; respdata.jsonArr[k].reactions && l < respdata.jsonArr[k].reactions.length; l++) {
+        if (respdata.jsonArr[k].reactions[l].name === reaction) {
+          setReaction(respdata.jsonArr[k].reactions[l]);
         }
       }
     }
@@ -931,7 +937,7 @@ function EditJob(jobJson)
                 label="Reaction"
                 defaultValue={areaList.jsonArr.map(line => {
                   return line.reactions ? (line.reactions.map(lineReaction => {
-                    return lineReaction.name == reaction ? lineReaction: ""
+                    return lineReaction.name === reaction ? lineReaction: ""
                   })): null
                 })}
                 onChange={handleReaction}
@@ -1052,12 +1058,12 @@ function EditJob(jobJson)
       {activeStep === 4 ? (
         <React.Fragment>
           {createJob === "l" ? (
-            <Grid container justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }} >
+            <Grid container justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }}>
               <CircularProgress />
             </Grid>
           ): null}
           {createJob === "t" ? (
-            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }} >
+            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }}>
               <Alert severity="success">
                 <AlertTitle>Success</AlertTitle>
                 AREA — <strong>Created successfully !</strong>
@@ -1065,7 +1071,7 @@ function EditJob(jobJson)
             </ Grid>
           ): null}
           {createJob === "f" ? (
-            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }} >
+            <Grid item xs={12} justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 16, mb: 16 }}>
               <Alert severity="error">
                 <AlertTitle>Error</AlertTitle>
                 AREA — <strong>Creation failed !</strong>
@@ -1122,9 +1128,9 @@ export function Dashboard()
     setOpenDialog(false);
   };
 
-  //if (User.logged !== true) {
-  //  window.location = "/login";
-  //}
+  if (User.logged !== true) {
+    window.location = "/login";
+  }
   const toggleDrawer = () => {
     setOpen(!open);
   };

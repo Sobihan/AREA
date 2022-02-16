@@ -1,1 +1,1 @@
-export const User = { logged: false, token: "", email: "", google: false, twitter: false }
+export const User = { logged: false, token: "", email: "", google: false, reddit: false }
