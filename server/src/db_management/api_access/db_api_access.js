@@ -2,17 +2,6 @@ const main = require('../../main');
 const http_r = require('../../api/http_requester');
 const utf8 = require('utf8');
 
-/*
-function convertInt(x, base) {
-    const parsed = parseInt(x, base);
-
-    if (isNaN(parsed)) {
-        return 0;
-    }
-    return parsed;
-}
-*/
-
 async function findUniqueApiTokenSimple(token, type) {
     const user = await main.prisma.eX_API.findUnique({
         where: {
