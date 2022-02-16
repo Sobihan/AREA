@@ -50,7 +50,7 @@ class _NewTriggerState extends State<NewTrigger> {
                 blurRadius: 7,
                 offset: const Offset(0, 3)),
           ],
-          color: CustomColor.lightBlue,
+          color: Colors.white,
           borderRadius: const BorderRadius.all(Radius.circular(5))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -60,7 +60,7 @@ class _NewTriggerState extends State<NewTrigger> {
             child: Text(
               "Area Name:",
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
             ),
@@ -73,7 +73,7 @@ class _NewTriggerState extends State<NewTrigger> {
             child: Text(
               "Timer:",
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
             ),
