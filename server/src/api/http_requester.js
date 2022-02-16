@@ -52,7 +52,6 @@ module.exports.http_reqRefresh = http_reqRefresh;
 
 
 
-//import fetch from 'node-fetch';
 const fetch = require('node-fetch');
 
 async function apiCaller(options, url)

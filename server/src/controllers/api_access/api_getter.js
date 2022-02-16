@@ -21,17 +21,11 @@ async function apiGetter(userToken, type)
 
     if (apiTokens.get(userToken) != undefined && apiTokens.get(userToken)[type] != undefined) {
         console.log("if get map");
-        //console.log("map = ", apiTokens.get(userToken));
-
-        //console.log("map-Reddit = ", apiTokens.get(userToken)[type]);
-        //return apiTokens.get(userToken)[type];
         var data = apiTokens.get(userToken)[type];
 
         if (data.disableAt <= Date.now()) {
             console.log("if get map REFRESH");
-
             let is_failed = false;
-
             if (type == 'REDDIT') {
                 console.log("if get map REFRESH REDDIT");
 
@@ -68,7 +62,6 @@ async function apiGetter(userToken, type)
     else {
         //get data from db.
         console.log("else set map");
-        //apiTokens.set(userToken, {});
 
         let is_failed = false;
 
@@ -90,7 +83,6 @@ async function apiGetter(userToken, type)
                         console.log("else set map REFRESH REDDIT");
 
                         let is_failed_2 = false;
-
                         try {
                             var data = await refreshReddit(type, userToken, apiToken.rfstoken);
                         }
@@ -116,11 +108,9 @@ async function apiGetter(userToken, type)
                         return null;
                     }
                 }
-                else { //{acstoken: data.access_token, disableAt: disableAt, rfstoken: data.refresh_token}
+                else {
                     console.log("else set map NO REFRESH");
                     apiTokens.set(userToken, {[type]: {acstoken: apiToken.acstoken, disableAt: apiToken.disableAt, rfstoken: apiToken.rfstoken}/*{disableAt: apiToken.disableAt, acstoken: apiToken.acstoken}*/});
-                    //return apiTokens;
-                    //return {disableAt: apiToken.disableAt, acstoken: apiToken.acstoken};
                     return {acstoken: apiToken.acstoken, disableAt: apiToken.disableAt, rfstoken: apiToken.rfstoken};
                 }
 
@@ -135,7 +125,7 @@ async function apiGetter(userToken, type)
 
     }
 
-    console.log("apiTokens =", apiTokens);
+    //console.log("apiTokens =", apiTokens);
     return null;
 }
 
@@ -154,7 +144,6 @@ async function refreshReddit(type, userToken, refreshToken)
     finally {
         if (!is_failed) {
             //working
-            //console.log("data = ", data);
             const disableAt = (Date.now() + ((data.expires_in - 200) * 1000));
 
             try {

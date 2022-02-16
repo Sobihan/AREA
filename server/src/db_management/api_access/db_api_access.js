@@ -50,7 +50,7 @@ async function findUniqueApiToken(token, type) {
     return user;
 }
 
-async function updateApiToken(authToken, token, type) {
+async function updateApiToken(authToken, token, type, disableAt, acstoken, rfstoken) {
     const user = await main.prisma.user.update({
         where: {
             token: authToken,
@@ -61,13 +61,16 @@ async function updateApiToken(authToken, token, type) {
                     create: {
                         type: type,
                         token: token,
+                        disableAt: disableAt,
+                        acstoken: acstoken,
+                        rfstoken: rfstoken,
                     },
                     update: {
                         type: type,
                         token: token,
-                        disableAt: null,
-                        acstoken: null,
-                        rfstoken: null,
+                        disableAt: disableAt,
+                        acstoken: acstoken,
+                        rfstoken: rfstoken,
                     },
                     where: {
                         type_userToken: {
@@ -101,50 +104,45 @@ async function updateApiAccessToken(type, token, acstoken, rfstoken, disableAt) 
 
 const fetch = require('node-fetch');
 
-async function redditRefreshAcessToken(refreshToken)
+async function redditGetAcessToken(redditToken)
 {
     const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
-
-
     var myHeaders = new fetch.Headers();
+
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     myHeaders.append("Authorization", basicAuth);
     myHeaders.append("Cookie", "edgebucket=NFsC7UQxIKop6Oc1vY");
-
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
         redirect: 'follow'
     };
-
-    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=http://localhost/oauth2_callback"
-
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=authorization_code&code=" + redditToken + "&redirect_uri=http://localhost/oauth2_callback"
     var data = await http_r.apiCaller(requestOptions, URL);
     return data;
-
 };
 
-/*
-function redditGetAcessToken(token, callback) {
+async function redditRefreshAcessToken(refreshToken)
+{
     const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+    var myHeaders = new fetch.Headers();
 
-    const options = {
-        'method': 'POST',
-        'hostname': 'www.reddit.com',
-        'path': '/api/v1/access_token?grant_type=authorization_code&code=' + token + '&redirect_uri=http://localhost/oauth2_callback',
-        'headers': {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': basicAuth
-        },
-        'maxRedirects': 20
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("Authorization", basicAuth);
+    myHeaders.append("Cookie", "edgebucket=NFsC7UQxIKop6Oc1vY");
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow'
     };
-    http_r.http_req(options, callback)
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=http://localhost/oauth2_callback"
+    var data = await http_r.apiCaller(requestOptions, URL);
+    return data;
 };
-
-*/
 
 module.exports.findUniqueApiTokenSimple = findUniqueApiTokenSimple;
 module.exports.findUniqueApiToken = findUniqueApiToken;
 module.exports.updateApiToken = updateApiToken;
 module.exports.updateApiAccessToken = updateApiAccessToken;
+module.exports.redditGetAcessToken = redditGetAcessToken;
 module.exports.redditRefreshAcessToken = redditRefreshAcessToken;

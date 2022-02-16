@@ -11,7 +11,7 @@ router.post('/update-user-data', user_controllers.updateUserData);
 router.get('/get-user-data', user_controllers.getUserData);
 
 router.post('/update-api-token', api_access.ApiAuth);
-router.post('/acess-api-token', api_access.getApiToken);
+//router.post('/acess-api-token', api_access.getApiToken);
 
 router.post('/update-job', job.updateJob);
 router.post('/delete-job', job.deleteJob);

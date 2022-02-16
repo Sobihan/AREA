@@ -271,9 +271,9 @@ const testTokenApi = (req, res, next) => {
     .then((resul) => {
         if (isSuccess == true){
             console.log('testTokenApi SUCESSFUL');
-            console.log("api_getter.apiTokens.get(req.header('authtoken')) =", api_getter.apiTokens.get(req.header('authtoken')));
+            //console.log("api_getter.apiTokens.get(req.header('authtoken')) =", api_getter.apiTokens.get(req.header('authtoken')));
             //api_getter.apiTokens.get(req.header('authtoken'));
-            //console.log("resul =", resul);
+            console.log("resul =", resul);
             res.status(200).json({
                 success: true,
                 body: 'testTokenApi done'
@@ -287,12 +287,6 @@ const testTokenApi = (req, res, next) => {
             });
         }
     });
-
-
-    /*res.status(200).json({
-        success: true,
-        body: 'testTokenApi'
-    });*/
 }
 
 
