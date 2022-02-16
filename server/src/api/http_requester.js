@@ -46,3 +46,26 @@ req.end();
 
 module.exports.http_req = http_req;
 module.exports.http_reqRefresh = http_reqRefresh;
+
+
+
+
+
+
+//import fetch from 'node-fetch';
+const fetch = require('node-fetch');
+
+async function apiCaller(options, url)
+{
+    const response = await fetch(url, options);
+    if (!response.ok) {
+        const message = `An error has occured: ${response.status}`;
+        throw new Error(message);
+    }
+    else {
+        const data = await response.json();
+        return data;
+    }
+}
+
+module.exports.apiCaller = apiCaller;

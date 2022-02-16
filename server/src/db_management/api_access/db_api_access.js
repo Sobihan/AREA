@@ -102,9 +102,47 @@ async function updateApiAccessToken(type, token, acstoken, rfstoken, disableAt) 
     return user;
 }
 
-function redditRefreshAcessToken(refreshToken, callback, type, userToken, returnCallback) {
+// function redditRefreshAcessToken(refreshToken, callback, type, userToken, returnCallback) {
+//     const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+
+//     var options = {
+//         'method': 'POST',
+//         'hostname': 'www.reddit.com',
+//         'path': '/api/v1/access_token?grant_type=refresh_token&refresh_token=' + refreshToken + '&redirect_uri=http://localhost/oauth2_callback',
+//         'headers': {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//             'Authorization': basicAuth
+//         },
+//         'maxRedirects': 20
+//     };
+
+//     http_r.http_reqRefresh(options, callback, type, userToken, returnCallback);
+// };
+
+const fetch = require('node-fetch');
+
+async function redditRefreshAcessToken(refreshToken/*, callback, type, userToken, returnCallback*/)
+{
     const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
 
+
+    var myHeaders = new fetch.Headers();//Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("Authorization", basicAuth);
+    myHeaders.append("Cookie", "edgebucket=NFsC7UQxIKop6Oc1vY");
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=http://localhost/oauth2_callback"
+
+    var data = await http_r.apiCaller(requestOptions, URL);
+    return data;
+
+/*
     var options = {
         'method': 'POST',
         'hostname': 'www.reddit.com',
@@ -117,6 +155,7 @@ function redditRefreshAcessToken(refreshToken, callback, type, userToken, return
     };
 
     http_r.http_reqRefresh(options, callback, type, userToken, returnCallback);
+*/
 };
 
 /*

@@ -50,17 +50,17 @@ async function apiGetter(userToken, type /* callback */)
         finally {
             if (!is_failed) {
                 console.log("success");
-                //console.log(apiToken);
 
                 if (apiToken.disableAt <= Date.now()) {
                     //refresh token
                     if (type == 'REDDIT') {
+                        console.log("INSIDE");
                         /*await api_access.redditRefreshAcessToken(apiToken.rfstoken, refreshReddit, type, userToken, function(res, disableAt) {
                             console.log("res = ", res);
                             apiTokens.set(userToken, {[type]: {disableAt: disableAt, acstoken: res.access_token}});
                             //return res;
                         });*/
-
+/*
                         try {
                             api_access.redditRefreshAcessToken(apiToken.rfstoken, refreshReddit, type, userToken, function(res, disableAt) {
                                 console.log("res = ", res);
@@ -73,8 +73,32 @@ async function apiGetter(userToken, type /* callback */)
                             is_failed = true
                         }
                         finally {
-
+                            //console.log("resaaal = ", res);
                         }
+*/
+
+                        let is_failed_2 = false;
+
+                        try {
+                            //var data = await api_access.redditRefreshAcessToken(apiToken.rfstoken);
+                            var data = await refreshReddit(type, userToken, apiToken.rfstoken);
+                        }
+                        catch (error) {
+                            console.log(error);
+                            is_failed_2 = true
+                        }
+                        finally {
+                            if (!is_failed_2) {
+                                console.log("data = ", data);
+                                //apiTokens.set(userToken, {[type]: {disableAt: disableAt, acstoken: res.access_token}});
+                                apiTokens.set(userToken, data);
+                            }
+                            else {
+                                console.log("FAIL");
+                            }
+                            //console.log("resaaal = ", res);
+                        }
+
 
                         //console.log("apiToken.rfstoken =", apiToken.rfstoken);
 
@@ -107,13 +131,53 @@ async function apiGetter(userToken, type /* callback */)
 
 }
 
-function refreshReddit(responce, type, userToken, returnCallback)
+async function refreshReddit(type, userToken, refreshToken)
 {
+    let is_failed = false;
+    let is_failed_2 = false;
+
+    try {
+        var data = await api_access.redditRefreshAcessToken(refreshToken);
+    }
+    catch (error) {
+        console.log(error);
+        is_failed = true
+    }
+    finally {
+        if (!is_failed) {
+            //working
+            console.log("data = ", data);
+            const disableAt = (Date.now() + ((data.expires_in - 200) * 1000));
+
+            try {
+                await api_access.updateApiAccessToken(type, userToken, data.access_token, data.refresh_token, disableAt);
+            }
+            catch (error) {
+                console.log(error);
+                is_failed_2 = true
+            }
+            finally {
+                if (!is_failed_2) {
+                    console.log('refreshReddit SUCESS');
+                    return {disableAt: disableAt, acstoken: data.access_token};
+                }
+                else {
+                    console.log('refreshReddit FAIL');
+                }
+            }
+
+        }
+        else {
+            console.log("FAIL");
+        }
+    }
+
+
     //api_access.redditRefreshAcessToken(rfstoken, refreshReddit);
     //resfesh token
     //update db
     //return { token: 'LOL', disableAt: null }
-
+/*
     const json_responce = JSON.parse(responce);
     let isSuccess = true;
     const disableAt = (Date.now() + ((json_responce.expires_in - 200) * 1000));
@@ -129,13 +193,14 @@ function refreshReddit(responce, type, userToken, returnCallback)
         //console.logTEST22 ' + isSuccess);
         if (isSuccess == true){
             console.log('refreshReddit SUCESS');
-            returnCallback(json_responce, disableAt);
+            //returnCallback(json_responce, disableAt);
         }
         else {
             console.log('refreshReddit FAIL');
             //callback(null);
         }
     });
+*/
 }
 
 module.exports.apiGetter = apiGetter;
