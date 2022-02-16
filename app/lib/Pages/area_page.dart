@@ -67,20 +67,20 @@ class _AreaPageState extends State<AreaPage> {
             Animation secondAnimation) {
           return Center(
               child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            width: 400,
+            height: 500,
             color: CustomColor.lightBlue,
             child: Scaffold(
                 body: Container(
-                    decoration: background(),
+                    // decoration: background(),
                     child: NewArea(
-                      host: widget.host,
-                      actions: actions,
-                      reactions: reactions,
-                    ))),
+              host: widget.host,
+              actions: actions,
+              reactions: reactions,
+            ))),
           ));
         }) as Area;
-    if (result == Area.error()) return;
+    if (result.isError()) return;
     result.clean();
     final response = await createUpdate(
         area: result, host: widget.host, token: widget.user.token);

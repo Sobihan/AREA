@@ -44,4 +44,11 @@ class Area {
     action.clean();
     reaction.clean();
   }
+
+  bool isError() {
+    if (name == "Error" && action.name == "Error" && reaction.name == "Error") {
+      return true;
+    }
+    return false;
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:area/Components/Common/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:area/Models/reaction.dart';
@@ -79,7 +78,7 @@ class _NewReactionState extends State<NewReaction> {
           Align(
             child: Text(configName[i],
                 style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight.w700)),
             alignment: Alignment.topLeft,
@@ -98,7 +97,7 @@ class _NewReactionState extends State<NewReaction> {
         const Text(
           "Choose the reaction",
           style: TextStyle(
-              color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700),
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
         ),
         DropdownButton<String>(
             icon: const Icon(
@@ -106,8 +105,7 @@ class _NewReactionState extends State<NewReaction> {
               size: 15,
               color: Colors.white,
             ),
-            dropdownColor: CustomColor.lightBlue,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.black),
             onChanged: (String? newValue) {
               if (newValue == currentreaction) return;
               setState(() {
@@ -145,7 +143,7 @@ class _NewReactionState extends State<NewReaction> {
                 blurRadius: 7,
                 offset: const Offset(0, 3)),
           ],
-          color: CustomColor.lightBlue,
+          color: Colors.white,
           borderRadius: const BorderRadius.all(Radius.circular(5))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
