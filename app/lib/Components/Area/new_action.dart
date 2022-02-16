@@ -1,4 +1,3 @@
-import 'package:area/Components/Common/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:area/Models/action.dart';
@@ -66,8 +65,6 @@ class _NewActionState extends State<NewAction> {
   void saveConfig(int index) {
     List<String> config = getConfigName();
     if (config.isEmpty) return;
-    print(config);
-    print(index);
     widget.action.config[index] = {config[index]: controllers[index].text};
   }
 
