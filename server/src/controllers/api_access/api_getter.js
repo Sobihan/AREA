@@ -19,25 +19,56 @@ async function apiGetter(userToken, type)
     */
 
 
-    if (apiTokens.get(userToken) != undefined) {
+    if (apiTokens.get(userToken) != undefined && apiTokens.get(userToken)[type] != undefined) {
         console.log("if get map");
         //console.log("map = ", apiTokens.get(userToken));
-        /*if (apiTokens.get(userToken)[type] != undefined) {
-            if (apiTokens.get(userToken)[type].disableAt > Date.now()) {
-                //return apiTokens.get(userToken).get(type).token;
-                return apiTokens.get(userToken)[type].token;
+
+        //console.log("map-Reddit = ", apiTokens.get(userToken)[type]);
+        //return apiTokens.get(userToken)[type];
+        var data = apiTokens.get(userToken)[type];
+
+        if (data.disableAt <= Date.now()) {
+            console.log("if get map REFRESH");
+
+            let is_failed = false;
+
+            if (type == 'REDDIT') {
+                console.log("if get map REFRESH REDDIT");
+
+                try {
+                    var data = await refreshReddit(type, userToken, data.rfstoken);
+                }
+                catch (error) {
+                    console.log(error);
+                    is_failed = true
+                }
+                finally {
+                    if (!is_failed) {
+                        apiTokens.set(userToken, {[type]: data});
+                        return data;
+                    }
+                    else {
+                        console.log("FAIL");
+                        return null;
+                    }
+                }
+
             }
-            else {
-                console.log("NEED To REFRESH TOKEN");
+            else if (type == 'GOOGLE') {
+                console.log("if get map REFRESH GOOGLE");
+                console.log("GOOGLE is under construction");
+                return null;
             }
-        }*/
+
+        }
+        else {
+            return data;
+        }
     }
     else {
         //get data from db.
         console.log("else set map");
         //apiTokens.set(userToken, {});
-
-
 
         let is_failed = false;
 
@@ -50,11 +81,13 @@ async function apiGetter(userToken, type)
         }
         finally {
             if (!is_failed) {
-                console.log("success"); //token found in db.
+                console.log("else set map success"); //token found in db.
 
                 if (apiToken.disableAt <= Date.now()) {
                     //refresh token
+                    console.log("else set map REFRESH");
                     if (type == 'REDDIT') {
+                        console.log("else set map REFRESH REDDIT");
 
                         let is_failed_2 = false;
 
@@ -67,6 +100,7 @@ async function apiGetter(userToken, type)
                         }
                         finally {
                             if (!is_failed_2) {
+                                console.log("SUCESS");
                                 apiTokens.set(userToken, {[type]: data});
                                 return data;
                             }
@@ -77,13 +111,17 @@ async function apiGetter(userToken, type)
                         }
                     }
                     else if (type == 'GOOGLE') {
+                        console.log("else set map REFRESH GOOGLE");
                         console.log("GOOGLE is under construction");
                         return null;
                     }
                 }
-                else{
-                    apiTokens.set(userToken, {[type]: apiToken});
-                    return apiTokens;
+                else { //{acstoken: data.access_token, disableAt: disableAt, rfstoken: data.refresh_token}
+                    console.log("else set map NO REFRESH");
+                    apiTokens.set(userToken, {[type]: {acstoken: apiToken.acstoken, disableAt: apiToken.disableAt, rfstoken: apiToken.rfstoken}/*{disableAt: apiToken.disableAt, acstoken: apiToken.acstoken}*/});
+                    //return apiTokens;
+                    //return {disableAt: apiToken.disableAt, acstoken: apiToken.acstoken};
+                    return {acstoken: apiToken.acstoken, disableAt: apiToken.disableAt, rfstoken: apiToken.rfstoken};
                 }
 
             }
@@ -98,9 +136,7 @@ async function apiGetter(userToken, type)
     }
 
     console.log("apiTokens =", apiTokens);
-
-    //impossible to do.
-
+    return null;
 }
 
 async function refreshReddit(type, userToken, refreshToken)
@@ -131,7 +167,8 @@ async function refreshReddit(type, userToken, refreshToken)
             finally {
                 if (!is_failed_2) {
                     console.log('refreshReddit SUCESS');
-                    return {disableAt: disableAt, acstoken: data.access_token};
+                    //return {disableAt: disableAt, acstoken: data.access_token};
+                    return {acstoken: data.access_token, disableAt: disableAt, rfstoken: data.refresh_token};
                 }
                 else {
                     console.log('refreshReddit FAIL');
