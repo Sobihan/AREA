@@ -109,6 +109,7 @@ class _NewAreaState extends State<NewArea> {
           colorScheme: const ColorScheme.light(primary: CustomColor.lightBlue)),
       child: Stepper(
           onStepCancel: () {
+            print("here");
             Navigator.pop(context, Area.error());
           },
           onStepContinue: () {

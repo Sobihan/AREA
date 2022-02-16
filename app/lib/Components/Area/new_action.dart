@@ -81,7 +81,7 @@ class _NewActionState extends State<NewAction> {
           Align(
             child: Text(configName[i],
                 style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight.w700)),
             alignment: Alignment.topLeft,
@@ -100,16 +100,17 @@ class _NewActionState extends State<NewAction> {
         const Text(
           "Choose the action",
           style: TextStyle(
-              color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700),
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
         ),
         DropdownButton<String>(
             icon: const Icon(
               FontAwesomeIcons.arrowDown,
               size: 15,
-              color: Colors.white,
+              color: Colors.black,
             ),
-            dropdownColor: CustomColor.lightBlue,
-            style: const TextStyle(color: Colors.white),
+            //  dropdownColor: C,
+            // dropdownColor: Colors.black,
+            style: const TextStyle(color: Colors.black),
             onChanged: (String? newValue) {
               if (newValue == currentAction) return;
               setState(() {
@@ -153,7 +154,7 @@ class _NewActionState extends State<NewAction> {
                 blurRadius: 7,
                 offset: const Offset(0, 3)),
           ],
-          color: CustomColor.lightBlue,
+          color: Colors.white,
           borderRadius: const BorderRadius.all(Radius.circular(5))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
