@@ -129,7 +129,7 @@ twitchInfo.set("testAction", {
     args: []
 });
 
-function create_callback_hook_sub(userId, actionCallback) {
+function create_callback_hook_sub(userId, actionCallback, client_id) {
     let resolve;
     let rejectRequest;
     const request = new request((resolve, reject) => {
@@ -138,7 +138,7 @@ function create_callback_hook_sub(userId, actionCallback) {
     });
     const options = {method: 'POST', headers: {
         'Content-Type': 'application/json',
-        'client-id': process.env.TWITCH_CLIENT_ID,
+        'client-id': client_id,
         'Authorization': `Bearer ${accessToken}`}};
     const req = https.request('https://api.twitch.tv/helix/webhooks/hub',
       options, (res) => {
