@@ -160,6 +160,23 @@ async function twitchGetAcessToken(client_id, client_secret) {
     return request;
 }
 
+async function twitchRevokeAcessToken(client_id, token) {
+    var resolver;
+    const request = new Promise(resolve => resolver = resolve);
+    const params = new URLSearchParams({
+      "client_id": client_id,
+      "token": token
+    });
+    https.request(
+      `https://id.twitch.tv/oauth2/revoke?${params}`, {method: 'POST'}, (twitchRes) => {
+        twitch_request(twitchRes, body => {
+          accessToken = body.access_token;
+          promiseResolver({res: twitchRes, body});
+        });
+      }).end();
+    return request;
+}
+
 module.exports.findUniqueApiTokenSimple = findUniqueApiTokenSimple;
 module.exports.findUniqueApiToken = findUniqueApiToken;
 module.exports.updateApiToken = updateApiToken;
