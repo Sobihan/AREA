@@ -178,11 +178,11 @@ const searchJob = (req, res, next) => {
         console.log(e);
     })
     .then((job) => {
-        if (isSuccess == true && job != null/* && job[0] != null*/){
+        if (isSuccess == true && job != null && job[0] != null){
             console.log('findJob SUCESSFUL');
-            console.log('job = ', job);
-            console.log('job[0] = ', job[0]);
-            console.log('job[0].job = ', job[0].job);
+            //console.log('job = ', job);
+            //console.log('job[0] = ', job[0]);
+            //console.log('job[0].job = ', job[0].job);
             res.status(200).json({
                 success: true,
                 body: 'Find job done!',
