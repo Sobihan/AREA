@@ -123,6 +123,7 @@ async function redditGetAcessToken(redditToken)
     return data;
 };
 
+
 async function redditRefreshAcessToken(refreshToken)
 {
     const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
@@ -141,6 +142,24 @@ async function redditRefreshAcessToken(refreshToken)
     return data;
 };
 
+async function twitchGetAcessToken(client_id, client_secret) {
+    var resolver;
+    const request = new Promise(resolve => resolver = resolve);
+    const params = new URLSearchParams({
+      "client_id": client_id,
+      "client_secret": client_secret,
+      "grant_type": "client_credentials",
+    });
+    https.request(
+      `https://id.twitch.tv/oauth2/token?${params}`, {method: 'POST'}, (twitchRes) => {
+        twitch_request(twitchRes, body => {
+          accessToken = body.access_token;
+          promiseResolver({res: twitchRes, body});
+        });
+      }).end();
+    return request;
+}
+
 module.exports.findUniqueApiTokenSimple = findUniqueApiTokenSimple;
 module.exports.findUniqueApiToken = findUniqueApiToken;
 module.exports.updateApiToken = updateApiToken;
@@ -148,3 +167,5 @@ module.exports.updateApiAccessToken = updateApiAccessToken;
 module.exports.getUserApiToken = getUserApiToken;
 module.exports.redditGetAcessToken = redditGetAcessToken;
 module.exports.redditRefreshAcessToken = redditRefreshAcessToken;
+module.exports.twitchGetAcessToken = redditRefreshAcessToken;
+module.exports.twitchRevokeAcessToken = redditRefreshAcessToken;
