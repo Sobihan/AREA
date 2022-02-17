@@ -197,5 +197,5 @@ module.exports.updateApiAccessToken = updateApiAccessToken;
 module.exports.getUserApiToken = getUserApiToken;
 module.exports.redditGetAcessToken = redditGetAcessToken;
 module.exports.redditRefreshAcessToken = redditRefreshAcessToken;
-module.exports.twitchGetAcessToken = redditRefreshAcessToken;
-module.exports.twitchRevokeAcessToken = redditRefreshAcessToken;
+module.exports.twitchGetAcessToken = twitchGetAcessToken;
+module.exports.twitchRevokeAcessToken = twitchRevokeAcessToken;
