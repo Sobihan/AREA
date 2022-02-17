@@ -177,6 +177,21 @@ async function twitchRevokeAcessToken(client_id, token) {
     return request;
 }
 
+function twitch_request(req, cb) {
+  let body = '';
+  req
+    .on('data', chunk => body += chunk)
+    .on('end', () => {
+      if (!body) return cb(null);
+      try {
+        cb(JSON.parse(body), body)
+      } catch (e) {
+        console.warn('body could not be parsed', e);
+        cb(null);
+      }
+    });
+}
+
 module.exports.findUniqueApiTokenSimple = findUniqueApiTokenSimple;
 module.exports.findUniqueApiToken = findUniqueApiToken;
 module.exports.updateApiToken = updateApiToken;
