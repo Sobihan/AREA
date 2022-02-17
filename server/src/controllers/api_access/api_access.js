@@ -82,7 +82,7 @@ const getLogedIn = (req, res, next) => {
             console.log(e);
         })
         .then((user) => {
-            if (isSuccess == true){
+            if (isSuccess == true && user != null){
                 console.log('getUserApiToken SUCESS');
                 let is_reddit_logedin = false;
                 let is_google_logedin = false;
