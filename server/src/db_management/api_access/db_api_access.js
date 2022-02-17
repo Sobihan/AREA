@@ -177,17 +177,15 @@ async function twitchRevokeAcessToken(client_id, token) {
     return request;
 }
 
-function twitch_request(req, cb) {
+function twitch_request(req, callback) {
   let body = '';
-  req
-    .on('data', chunk => body += chunk)
-    .on('end', () => {
-      if (!body) return cb(null);
+  req.on('data', chunk => body += chunk).on('end', () => {
+      if (!body) return callback(null);
       try {
-        cb(JSON.parse(body), body)
+        callback(JSON.parse(body), body)
       } catch (e) {
-        console.warn('body could not be parsed', e);
-        cb(null);
+        console.warn('error while parsing twitch request', e);
+        callback(null);
       }
     });
 }

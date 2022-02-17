@@ -129,4 +129,50 @@ twitchInfo.set("testAction", {
     args: []
 });
 
+function create_callback_hook_sub(userId, actionCallback) {
+    let resolve;
+    let rejectRequest;
+    const request = new request((resolve, reject) => {
+      resolve = resolve;
+      rejectRequest = reject;
+    });
+    const options = {method: 'POST', headers: {
+        'Content-Type': 'application/json',
+        'client-id': process.env.TWITCH_CLIENT_ID,
+        'Authorization': `Bearer ${accessToken}`}};
+    const req = https.request('https://api.twitch.tv/helix/webhooks/hub',
+      options, (res) => {
+        twitch_request(res, body => {
+          console.info(`${actionCallback}d to ${userId} with HTTP status ${res.statusCode}`);
+          if (res.statusCode.toString().startsWith('2')) {
+            resolve();
+          } else {
+            rejectRequest();
+          }
+          res && endWithCode(res, 200);
+        });
+      });
+    req.on('error', console.error);
+    const callbackUrl = `${hostname}/consume/${userId}`;
+    const topic = `https://api.twitch.tv/helix/streams?user_id=${userId}`;
+    console.info(`${actionCallback} `, topic);
+    req.write(JSON.stringify({"hub.callback": callbackUrl,"hub.mode": actionCallback,"hub.topic": topic,"hub.secret": process.env.TWITCH_CLIENT_SECRET,"hub.lease_seconds": leaseSeconds,}));
+    req.end();
+    return request;
+}
+
+function twitch_request(req, callback) {
+    let body = '';
+    req.on('data', chunk => body += chunk).on('end', () => {
+        if (!body) return callback(null);
+        try {
+          callback(JSON.parse(body), body)
+        } catch (e) {
+          console.warn('error while parsing twitch request', e);
+          callback(null);
+        }
+      });
+}
+
 module.exports.twitchInfo = twitchInfo;
+module.exports.create_callback_hook_sub = create_callback_hook_sub;
