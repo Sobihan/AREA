@@ -105,25 +105,28 @@ function JobsList()
   };
 
   const handleList = async () => {
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'authToken': User.token
-      },
-      body: JSON.stringify({
-        name: "",
-        action: "",
-        reaction: ""
-      })
-    };
-    const response = await fetch('/api/v1/search-job', requestOptions);
-    const respdata = await response.json();
-    console.log(respdata);
-    setJobsList(respdata);
-    Sleep(5000).then(() => {
-      handleList();
-    });
+    if (User.logged === true) {
+      /*const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authToken': User.token
+        },
+        body: JSON.stringify({
+          name: "",
+          action: "",
+          reaction: ""
+        })
+      };
+      const response = await fetch('/api/v1/search-job', requestOptions);
+      console.log("coucou lol");
+      const respdata = await response.json();
+      console.log(respdata);
+      setJobsList(respdata);
+      Sleep(5000).then(() => {
+        handleList();
+      });*/
+    }
   };
 
   const handleDelete = async (jobToken) => {
@@ -1130,6 +1133,9 @@ export function Dashboard()
 
   if (User.logged !== true) {
     window.location = "/login";
+    return (
+      <h3>Redirecting...</h3>
+    );
   }
   const toggleDrawer = () => {
     setOpen(!open);
