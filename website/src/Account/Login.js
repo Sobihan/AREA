@@ -26,7 +26,7 @@ export function Login()
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const requestOptions = {
+    const requestLogin = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -36,14 +36,33 @@ export function Login()
         password: formData.get('password')
       })
     };
-    const response = await fetch('/api/v1/authenticate', requestOptions);
-    if (response.status === 200) {
+    const responseLogin = await fetch('/api/v1/authenticate', requestLogin);
+    if (responseLogin.status === 200) {
       setShowError(false);
       setShowSuccess(true);
-      const respdata = await response.json();
-      Sleep(2000).then(() => {
-        User.token = respdata.token;
-        User.email = formData.get('email');
+      const respdata = await responseLogin.json();
+      User.token = respdata.token;
+      User.email = formData.get('email');
+    }
+    else {
+      setShowSuccess(false);
+      setShowError(true);
+    }
+    const requestServices = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': User.token
+      }
+    };
+    const responseServices = await fetch('/api/v1/get-user-loged-api', requestServices);
+    if (responseServices.status === 200) {
+      setShowError(false);
+      setShowSuccess(true);
+      const respdata = await responseServices.json();
+      Sleep(1000).then(() => {
+        User.reddit = respdata.reddit;
+        User.google = respdata.google;
         User.logged = true;
         navigate('/');
       });

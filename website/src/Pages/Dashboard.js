@@ -105,28 +105,25 @@ function JobsList()
   };
 
   const handleList = async () => {
-    if (User.logged === true) {
-      /*const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authToken': User.token
-        },
-        body: JSON.stringify({
-          name: "",
-          action: "",
-          reaction: ""
-        })
-      };
-      const response = await fetch('/api/v1/search-job', requestOptions);
-      console.log("coucou lol");
-      const respdata = await response.json();
-      console.log(respdata);
-      setJobsList(respdata);
-      Sleep(5000).then(() => {
-        handleList();
-      });*/
-    }
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': User.token
+      },
+      body: JSON.stringify({
+        name: "",
+        action: "",
+        reaction: ""
+      })
+    };
+    const response = await fetch('/api/v1/search-job', requestOptions);
+    const respdata = await response.json();
+    console.log(respdata);
+    setJobsList(respdata);
+    Sleep(5000).then(() => {
+      handleList();
+    });
   };
 
   const handleDelete = async (jobToken) => {

@@ -29,6 +29,7 @@ import { User } from '../Account/User';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { OAuthReddit } from '../OAuth/OAuthReddit';
 import RedditIcon from '@mui/icons-material/Reddit';
+import { Sleep } from '../Sleep';
 
 const drawerWidth = 240;
 
@@ -89,27 +90,41 @@ export function Services()
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const getServices = async () => {
+    const requestServices = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': User.token
+      }
+    };
+    const responseServices = await fetch('/api/v1/get-user-loged-api', requestServices);
+    if (responseServices.status === 200) {
+      const respdata = await responseServices.json();
+      User.reddit = respdata.reddit;
+      User.google = respdata.google;
+      setShowGoogle(User.google);
+      setShowReddit(User.reddit);
+      Sleep(5000).then(() => {
+        getServices();
+      });
+    }
+  };
   const OAuthGoogle = async (response) => {
     const requestOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authToken': User.token
       },
-      body: JSON.stringify({response})
+      body: JSON.stringify({
+        type: "GOOGLE",
+        token: response
+      })
     };
-    const api_response = await fetch('/api/v1/google-auth', requestOptions);
-    if (api_response.status === 200) {
-      //setShowError(false);
-      //setShowSuccess(true);
-      const respdata = await api_response.json();
-      User.google = true;
-      setShowGoogle(User.google);
-    }
-    else {
-      //setShowSuccess(false);
-      //setShowError(true);
-    }
+    await fetch('/api/v1/update-api-token', requestOptions);
   };
+  getServices();
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
