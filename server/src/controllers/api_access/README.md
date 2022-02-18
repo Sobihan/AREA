@@ -9,7 +9,7 @@
 | Action | Method | Route |
 | ---- | ---- | ---- |
 | Update api token | `POST` | `/update-api-token` |
-| Get requested api token | `POST` | `/acess-api-token` |
+| Get user's logedin APIs | `POST` | `/get-user-loged-api` |
 
 ## **Routes description**
 
@@ -47,37 +47,23 @@ Here is an example of a **response**:
 }
 ```
 ____
-### **Get requested api token**
+### **Get user's logedin APIs**
 
 Request type: `POST`.
 
-URL: `/acess-api-token`.
+URL: `/get-user-loged-api`.
 
 Exemple of request in cURL:
 ```bash
-curl --location --request POST 'http://localhost:8080/api/v1/acess-api-token' \
---header 'authToken: fe70bb1b-7f5b-4db6-bf1c-8e231b02ca04' \
---header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'type=REDDIT'
+curl --location --request POST 'http://localhost:8080/api/v1/get-user-loged-api' \
+--header 'authToken: db413c52-2f13-4033-9a94-8562402d9dbc'
 ```
 
 Here is an example of a **response**:
 ```json
 {
-    "body": "getApiToken done!",
-    "user": [
-        {
-            "token": "fe70bb1b-7f5b-4db6-bf1c-8e231b02ca04",
-            "exApi": [
-                {
-                    "token": "LOL",
-                    "type": "REDDIT",
-                    "disableAt": null,
-                    "acstoken": null,
-                    "rfstoken": null
-                }
-            ]
-        }
-    ]
+    "body": "getLogedIn done!",
+    "reddit": true,
+    "google": false
 }
 ```

@@ -178,8 +178,11 @@ const searchJob = (req, res, next) => {
         console.log(e);
     })
     .then((job) => {
-        if (isSuccess == true && job != null){
+        if (isSuccess == true && job != null && job[0] != null){
             console.log('findJob SUCESSFUL');
+            //console.log('job = ', job);
+            //console.log('job[0] = ', job[0]);
+            //console.log('job[0].job = ', job[0].job);
             res.status(200).json({
                 success: true,
                 body: 'Find job done!',
@@ -258,8 +261,44 @@ const getReActionInfo = (req, res, next) => {
     });
 }
 
+const api_getter = require('../api_access/api_getter');
+
+const testTokenApi = (req, res, next) => {
+    let isSuccess = true;
+
+    api_getter.apiGetter(req.header('authtoken'), req.body.type)
+    .catch((e) => {
+        isSuccess = false;
+        console.log(e);
+    })
+    .then((resul) => {
+        if (isSuccess == true){
+            console.log('testTokenApi SUCESSFUL');
+            //console.log("api_getter.apiTokens.get(req.header('authtoken')) =", api_getter.apiTokens.get(req.header('authtoken')));
+            //api_getter.apiTokens.get(req.header('authtoken'));
+            console.log("resul =", resul);
+            res.status(200).json({
+                success: true,
+                body: 'testTokenApi done'
+            });
+        }
+        else {
+            console.log('testTokenApi FAIL');
+            res.status(401).json({
+                success: false,
+                body: 'testTokenApi failed'
+            });
+        }
+    });
+}
+
+
 module.exports.updateJob = updateJob;
 module.exports.deleteJob = deleteJob;
 module.exports.searchJob = searchJob;
 module.exports.stopJob = stopJob;
 module.exports.getReActionInfo = getReActionInfo;
+
+
+
+module.exports.testTokenApi = testTokenApi;
