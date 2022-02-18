@@ -25,6 +25,6 @@ module.exports.checkAction = checkAction;
 
 const infoAction = new Map();
 
-infoAction.set("twitch", {name: "twitch", actions: twitch.twitchInfo}, {name: "twtich", actions: twitter.twitterInfo});
+infoAction.set("twitch", {name: "twitch", actions: twitch.twitchInfo}/*, {name: "twtich", actions: twitter.twitterInfo}*/);
 
 module.exports.infoAction = infoAction;

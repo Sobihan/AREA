@@ -11,12 +11,15 @@ router.post('/update-user-data', user_controllers.updateUserData);
 router.get('/get-user-data', user_controllers.getUserData);
 
 router.post('/update-api-token', api_access.ApiAuth);
-router.post('/acess-api-token', api_access.getApiToken);
+router.post('/get-user-loged-api', api_access.getLogedIn);
 
 router.post('/update-job', job.updateJob);
 router.post('/delete-job', job.deleteJob);
 router.post('/search-job', job.searchJob);
 router.post('/stop-job', job.stopJob);
 router.get('/re-action-info', job.getReActionInfo);
+
+
+router.get('/test-token-api', job.testTokenApi);
 
 module.exports = router;
