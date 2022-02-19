@@ -18,18 +18,18 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 import WorkIcon from '@mui/icons-material/Work';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import GoogleIcon from '@mui/icons-material/Google';
 import GoogleLogin from 'react-google-login';
 import { useNavigate } from 'react-router';
-import { User } from '../Account/User';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { OAuthReddit } from '../OAuth/OAuthReddit';
 import RedditIcon from '@mui/icons-material/Reddit';
 import { Sleep } from '../Sleep';
+import { useCookies } from 'react-cookie';
 
 const drawerWidth = 240;
 
@@ -81,12 +81,17 @@ export function Services()
 {
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
-  const [showGoogle, setShowGoogle] = React.useState(User.google);
-  const [showReddit, setShowReddit] = React.useState(User.reddit);
+  const [cookies, setCookie] = useCookies(['user']);
+  const [showGoogle, setShowGoogle] = React.useState(cookies.google);
+  const [showReddit, setShowReddit] = React.useState(cookies.reddit);
 
-  if (User.logged !== true) {
+  if (cookies.logged !== "true") {
     window.location = "/login";
+    return (
+      <h3>Redirecting...</h3>
+    );
   }
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -95,16 +100,16 @@ export function Services()
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authToken': User.token
+        'authToken': cookies.token
       }
     };
     const responseServices = await fetch('/api/v1/get-user-loged-api', requestServices);
     if (responseServices.status === 200) {
       const respdata = await responseServices.json();
-      User.reddit = respdata.reddit;
-      User.google = respdata.google;
-      setShowGoogle(User.google);
-      setShowReddit(User.reddit);
+      cookies.reddit = respdata.reddit;
+      cookies.google = respdata.google;
+      setShowGoogle(cookies.google);
+      setShowReddit(cookies.reddit);
       Sleep(5000).then(() => {
         getServices();
       });
@@ -115,7 +120,7 @@ export function Services()
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authToken': User.token
+        'authToken': cookies.token
       },
       body: JSON.stringify({
         type: "GOOGLE",
@@ -175,7 +180,7 @@ export function Services()
           <div>
           <ListItem button onClick={
               () => {
-                navigate('/');
+                window.location = "/";
               }
             }>
               <ListItemIcon>
@@ -195,13 +200,14 @@ export function Services()
             </ListItem>
             <ListItem button onClick={
               () => {
-                navigate('/account');
+                setCookie('logged', "false", { path: '/' });
+                window.location.reload();
               }
             }>
               <ListItemIcon>
-                <AccountCircleIcon />
+                <LogoutIcon />
               </ListItemIcon>
-              <ListItemText primary="Account" />
+              <ListItemText primary="Logout" />
             </ListItem>
           </div>
         </List>

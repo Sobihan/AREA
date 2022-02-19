@@ -19,14 +19,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import EditIcon from '@mui/icons-material/Edit';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 import WorkIcon from '@mui/icons-material/Work';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router';
 import CircularProgress from '@mui/material/CircularProgress';
-import { User } from '../Account/User';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -46,6 +45,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { Sleep } from '../Sleep';
+import { useCookies } from 'react-cookie';
 
 
 const drawerWidth = 240;
@@ -99,6 +99,7 @@ function JobsList()
   const [jobsList, setJobsList] = React.useState(null);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [editJob, setEditJob] = React.useState(null);
+  const [cookies] = useCookies(['user']);
 
   const closeDialog = () => {
     setOpenDialog(false);
@@ -109,7 +110,7 @@ function JobsList()
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authToken': User.token
+        'authToken': cookies.token
       },
       body: JSON.stringify({
         name: "",
@@ -119,7 +120,6 @@ function JobsList()
     };
     const response = await fetch('/api/v1/search-job', requestOptions);
     const respdata = await response.json();
-    console.log(respdata);
     setJobsList(respdata);
     Sleep(5000).then(() => {
       handleList();
@@ -131,13 +131,14 @@ function JobsList()
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authToken': User.token
+        'authToken': cookies.token
       },
       body: JSON.stringify({
         jobToken: jobToken
       })
     };
     await fetch('/api/v1/delete-job', requestOptions);
+    window.location.reload();
   }
 
   if (jobsList && jobsList.job.length > 0) {
@@ -183,17 +184,15 @@ function JobsList()
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
-                      'authToken': User.token
+                      'authToken': cookies.token
                     },
                     body: JSON.stringify({
                       jobToken: line.jobToken,
                       stop: !line.is_stoped
                     })
                   };
-                  const response = await fetch('/api/v1/stop-job', requestOptions);
-                  const respdata = await response.json();
-                  console.log(respdata);
-                  handleList();
+                  await fetch('/api/v1/stop-job', requestOptions);
+                  window.location.reload();
                 }
               }/>} label={line.is_stoped ? "Disabled": "Enabled"} />
             </Stack>
@@ -205,14 +204,15 @@ function JobsList()
                 label="Action"
                 defaultValue={line.action}
               />
-              {line.actionArg !== '' ? (line.actionArg.map(lineActionArg =>
-                <TextField
-                  disabled
-                  id="outlined-disabled"
-                  label={Object.keys(lineActionArg)[0]}
-                  defaultValue={Object.values(lineActionArg)[0]}
-                />
-              )): null}
+              {line.actionArg !== '' ? (line.actionArg.map(lineActionArg => {
+                return Object.values(lineActionArg)[0] !== "userToken" ? (
+                  <TextField
+                    disabled
+                    id="outlined-disabled"
+                    label={Object.values(lineActionArg)[0]}
+                    defaultValue={Object.values(lineActionArg)[1]}
+                  />): null
+              })): null}
               <h3>THEN</h3>
               <TextField
                 disabled
@@ -220,14 +220,15 @@ function JobsList()
                 label="Action"
                 defaultValue={line.reaction}
               />
-              {line.reactionArg !== '' ? (line.reactionArg.map(lineReactionArg =>
-                <TextField
-                  disabled
-                  id="outlined-disabled"
-                  label={Object.keys(lineReactionArg)[0]}
-                  defaultValue={Object.values(lineReactionArg)[0]}
-                />
-              )): null}
+              {line.reactionArg !== '' ? (line.reactionArg.map(lineReactionArg => {
+                return Object.values(lineReactionArg)[0] !== "userToken" ? (
+                  <TextField
+                    disabled
+                    id="outlined-disabled"
+                    label={Object.values(lineReactionArg)[0]}
+                    defaultValue={Object.values(lineReactionArg)[1]}
+                  />): null
+              })): null}
             </ Stack>
         </ Paper>
         ))}
@@ -263,6 +264,7 @@ function CreateJob()
   const [areaRunNow, setAreaRunNow] = React.useState(true);
   const [runNowLabel, setRunNowLabel] = React.useState("Enabled");
   const [createJob, setCreateJob] = React.useState("l");
+  const [cookies] = useCookies(['user']);
 
   const steps = ['New AREA', 'Select an action', 'Select a reaction', 'Review'];
   const [activeStep, setActiveStep] = React.useState(0);
@@ -282,12 +284,11 @@ function CreateJob()
   const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     if (activeStep === steps.length - 1) {
-      console.log(User.token);
       const requestOptions = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'authToken': User.token
+          'authToken': cookies.token
         },
         body: JSON.stringify({
           jobToken: "",
@@ -303,6 +304,7 @@ function CreateJob()
       const response = await fetch('/api/v1/update-job', requestOptions);
       if (response.status === 200) {
         setCreateJob("t");
+        window.location.reload();
       }
       else {
         setCreateJob("f");
@@ -340,6 +342,9 @@ function CreateJob()
     for (var i = 0; i < actionArg.length; i += 1) {
       if (Object.keys(actionArg[i])[0] === argName) {
         actionArg[i][argName] = event.target.value;
+        if (actionArg[i][argName] === "") {
+          setActionArg(actionArg.filter((e)=>(Object.keys(e)[0] !== argName)));
+        }
         return;
       }
     }
@@ -353,6 +358,9 @@ function CreateJob()
     for (var i = 0; i < reactionArg.length; i += 1) {
       if (Object.keys(reactionArg[i])[0] === argName) {
         reactionArg[i][argName] = event.target.value;
+        if (reactionArg[i][argName] === "") {
+          setReactionArg(reactionArg.filter((e)=>(Object.keys(e)[0] !== argName)));
+        }
         return;
       }
     }
@@ -648,6 +656,16 @@ function CreateJob()
                 <AlertTitle>Error</AlertTitle>
                 AREA — <strong>Creation failed !</strong>
               </Alert>
+              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Back
+                </Button>
+              </Box>
             </Grid>
           ): null}
         </React.Fragment>
@@ -669,6 +687,7 @@ function EditJob(jobJson)
   const [areaRunNow, setAreaRunNow] = React.useState(jobJson.jobJson.is_stoped);
   const [runNowLabel, setRunNowLabel] = React.useState(areaRunNow ? "Enabled": "Disabled");
   const [createJob, setCreateJob] = React.useState("l");
+  const [cookies] = useCookies(['user']);
 
   const steps = ['New AREA', 'Select an action', 'Select a reaction', 'Review'];
   const [activeStep, setActiveStep] = React.useState(0);
@@ -706,20 +725,35 @@ function EditJob(jobJson)
   const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     if (activeStep === steps.length - 1) {
-      console.log(User.token);
+      const factionArg = [];
+      for (var i = 0; i < actionArg.length; i += 1) {
+        if (Object.values(actionArg[i])[0] !== "userToken") {
+          factionArg.push({
+            [Object.values(actionArg[i])[0]]: Object.values(actionArg[i])[1]
+          })
+        }
+      }
+      const freactionArg = [];
+      for (var j = 0; j < reactionArg.length; j += 1) {
+        if (Object.values(reactionArg[j])[0] !== "userToken") {
+          freactionArg.push({
+            [Object.values(reactionArg[j])[0]]: Object.values(reactionArg[j])[1]
+          })
+        }
+      }
       const requestOptions = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'authToken': User.token
+          'authToken': cookies.token
         },
         body: JSON.stringify({
           jobToken: jobJson.jobJson.jobToken,
           name: areaName,
           action: action.name,
-          actionArg: actionArg,
+          actionArg: factionArg,
           reaction: reaction.name,
-          reactionArg: reactionArg,
+          reactionArg: freactionArg,
           interval: areaInterval,
           runNow: areaRunNow
         })
@@ -727,6 +761,7 @@ function EditJob(jobJson)
       const response = await fetch('/api/v1/update-job', requestOptions);
       if (response.status === 200) {
         setCreateJob("t");
+        window.location.reload();
       }
       else {
         setCreateJob("f");
@@ -752,36 +787,36 @@ function EditJob(jobJson)
     }
   };
 
-  const handleAction = (event) => {
-    setAction(event.target.value);
-  };
-
-  const handleReaction = (event) => {
-    setReaction(event.target.value);
-  };
-
   const handleActionArg = (event, argName) => {
     for (var i = 0; i < actionArg.length; i += 1) {
-      if (Object.keys(actionArg[i])[0] === argName) {
-        actionArg[i][argName] = event.target.value;
+      if (Object.values(actionArg[i])[0] === argName) {
+        actionArg[i].value = event.target.value;
+        if (actionArg[i].value === "") {
+          setActionArg(actionArg.filter((e)=>(Object.values(e)[0] !== Object.values(actionArg[i])[0])))
+        }
         return;
       }
     }
     const newArg = {
-      [argName]: event.target.value
+      key: argName,
+      value: event.target.value
     };
     setActionArg(actionArg => [...actionArg, newArg]);
   };
 
   const handleReactionArg = (event, argName) => {
     for (var i = 0; i < reactionArg.length; i += 1) {
-      if (Object.keys(reactionArg[i])[0] === argName) {
-        reactionArg[i][argName] = event.target.value;
+      if (Object.values(reactionArg[i])[0] === argName) {
+        reactionArg[i].value = event.target.value;
+        if (reactionArg[i].value === "") {
+          setReactionArg(reactionArg.filter((e)=>(Object.values(e)[0] !== Object.values(reactionArg[i])[0])))
+        }
         return;
       }
     }
     const newArg = {
-      [argName]: event.target.value
+      key: argName,
+      value: event.target.value
     };
     setReactionArg(reactionArg => [...reactionArg, newArg]);
   };
@@ -796,6 +831,16 @@ function EditJob(jobJson)
     setAreaRunNow(event.target.checked);
   }
 
+  for (var i = 0; i < actionArg.length; i += 1) {
+    if (Object.values(actionArg[i])[0] === "userToken") {
+      actionArg.splice(i, 1);
+    }
+  }
+  for (var j = 0; j < reactionArg.length; j += 1) {
+    if (Object.values(reactionArg[j])[0] === "userToken") {
+      reactionArg.splice(j, 1);
+    }
+  }
   if (areaList === "") {
     getAreaList();
     return (
@@ -871,16 +916,21 @@ function EditJob(jobJson)
               <Select
                 labelId="actionSelectLabel"
                 id="actionSelect"
-                value={action}
+                value={action.name}
                 label="Action"
-                defaultValue={action}
-                onChange={handleAction}
+                defaultValue={action.name}
               >
                 {areaList.jsonArr.map(line => {
                   return line.actions ? (line.actions.map(lineAction =>
                     <MenuItem
                       key={lineAction.name}
-                      value={lineAction}
+                      value={lineAction.name}
+                      onClick={() => {
+                        if (lineAction.name !== action.name) {
+                          setAction(lineAction);
+                          setActionArg([]);
+                        }
+                      }}
                     >
                       {lineAction.name}
                     </MenuItem>
@@ -899,7 +949,7 @@ function EditJob(jobJson)
                   label={Object.keys(lineActionArg)}
                   name="actionArg"
                   defaultValue={
-                    actionArg[index] ? Object.values(actionArg[index]): ""
+                    actionArg[index] ? Object.values(actionArg[index])[1]: ""
                   }
                   onChange={(e) => handleActionArg(e, Object.keys(lineActionArg)[0])}
                 />
@@ -933,20 +983,21 @@ function EditJob(jobJson)
               <Select
                 labelId="reactionSelectLabel"
                 id="reactionSelect"
-                value={reaction}
+                value={reaction.name}
                 label="Reaction"
-                defaultValue={areaList.jsonArr.map(line => {
-                  return line.reactions ? (line.reactions.map(lineReaction => {
-                    return lineReaction.name === reaction ? lineReaction: ""
-                  })): null
-                })}
-                onChange={handleReaction}
+                defaultValue={reaction.name}
               >
                 {areaList.jsonArr.map(line => {
                   return line.reactions ? (line.reactions.map(lineReaction =>
                     <MenuItem
                       key={lineReaction.name}
-                      value={lineReaction}
+                      value={lineReaction.name}
+                      onClick={() => {
+                        if (lineReaction.name !== reaction.name) {
+                          setReaction(lineReaction);
+                          setReactionArg([]);
+                        }
+                      }}
                     >
                       {lineReaction.name}
                     </MenuItem>
@@ -965,13 +1016,12 @@ function EditJob(jobJson)
                   label={Object.keys(lineReactionArg)}
                   name="reactionArg"
                   defaultValue={
-                    reactionArg[index] ? Object.values(reactionArg[index]): ""
+                    reactionArg[index] ? Object.values(reactionArg[index])[1]: ""
                   }
                   onChange={(e) => handleReactionArg(e, Object.keys(lineReactionArg)[0])}
                 />
               )
-            ): null
-          }
+            ): null}
           </Stack>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
@@ -1011,13 +1061,15 @@ function EditJob(jobJson)
               label="Action"
               defaultValue={action.name}
             />
-            {actionArg !== '' ? (actionArg.map(lineActionArg =>
-              <TextField
-                disabled
-                id="outlined-disabled"
-                label={Object.keys(lineActionArg)[0]}
-                defaultValue={Object.values(lineActionArg)[0]}
-              />
+            {actionArg !== '' ? (actionArg.map(lineActionArg => {
+              return Object.values(lineActionArg)[0] !== "userToken" ? (
+                <TextField
+                  disabled
+                  id="outlined-disabled"
+                  label={Object.values(lineActionArg)[0]}
+                  defaultValue={Object.values(lineActionArg)[1]}
+                />): null
+              }
             )): null}
           </Stack>
           <Stack justifyContent="center" alignItems="center" direction="row" spacing={4} sx={{ mt: 3 }}>
@@ -1028,13 +1080,15 @@ function EditJob(jobJson)
               label="Reaction"
               defaultValue={reaction.name}
             />
-            {reactionArg !== '' ? (reactionArg.map(lineReactionArg =>
-              <TextField
-                disabled
-                id="outlined-disabled"
-                label={Object.keys(lineReactionArg)[0]}
-                defaultValue={Object.values(lineReactionArg)[0]}
-              />
+            {reactionArg !== '' ? (reactionArg.map(lineReactionArg => {
+              return Object.values(lineReactionArg)[0] !== "userToken" ? (
+                <TextField
+                  disabled
+                  id="outlined-disabled"
+                  label={Object.values(lineReactionArg)[0]}
+                  defaultValue={Object.values(lineReactionArg)[1]}
+                />): null
+              }
             )): null}
           </Stack>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -1076,6 +1130,16 @@ function EditJob(jobJson)
                 <AlertTitle>Error</AlertTitle>
                 AREA — <strong>Creation failed !</strong>
               </Alert>
+              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Back
+                </Button>
+              </Box>
             </Grid>
           ): null}
         </React.Fragment>
@@ -1123,12 +1187,13 @@ export function Dashboard()
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [cookies, setCookie] = useCookies(['user']);
 
   const closeDialog = () => {
     setOpenDialog(false);
   };
 
-  if (User.logged !== true) {
+  if (cookies.logged !== "true") {
     window.location = "/login";
     return (
       <h3>Redirecting...</h3>
@@ -1197,7 +1262,7 @@ export function Dashboard()
             </ListItem>
             <ListItem button onClick={
               () => {
-                navigate('/services');
+                window.location = "/services";
               }
             }>
               <ListItemIcon>
@@ -1207,13 +1272,14 @@ export function Dashboard()
             </ListItem>
             <ListItem button onClick={
               () => {
-                navigate('/account');
+                setCookie('logged', "false", { path: '/' });
+                window.location.reload();
               }
             }>
               <ListItemIcon>
-                <AccountCircleIcon />
+                <LogoutIcon />
               </ListItemIcon>
-              <ListItemText primary="Account" />
+              <ListItemText primary="Logout" />
             </ListItem>
           </div>
         </List>

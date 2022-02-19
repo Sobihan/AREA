@@ -1,1 +1,0 @@
-export const User = { logged: false, token: "", email: "", google: false, reddit: false }

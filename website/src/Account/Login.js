@@ -13,15 +13,15 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { useNavigate } from 'react-router';
 import GoogleLogin from 'react-google-login';
-
+import { useCookies } from 'react-cookie';
 import { Sleep } from '../Sleep';
-import { User } from './User';
 
 export function Login()
 {
   let navigate = useNavigate();
   const [showSuccess, setShowSuccess] = React.useState(false);
   const [showError, setShowError] = React.useState(false);
+  const [cookies, setCookie] = useCookies(['user']);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,8 +41,7 @@ export function Login()
       setShowError(false);
       setShowSuccess(true);
       const respdata = await responseLogin.json();
-      User.token = respdata.token;
-      User.email = formData.get('email');
+      setCookie('token', respdata.token, { path: '/' });
     }
     else {
       setShowSuccess(false);
@@ -52,7 +51,7 @@ export function Login()
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'authToken': User.token
+        'authToken': cookies.token
       }
     };
     const responseServices = await fetch('/api/v1/get-user-loged-api', requestServices);
@@ -61,9 +60,9 @@ export function Login()
       setShowSuccess(true);
       const respdata = await responseServices.json();
       Sleep(1000).then(() => {
-        User.reddit = respdata.reddit;
-        User.google = respdata.google;
-        User.logged = true;
+        setCookie('reddit', respdata.reddit, { path: '/' });
+        setCookie('google', respdata.google, { path: '/' });
+        setCookie('logged', "true", { path: '/' });
         navigate('/');
       });
     }
@@ -73,22 +72,40 @@ export function Login()
     }
   };
   const OAuthGoogle = async (response) => {
-    const requestOptions = {
+    const requestLogin = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({response})
     };
-    const api_response = await fetch('/api/v1/google-auth', requestOptions);
-    if (api_response.status === 200) {
+    const responseLogin = await fetch('/api/v1/google-auth', requestLogin);
+    if (responseLogin.status === 200) {
       setShowError(false);
       setShowSuccess(true);
-      const respdata = await api_response.json();
-      Sleep(2000).then(() => {
-        User.token = respdata.token;
-        User.logged = true;
-        User.google = true;
+      const respdata = await responseLogin.json();
+      setCookie('token', respdata.token, { path: '/' });
+    }
+    else {
+      setShowSuccess(false);
+      setShowError(true);
+    }
+    const requestServices = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': cookies.token
+      }
+    };
+    const responseServices = await fetch('/api/v1/get-user-loged-api', requestServices);
+    if (responseServices.status === 200) {
+      setShowError(false);
+      setShowSuccess(true);
+      const respdata = await responseServices.json();
+      Sleep(1000).then(() => {
+        setCookie('reddit', respdata.reddit, { path: '/' });
+        setCookie('google', respdata.google, { path: '/' });
+        setCookie('logged', "true", { path: '/' });
         navigate('/');
       });
     }
