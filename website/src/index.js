@@ -6,7 +6,7 @@ import { CookiesProvider } from "react-cookie";
 import { Login } from './Account/Login';
 import { SignUp } from './Account/SignUp';
 import { OAuthCallback } from './OAuth/OAuthCallback';
-import { Dashboard } from './Pages/Dashboard';
+import { Home } from './Pages/Home';
 import { Services } from './Pages/Services';
 
 ReactDOM.render(
@@ -14,7 +14,7 @@ ReactDOM.render(
     <CookiesProvider>
       <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Dashboard />}/>
+            <Route path="/" element={<Home />}/>
             <Route path="/services" element={<Services />}/>
             <Route path="/oauth2_callback" element={<OAuthCallback />}/>
             <Route path="/login" element={<Login />}/>

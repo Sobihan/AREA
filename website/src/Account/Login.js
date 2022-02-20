@@ -23,6 +23,12 @@ export function Login()
   const [showError, setShowError] = React.useState(false);
   const [cookies, setCookie] = useCookies(['user']);
 
+  if (cookies.logged === "true") {
+    window.location = "/";
+    return (
+      <h3>Redirecting...</h3>
+    );
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -38,14 +44,13 @@ export function Login()
     };
     const responseLogin = await fetch('/api/v1/authenticate', requestLogin);
     if (responseLogin.status === 200) {
-      setShowError(false);
-      setShowSuccess(true);
       const respdata = await responseLogin.json();
       setCookie('token', respdata.token, { path: '/' });
     }
     else {
       setShowSuccess(false);
       setShowError(true);
+      return;
     }
     const requestServices = {
       method: 'POST',
@@ -59,6 +64,7 @@ export function Login()
       setShowError(false);
       setShowSuccess(true);
       const respdata = await responseServices.json();
+      console.log(respdata);
       Sleep(1000).then(() => {
         setCookie('reddit', respdata.reddit, { path: '/' });
         setCookie('google', respdata.google, { path: '/' });
@@ -69,6 +75,7 @@ export function Login()
     else {
       setShowSuccess(false);
       setShowError(true);
+      return;
     }
   };
   const OAuthGoogle = async (response) => {
@@ -81,14 +88,13 @@ export function Login()
     };
     const responseLogin = await fetch('/api/v1/google-auth', requestLogin);
     if (responseLogin.status === 200) {
-      setShowError(false);
-      setShowSuccess(true);
       const respdata = await responseLogin.json();
       setCookie('token', respdata.token, { path: '/' });
     }
     else {
       setShowSuccess(false);
       setShowError(true);
+      return;
     }
     const requestServices = {
       method: 'POST',
@@ -102,6 +108,7 @@ export function Login()
       setShowError(false);
       setShowSuccess(true);
       const respdata = await responseServices.json();
+      console.log(respdata);
       Sleep(1000).then(() => {
         setCookie('reddit', respdata.reddit, { path: '/' });
         setCookie('google', respdata.google, { path: '/' });
@@ -112,6 +119,7 @@ export function Login()
     else {
       setShowSuccess(false);
       setShowError(true);
+      return;
     }
   };
   return (
