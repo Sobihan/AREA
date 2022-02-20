@@ -46,33 +46,15 @@ export function Login()
     if (responseLogin.status === 200) {
       const respdata = await responseLogin.json();
       setCookie('token', respdata.token, { path: '/' });
-    }
-    else {
-      setShowSuccess(false);
-      setShowError(true);
-      return;
-    }
-    const requestServices = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'authToken': cookies.token
-      }
-    };
-    const responseServices = await fetch('/api/v1/get-user-loged-api', requestServices);
-    if (responseServices.status === 200) {
+      setCookie('logged', "true", { path: '/' });
       setShowError(false);
       setShowSuccess(true);
-      const respdata = await responseServices.json();
-      console.log(respdata);
       Sleep(1000).then(() => {
-        setCookie('reddit', respdata.reddit, { path: '/' });
-        setCookie('google', respdata.google, { path: '/' });
-        setCookie('logged', "true", { path: '/' });
         navigate('/');
       });
     }
     else {
+      setCookie('logged', "false", { path: '/' });
       setShowSuccess(false);
       setShowError(true);
       return;
@@ -90,33 +72,15 @@ export function Login()
     if (responseLogin.status === 200) {
       const respdata = await responseLogin.json();
       setCookie('token', respdata.token, { path: '/' });
-    }
-    else {
-      setShowSuccess(false);
-      setShowError(true);
-      return;
-    }
-    const requestServices = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'authToken': cookies.token
-      }
-    };
-    const responseServices = await fetch('/api/v1/get-user-loged-api', requestServices);
-    if (responseServices.status === 200) {
+      setCookie('logged', "true", { path: '/' });
       setShowError(false);
       setShowSuccess(true);
-      const respdata = await responseServices.json();
-      console.log(respdata);
       Sleep(1000).then(() => {
-        setCookie('reddit', respdata.reddit, { path: '/' });
-        setCookie('google', respdata.google, { path: '/' });
-        setCookie('logged', "true", { path: '/' });
         navigate('/');
       });
     }
     else {
+      setCookie('logged', "false", { path: '/' });
       setShowSuccess(false);
       setShowError(true);
       return;
