@@ -30,7 +30,7 @@ async function apiGetter(userToken, type)
                 console.log("if get map REFRESH REDDIT");
 
                 try {
-                    var data = await refreshReddit(type, userToken, data.rfstoken);
+                    var data = await refreshReddit(type, userToken, data.rfstoken, data.is_mobile);
                 }
                 catch (error) {
                     console.log(error);
@@ -84,7 +84,7 @@ async function apiGetter(userToken, type)
 
                         let is_failed_2 = false;
                         try {
-                            var data = await refreshReddit(type, userToken, apiToken.rfstoken);
+                            var data = await refreshReddit(type, userToken, apiToken.rfstoken, apiToken.is_mobile);
                         }
                         catch (error) {
                             console.log(error);
@@ -110,7 +110,8 @@ async function apiGetter(userToken, type)
                 }
                 else {
                     console.log("else set map NO REFRESH");
-                    apiTokens.set(userToken, {[type]: {acstoken: apiToken.acstoken, disableAt: apiToken.disableAt, rfstoken: apiToken.rfstoken}/*{disableAt: apiToken.disableAt, acstoken: apiToken.acstoken}*/});
+                    apiTokens.set(userToken, {[type]: {acstoken: apiToken.acstoken, disableAt: apiToken.disableAt, rfstoken: apiToken.rfstoken, is_mobile: apiToken.is_mobile}});
+                    console.log("return = " + apiTokens.get(userToken)[type].acstoken + ", " + apiTokens.get(userToken)[type].disableAt + ", " + apiTokens.get(userToken)[type].rfstoken + ", " + apiTokens.get(userToken)[type].is_mobile);
                     return {acstoken: apiToken.acstoken, disableAt: apiToken.disableAt, rfstoken: apiToken.rfstoken};
                 }
 
@@ -129,13 +130,16 @@ async function apiGetter(userToken, type)
     return null;
 }
 
-async function refreshReddit(type, userToken, refreshToken)
+async function refreshReddit(type, userToken, refreshToken, is_mobile)
 {
     let is_failed = false;
     let is_failed_2 = false;
 
     try {
-        var data = await api_access.redditRefreshAcessToken(refreshToken);
+        if (!is_mobile)
+            var data = await api_access.redditRefreshAcessTokenWeb(refreshToken);
+        else
+            var data = await api_access.redditRefreshAcessTokenMobile(refreshToken);
     }
     catch (error) {
         console.log(error);
@@ -157,7 +161,7 @@ async function refreshReddit(type, userToken, refreshToken)
                 if (!is_failed_2) {
                     console.log('refreshReddit SUCESS');
                     //return {disableAt: disableAt, acstoken: data.access_token};
-                    return {acstoken: data.access_token, disableAt: disableAt, rfstoken: data.refresh_token};
+                    return {acstoken: data.access_token, disableAt: disableAt, rfstoken: data.refresh_token, is_mobile: is_mobile};
                 }
                 else {
                     console.log('refreshReddit FAIL');

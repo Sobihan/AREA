@@ -30,6 +30,7 @@ model EX_API {
     disableAt BigInt?  @db.BigInt
     acstoken  String?  @unique
     rfstoken  String?  @unique
+    is_mobile Boolean  @default(false)
     user      User?    @relation(fields: [userToken], references: [token])
     userToken String?
     @@unique([type, userToken])
@@ -75,6 +76,5 @@ enum Role {
 
 enum Api_id {
     REDDIT
-    TWITTER
     GOOGLE
 }
