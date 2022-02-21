@@ -26,3 +26,13 @@ function sendMail(transporter, from, to, subject, text) {
     }
     });
 }
+
+const mailInfo = new Map();
+
+mailInfo.set("sendMail", {
+    name:"sendMail",
+    description:"Send a mail on trigger",
+    args: [
+        {text: "user_mail", text: "user_password", text: "to", text: "subject", text: "text"}
+    ]
+});

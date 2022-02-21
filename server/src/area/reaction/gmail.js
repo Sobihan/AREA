@@ -23,3 +23,13 @@ function sendMessage(auth, from, to, subject, body) {
         res.send(err || response)
     });
 }
+
+const messageInfo = new Map();
+
+testInfo.set("testReaction", {
+    name:"testReaction",
+    description:"I am a reaction description",
+    args: [
+        {text: "Text to display after the Hello World :)"}
+    ]
+});

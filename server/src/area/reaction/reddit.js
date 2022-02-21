@@ -28,7 +28,7 @@ async function submit_post(token, subreddit, title, text)
     );
 };
 
-async function send_pm(token, subject, text, to)
+async function send_pm(token, to, subject, text)
 {
     return send_request(token, "https://oauth.reddit.com/api/compose", {
         api_type: 'json',
@@ -39,3 +39,23 @@ async function send_pm(token, subject, text, to)
     }
     );
 };
+
+const redditPostInfo = new Map();
+
+redditPostInfo.set("redditPost", {
+    name:"redditPost",
+    description:"Submit a post into a subreddit on trigger",
+    args: [
+        {text: "subreddit", text: "subject", text: "text"}
+    ]
+});
+
+const redditPMInfo = new Map();
+
+mailInfo.set("redditPM", {
+    name:"redditPM",
+    description:"Send a pm to a reddit user on trigger",
+    args: [
+        {text: "to", text: "subject", text: "text"}
+    ]
+});
