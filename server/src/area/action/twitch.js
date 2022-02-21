@@ -18,6 +18,7 @@ function getStream(actionArgs, callback, reactionArgs)
     .then((twitch) => {
         if (isSuccess == true && twitch.data.length > 0){
             console.log('testgetStream SUCESSFUL');
+            search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " is Live.\n")
             callback(reactionArgs);
         }
         else {
