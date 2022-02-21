@@ -231,6 +231,11 @@ export function CreateJob()
                     <MenuItem
                       key={lineAction.name}
                       value={lineAction}
+                      onClick={() => {
+                        if (action !== '' && lineAction.name !== action.name) {
+                          setActionArg([]);
+                        }
+                      }}
                     >
                       {lineAction.name}
                     </MenuItem>
@@ -293,6 +298,11 @@ export function CreateJob()
                     <MenuItem
                       key={lineReaction.name}
                       value={lineReaction}
+                      onClick={() => {
+                        if (reaction !== '' && lineReaction.name !== reaction.name) {
+                          setReactionArg([]);
+                        }
+                      }}
                     >
                       {lineReaction.name}
                     </MenuItem>
