@@ -28,7 +28,7 @@ export function EditJob(jobJson)
   const [actionArg, setActionArg] = React.useState(jobJson.jobJson.actionArg);
   const [reactionArg, setReactionArg] = React.useState(jobJson.jobJson.reactionArg);
   const [areaRunNow, setAreaRunNow] = React.useState(true);
-  const [runNowLabel, setRunNowLabel] = React.useState(areaRunNow ? "Enabled": "Disabled");
+  const [runNowLabel, setRunNowLabel] = React.useState(areaRunNow ? "Run Now": "Run Later");
   const [createJob, setCreateJob] = React.useState("l");
   const [cookies] = useCookies(['user']);
 
@@ -166,10 +166,10 @@ export function EditJob(jobJson)
 
   const handleRunNow = (event) => {
     if (event.target.checked) {
-      setRunNowLabel("Enabled")
+      setRunNowLabel("Run Now")
     }
     else {
-      setRunNowLabel("Disabled")
+      setRunNowLabel("Run Later")
     }
     setAreaRunNow(event.target.checked);
   }

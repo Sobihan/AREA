@@ -28,7 +28,7 @@ export function CreateJob()
   const [actionArg, setActionArg] = React.useState([]);
   const [reactionArg, setReactionArg] = React.useState('');
   const [areaRunNow, setAreaRunNow] = React.useState(true);
-  const [runNowLabel, setRunNowLabel] = React.useState("Enabled");
+  const [runNowLabel, setRunNowLabel] = React.useState("Run Now");
   const [createJob, setCreateJob] = React.useState("l");
   const [cookies] = useCookies(['user']);
 
@@ -138,10 +138,10 @@ export function CreateJob()
 
   const handleRunNow = (event) => {
     if (event.target.checked) {
-      setRunNowLabel("Enabled");
+      setRunNowLabel("Run Now");
     }
     else {
-      setRunNowLabel("Disabled");
+      setRunNowLabel("Run Later");
     }
     setAreaRunNow(event.target.checked);
   }
