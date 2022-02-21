@@ -52,7 +52,7 @@ redditPostInfo.set("redditPost", {
 
 const redditPMInfo = new Map();
 
-mailInfo.set("redditPM", {
+redditPMInfo.set("redditPM", {
     name:"redditPM",
     description:"Send a pm to a reddit user on trigger",
     args: [
