@@ -112,8 +112,9 @@ const fetch = require('node-fetch');
 async function redditGetAcessTokenWeb(redditToken)
 {
     console.log("INSIDE redditGetAcessTokenWeb");
+    console.log("redditToken = ", redditToken);
     //const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('1ghoBZDHNQYAQv0fjQCZbA:')).toString('base64'); //alexandre's API key
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('kwkqREzWGXUd_55yFSG8pg:')).toString('base64'); //alexandre's API key
     var myHeaders = new fetch.Headers();
 
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -126,6 +127,7 @@ async function redditGetAcessTokenWeb(redditToken)
     };
     var URL = "https://www.reddit.com/api/v1/access_token?grant_type=authorization_code&code=" + redditToken + "&redirect_uri=http://localhost:8081/oauth2_callback"
     var data = await http_r.apiCaller(requestOptions, URL);
+
     return data;
 };
 
@@ -152,7 +154,7 @@ async function redditRefreshAcessTokenWeb(refreshToken)
 {
     console.log("INSIDE redditRefreshAcessTokenWeb");
     //const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('1ghoBZDHNQYAQv0fjQCZbA:')).toString('base64'); //alexandre's API key
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('kwkqREzWGXUd_55yFSG8pg:')).toString('base64'); //alexandre's API key
     var myHeaders = new fetch.Headers();
 
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -186,7 +188,14 @@ async function redditRefreshAcessTokenMobile(refreshToken)
     var data = await http_r.apiCaller(requestOptions, URL);
     return data;
 };
+/*
+const {GoogleLogin} = require('react-google-login');
 
+async function googleRefresh()
+{
+    GoogleLogin.reload
+}
+*/
 module.exports.findUniqueApiTokenSimple = findUniqueApiTokenSimple;
 module.exports.findUniqueApiToken = findUniqueApiToken;
 module.exports.updateApiToken = updateApiToken;
