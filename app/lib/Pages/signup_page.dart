@@ -299,7 +299,6 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           gbutton(onTap: () => gButtonPressed()),
-                          rbutton(onTap: () => rButtonPressed())
                         ],
                       ))
                 ],

@@ -1,5 +1,6 @@
 import 'package:area/API/api.dart';
 import 'package:area/API/google.dart';
+import 'package:area/API/reddit.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/User/service.dart';
 import 'package:area/Models/google.dart';
@@ -48,6 +49,21 @@ class _UserPageState extends State<UserPage> {
     return;
   }
 
+  void rbuttonPressed() async {
+    String response = await getRedditCode();
+    if (response == "error") return;
+    String code = Uri.parse(response).queryParameters['code']!;
+    final responseAPI = await updateApi(
+        token: widget.user.token,
+        host: widget.host,
+        type: 'REDDIT',
+        serviceToken: code);
+    if (responseAPI.statusCode != 200) return;
+    setState(() {
+      widget.user.isReddit = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -83,7 +99,7 @@ class _UserPageState extends State<UserPage> {
                       ),
                       const SizedBox(height: 10),
                       Service(
-                          connect: () => {},
+                          connect: () => {rbuttonPressed()},
                           disconnect: () => {},
                           icon: const Icon(FontAwesomeIcons.reddit),
                           host: widget.host,
