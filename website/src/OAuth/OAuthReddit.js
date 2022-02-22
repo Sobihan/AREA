@@ -8,7 +8,8 @@ async function SendCode(code, userToken)
     },
     body: JSON.stringify({
       type: "REDDIT",
-      token: code
+      token: code,
+      mobile: false
     })
   };
   await fetch('/api/v1/update-api-token', requestOptions);
