@@ -15,6 +15,7 @@ async function findUniqueApiTokenSimple(token, type) {
             disableAt: true,
             acstoken: true,
             rfstoken: true,
+            is_mobile: true,
         }
     })
     return user;
@@ -34,12 +35,13 @@ async function findUniqueApiToken(token, type) {
             disableAt: true,
             acstoken: true,
             rfstoken: true,
+            is_mobile: true,
         }
     })
     return user;
 }
 
-async function updateApiToken(authToken, token, type, disableAt, acstoken, rfstoken) {
+async function updateApiToken(authToken, token, type, disableAt, acstoken, rfstoken, is_mobile) {
     const user = await main.prisma.user.update({
         where: {
             token: authToken,
@@ -53,6 +55,7 @@ async function updateApiToken(authToken, token, type, disableAt, acstoken, rfsto
                         disableAt: disableAt,
                         acstoken: acstoken,
                         rfstoken: rfstoken,
+                        is_mobile: is_mobile,
                     },
                     update: {
                         type: type,
@@ -60,6 +63,7 @@ async function updateApiToken(authToken, token, type, disableAt, acstoken, rfsto
                         disableAt: disableAt,
                         acstoken: acstoken,
                         rfstoken: rfstoken,
+                        is_mobile: is_mobile,
                     },
                     where: {
                         type_userToken: {
@@ -105,9 +109,11 @@ async function getUserApiToken(authToken) {
 
 const fetch = require('node-fetch');
 
-async function redditGetAcessToken(redditToken)
+async function redditGetAcessTokenWeb(redditToken)
 {
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+    console.log("INSIDE redditGetAcessTokenWeb");
+    //const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('1ghoBZDHNQYAQv0fjQCZbA:')).toString('base64'); //alexandre's API key
     var myHeaders = new fetch.Headers();
 
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -118,14 +124,15 @@ async function redditGetAcessToken(redditToken)
         headers: myHeaders,
         redirect: 'follow'
     };
-    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=authorization_code&code=" + redditToken + "&redirect_uri=http://localhost/oauth2_callback"
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=authorization_code&code=" + redditToken + "&redirect_uri=http://localhost:8081/oauth2_callback"
     var data = await http_r.apiCaller(requestOptions, URL);
     return data;
 };
 
-async function redditRefreshAcessToken(refreshToken)
+async function redditGetAcessTokenMobile(redditToken)
 {
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+    console.log("INSIDE redditGetAcessTokenMobile");
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('f7gY1o1RsIYnbY6OtwFfVQ:')).toString('base64');
     var myHeaders = new fetch.Headers();
 
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -136,7 +143,46 @@ async function redditRefreshAcessToken(refreshToken)
         headers: myHeaders,
         redirect: 'follow'
     };
-    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=http://localhost/oauth2_callback"
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=authorization_code&code=" + redditToken + "&redirect_uri=com.example.area://callback"
+    var data = await http_r.apiCaller(requestOptions, URL);
+    return data;
+};
+
+async function redditRefreshAcessTokenWeb(refreshToken)
+{
+    console.log("INSIDE redditRefreshAcessTokenWeb");
+    //const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('1ghoBZDHNQYAQv0fjQCZbA:')).toString('base64'); //alexandre's API key
+    var myHeaders = new fetch.Headers();
+
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("Authorization", basicAuth);
+    myHeaders.append("Cookie", "edgebucket=NFsC7UQxIKop6Oc1vY");
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=http://localhost:8081/oauth2_callback"
+    var data = await http_r.apiCaller(requestOptions, URL);
+    return data;
+};
+
+async function redditRefreshAcessTokenMobile(refreshToken)
+{
+    console.log("INSIDE redditRefreshAcessTokenMobile");
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('f7gY1o1RsIYnbY6OtwFfVQ:')).toString('base64');
+    var myHeaders = new fetch.Headers();
+
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("Authorization", basicAuth);
+    myHeaders.append("Cookie", "edgebucket=NFsC7UQxIKop6Oc1vY");
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=com.example.area://callback"
     var data = await http_r.apiCaller(requestOptions, URL);
     return data;
 };
@@ -146,5 +192,7 @@ module.exports.findUniqueApiToken = findUniqueApiToken;
 module.exports.updateApiToken = updateApiToken;
 module.exports.updateApiAccessToken = updateApiAccessToken;
 module.exports.getUserApiToken = getUserApiToken;
-module.exports.redditGetAcessToken = redditGetAcessToken;
-module.exports.redditRefreshAcessToken = redditRefreshAcessToken;
+module.exports.redditGetAcessTokenWeb = redditGetAcessTokenWeb;
+module.exports.redditGetAcessTokenMobile = redditGetAcessTokenMobile;
+module.exports.redditRefreshAcessTokenWeb = redditRefreshAcessTokenWeb;
+module.exports.redditRefreshAcessTokenMobile = redditRefreshAcessTokenMobile;

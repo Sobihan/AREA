@@ -30,7 +30,7 @@ const updateJob = (req, res, next) => {
         }
 
         if (isSuccess == true && user != null && jobToken != ''
-            && req.body.actionArg != '' && req.body.reactionArg != '') {
+            && req.body.actionArg != undefined && req.body.reactionArg != undefined) {
 
             try {
                 var isJobChecked = job_extra.checkGetJob(req.header('authtoken'), req.body.action, req.body.actionArg, req.body.reaction, req.body.reactionArg);
