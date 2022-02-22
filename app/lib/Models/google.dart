@@ -12,6 +12,7 @@ class Google {
       required this.googleID,
       required this.displayName,
       required this.email});
+
   factory Google.fromGoogleSignInAccount(
       {required GoogleSignInAccount? google,
       required GoogleSignInAuthentication token}) {

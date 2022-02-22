@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           theme: getMyTheme(),
           home: kReleaseMode == false
               ? const LoginPage(
-                  host: "10.41.130.197") //Need to change in debug mode.
+                  host: "192.168.1.15") //Need to change in debug mode.
               : const HostAlert(),
         ));
   }

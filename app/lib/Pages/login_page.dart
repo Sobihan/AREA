@@ -143,13 +143,64 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }
 
   void gButtonPressed() async {
-    AccessTokenResponse t = await googleClient.getTokenWithAuthCodeFlow(
-        clientId:
-            "789963154068-fkl9gdj0d898pcs5poa63av7fegto54b.apps.googleusercontent.com",
-        scopes: ["https://www.googleapis.com/auth/gmail.readonly"]);
-    print(t.refreshToken);
-    print(t.toString());
+    if (!await checkError(true)) return;
+    reload();
+    Google googleUser;
+    try {
+      AccessTokenResponse t = await googleClient.getTokenWithAuthCodeFlow(
+          clientId:
+              "789963154068-fkl9gdj0d898pcs5poa63av7fegto54b.apps.googleusercontent.com",
+          scopes: [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/gmail.readonly",
+            "https://www.googleapis.com/auth/userinfo.profile"
+          ]);
+      final response = await getGoogleInfo(accessToken: t.accessToken!);
+      final json = jsonDecode(response.body);
+      googleUser = Google(
+          accessToken: t.refreshToken!,
+          googleID: json["id"],
+          displayName: json["name"],
+          email: json["email"]);
+    } catch (error) {
+      reload();
+      addError("Please try Again");
+      return;
+    }
+    final responseToLog =
+        await signInWithGoogle(user: googleUser, host: widget.host);
+    if (responseToLog.statusCode != 200) {
+      reload();
+      addError("Please try Again");
+      return;
+    }
+    String userToken;
+    if (jsonDecode(responseToLog.body)['token'] == null) {
+      userToken = jsonDecode(responseToLog.body)['user']['token'];
+    } else {
+      userToken = jsonDecode(responseToLog.body)['token'];
+    }
 
+    final responseUser = await getUser(token: userToken, host: widget.host);
+    final serviceResponse =
+        await getUserServices(token: userToken, host: widget.host);
+    final jsonService = jsonDecode(serviceResponse.body);
+    User userConnect = User.fromJson(
+        json: jsonDecode(responseUser.body)['user'],
+        token: userToken,
+        isGoogle: jsonService['google'],
+        isReddit: jsonService['reddit']);
+    final actionReaction = await getActionRea(host: widget.host);
+    reload();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BottomBar(
+                host: widget.host,
+                user: userConnect,
+                actionReaction: jsonDecode(actionReaction.body),
+              )),
+    );
     // if (!await checkError(true)) return;
     // reload();
     // final user;
@@ -190,17 +241,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     // if (googleisConnect) {
     //   GoogleSignInApi.logout();
     // }
-    // final actionReaction = await getActionRea(host: widget.host);
-    // reload();
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) => BottomBar(
-    //             host: widget.host,
-    //             user: userConnect,
-    //             actionReaction: jsonDecode(actionReaction.body),
-    //           )),
-    // );
   }
 
   void rButtonPressed() async {
