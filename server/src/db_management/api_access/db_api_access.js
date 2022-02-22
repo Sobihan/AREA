@@ -112,8 +112,8 @@ const fetch = require('node-fetch');
 async function redditGetAcessTokenWeb(redditToken)
 {
     console.log("INSIDE redditGetAcessTokenWeb");
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
-    //const basicAuth = "Basic " + Buffer.from(utf8.encode('1ghoBZDHNQYAQv0fjQCZbA:')).toString('base64'); //alexandre's API key
+    //const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('1ghoBZDHNQYAQv0fjQCZbA:')).toString('base64'); //alexandre's API key
     var myHeaders = new fetch.Headers();
 
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -124,7 +124,7 @@ async function redditGetAcessTokenWeb(redditToken)
         headers: myHeaders,
         redirect: 'follow'
     };
-    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=authorization_code&code=" + redditToken + "&redirect_uri=http://localhost/oauth2_callback"
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=authorization_code&code=" + redditToken + "&redirect_uri=http://localhost:8081/oauth2_callback"
     var data = await http_r.apiCaller(requestOptions, URL);
     return data;
 };
@@ -132,7 +132,7 @@ async function redditGetAcessTokenWeb(redditToken)
 async function redditGetAcessTokenMobile(redditToken)
 {
     console.log("INSIDE redditGetAcessTokenMobile");
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('f7gY1o1RsIYnbY6OtwFfVQ:')).toString('base64');
     var myHeaders = new fetch.Headers();
 
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -143,7 +143,7 @@ async function redditGetAcessTokenMobile(redditToken)
         headers: myHeaders,
         redirect: 'follow'
     };
-    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=authorization_code&code=" + redditToken + "&redirect_uri=http://localhost/oauth2_callback"
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=authorization_code&code=" + redditToken + "&redirect_uri=com.example.area://callback"
     var data = await http_r.apiCaller(requestOptions, URL);
     return data;
 };
@@ -151,8 +151,8 @@ async function redditGetAcessTokenMobile(redditToken)
 async function redditRefreshAcessTokenWeb(refreshToken)
 {
     console.log("INSIDE redditRefreshAcessTokenWeb");
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
-    //const basicAuth = "Basic " + Buffer.from(utf8.encode('1ghoBZDHNQYAQv0fjQCZbA:')).toString('base64'); //alexandre's API key
+    //const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('1ghoBZDHNQYAQv0fjQCZbA:')).toString('base64'); //alexandre's API key
     var myHeaders = new fetch.Headers();
 
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -163,7 +163,7 @@ async function redditRefreshAcessTokenWeb(refreshToken)
         headers: myHeaders,
         redirect: 'follow'
     };
-    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=http://localhost/oauth2_callback"
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=http://localhost:8081/oauth2_callback"
     var data = await http_r.apiCaller(requestOptions, URL);
     return data;
 };
@@ -171,7 +171,7 @@ async function redditRefreshAcessTokenWeb(refreshToken)
 async function redditRefreshAcessTokenMobile(refreshToken)
 {
     console.log("INSIDE redditRefreshAcessTokenMobile");
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
+    const basicAuth = "Basic " + Buffer.from(utf8.encode('f7gY1o1RsIYnbY6OtwFfVQ:')).toString('base64');
     var myHeaders = new fetch.Headers();
 
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -182,7 +182,7 @@ async function redditRefreshAcessTokenMobile(refreshToken)
         headers: myHeaders,
         redirect: 'follow'
     };
-    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=http://localhost/oauth2_callback"
+    var URL = "https://www.reddit.com/api/v1/access_token?grant_type=refresh_token&refresh_token=" + refreshToken + "&redirect_uri=com.example.area://callback"
     var data = await http_r.apiCaller(requestOptions, URL);
     return data;
 };
