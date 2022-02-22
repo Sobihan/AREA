@@ -42,7 +42,6 @@ class _AreaPageState extends State<AreaPage> {
   List<Area> parseData(String? data) {
     final json = jsonDecode(data!);
     List<Area> areas = [];
-    print(json["job"]);
     int size = json["job"].length;
     for (int i = 0; i < size; i += 1) {
       areas.add(Area.fromJson(json: json["job"][i]));
@@ -151,7 +150,7 @@ class _AreaPageState extends State<AreaPage> {
                           ),
                         );
                       } else {
-                        return Text("Wait");
+                        return const Text("Wait");
                       }
                     },
                   ),

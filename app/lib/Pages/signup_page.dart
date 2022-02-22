@@ -220,7 +220,6 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
       return;
     }
     reload();
-    print(accessToken);
   }
 
   @override
