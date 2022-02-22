@@ -289,7 +289,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           gbutton(onTap: () => gButtonPressed()),
-                          rbutton(onTap: () => rButtonPressed())
                         ],
                       ))
                   // gbutton(onTap: () => gButtonPressed())
