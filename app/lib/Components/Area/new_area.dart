@@ -44,6 +44,7 @@ class _NewAreaState extends State<NewArea> {
     if (isNumeric(_newTrigger.timer) == false) return;
 
     Area area = Area(
+        token: "New Area",
         action: _newAction.action,
         reaction: _newReaction.reaction,
         interval: _newTrigger.timer == "" ? "5" : _newTrigger.timer,

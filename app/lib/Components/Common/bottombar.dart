@@ -67,11 +67,11 @@ class _BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
               size: 30,
               color: _selectedIndex == 1 ? CustomColor.darkBlue : Colors.black,
             ),
-            Icon(
-              FontAwesomeIcons.solidQuestionCircle,
-              size: 30,
-              color: _selectedIndex == 2 ? CustomColor.darkBlue : Colors.black,
-            ),
+            // Icon(
+            //   FontAwesomeIcons.solidQuestionCircle,
+            //   size: 30,
+            //   color: _selectedIndex == 2 ? CustomColor.darkBlue : Colors.black,
+            // ),
           ],
           onTap: (index) {
             onTapHandler(index);

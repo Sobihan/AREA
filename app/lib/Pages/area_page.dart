@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:area/Components/Area/dismiss.dart';
 import 'package:area/Components/Area/fbutton.dart';
 import 'package:area/Components/Area/new_area.dart';
@@ -27,15 +29,14 @@ class AreaPage extends StatefulWidget {
 }
 
 class _AreaPageState extends State<AreaPage> {
-  void getData() async {
+  Future<String> _getData() async {
     final response = await getJobs(host: widget.host, token: widget.user.token);
-    print(response.body);
+    return response.body;
   }
 
   @override
   void initState() {
     super.initState();
-    getData();
     // await
     // Map<String, dynamic> data = {
     //   "name": "Area Name",
@@ -56,6 +57,18 @@ class _AreaPageState extends State<AreaPage> {
     //   }
     // };
     // area = Area.fromJson(json: data);
+  }
+
+  List<Area> parseData(String? data) {
+    // print(data);
+    final json = jsonDecode(data!);
+    List<Area> areas = [];
+    int size = json["job"].length;
+    print(json["job"][0]);
+    for (int i = 0; i < size; i += 1) {
+      areas.add(Area.fromJson(json: json["job"][i]));
+    }
+    return areas;
   }
 
   void newArea() async {
@@ -87,6 +100,17 @@ class _AreaPageState extends State<AreaPage> {
     print(response.body);
   }
 
+  List<Widget> getArea(List<Area> areas) {
+    int size = areas.length;
+    List<Widget> widgets = [];
+    for (int i = 0; i < size; i += 1) {
+      widgets.add(dismiss(
+          widget: Job(host: widget.host, area: areas[i]),
+          onDismissed: () => print("hellooo")));
+    }
+    return widgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -101,7 +125,21 @@ class _AreaPageState extends State<AreaPage> {
                 horizontal: 25,
                 vertical: 120,
               ),
-              child: Text("hello"))),
+              child: FutureBuilder(
+                future: _getData(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  if (snapshot.hasData) {
+                    List<Area> areas = parseData(snapshot.data);
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: getArea(areas),
+                    );
+                  } else {
+                    return Text("Wait");
+                  }
+                },
+              ))),
       // child: Column(
       //   mainAxisAlignment: MainAxisAlignment.center,
       //   children: [

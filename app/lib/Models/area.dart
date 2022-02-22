@@ -9,16 +9,18 @@ class Area {
   String token = "";
   bool runNow = true;
   Area(
-      {required this.action,
+      {required this.token,
+      required this.action,
       required this.reaction,
       required this.interval,
       required this.name});
 
   factory Area.fromJson({required dynamic json}) {
     return Area(
+        token: json["jobToken"],
         action: CustomAction.fromJson(json: json),
         reaction: Reaction.fromJson(json: json),
-        interval: json["interval"],
+        interval: json["interval"].toString(),
         name: json["name"]);
   }
   @override
@@ -34,6 +36,7 @@ class Area {
 
   factory Area.error() {
     return Area(
+        token: "Error",
         action: CustomAction(config: ["Error"], name: "Error"),
         reaction: Reaction(config: ["Error"], name: "Error"),
         interval: "Error",
