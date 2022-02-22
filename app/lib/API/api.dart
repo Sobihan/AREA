@@ -113,3 +113,15 @@ Future<http.Response> getUserServices(
   final response = await http.post(url, headers: {'authToken': token});
   return response;
 }
+
+Future<http.Response> updateApi(
+    {required String token,
+    required String host,
+    required String type,
+    required serviceToken}) async {
+  Uri url = Uri.parse("http://$host:8080/api/v1/update-api-token");
+  final response = await http.post(url,
+      headers: {'Content-Type': 'application/json', 'authToken': token},
+      body: jsonEncode({'type': type, 'token': serviceToken}));
+  return response;
+}

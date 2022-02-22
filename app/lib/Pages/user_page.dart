@@ -1,3 +1,4 @@
+import 'package:area/API/api.dart';
 import 'package:area/API/google.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/User/service.dart';
@@ -29,12 +30,18 @@ class _UserPageState extends State<UserPage> {
       final token = await user.authentication;
       Google googleUser =
           Google.fromGoogleSignInAccount(google: user, token: token);
+      final response = await updateApi(
+          token: widget.user.token,
+          host: widget.host,
+          type: 'GOOGLE',
+          serviceToken: googleUser.accessToken);
+      setState(() {
+        widget.user.isGoogle = true;
+      });
+      GoogleSignInApi.logout();
     } else {
       return;
     }
-    setState(() {
-      widget.user.isGoogle = true;
-    });
   }
 
   void gButtonPressedSignOut() async {
