@@ -120,8 +120,14 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
     }
     String token = jsonDecode(responseSignUp.body)["user"]['token'];
     final responseUser = await getUser(token: token, host: widget.host);
+    final responseService =
+        await getUserServices(token: token, host: widget.host);
+    final serviceJson = jsonDecode(responseService.body);
     User user = User.fromJson(
-        token: token, json: jsonDecode(responseUser.body)['user']);
+        token: token,
+        json: jsonDecode(responseUser.body)['user'],
+        isGoogle: serviceJson['google'],
+        isReddit: serviceJson['reddit']);
     final actionReaction = await getActionRea(host: widget.host);
     reload();
     Navigator.push(
@@ -163,8 +169,14 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
     }
 
     final responseUser = await getUser(token: userToken, host: widget.host);
+    final responseService =
+        await getUserServices(token: userToken, host: widget.host);
+    final jsonService = jsonDecode(responseService.body);
     User userConnect = User.fromJson(
-        json: jsonDecode(responseUser.body)['user'], token: userToken);
+        json: jsonDecode(responseUser.body)['user'],
+        token: userToken,
+        isGoogle: jsonService['google'],
+        isReddit: jsonService['reddit']);
     final googleisConnect = await GoogleSignInApi.isConnect();
     if (googleisConnect) {
       GoogleSignInApi.logout();

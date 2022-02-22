@@ -5,6 +5,8 @@ class User {
   final String name;
   final String lastName;
   final String avatar;
+  bool isGoogle;
+  bool isReddit;
 
   User(
       {required this.token,
@@ -12,9 +14,17 @@ class User {
       required this.email,
       required this.lastName,
       required this.name,
-      required this.avatar});
-  factory User.fromJson({required dynamic json, required String token}) {
+      required this.avatar,
+      required this.isGoogle,
+      required this.isReddit});
+  factory User.fromJson(
+      {required dynamic json,
+      required String token,
+      required isGoogle,
+      required isReddit}) {
     return User(
+        isGoogle: isGoogle,
+        isReddit: isReddit,
         token: token,
         username: json['username'],
         email: json['email'],

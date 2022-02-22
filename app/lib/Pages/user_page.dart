@@ -17,8 +17,6 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  bool googleConnect = false;
-
   void gButtonPressedLogin() async {
     final user;
     try {
@@ -35,19 +33,12 @@ class _UserPageState extends State<UserPage> {
       return;
     }
     setState(() {
-      googleConnect = true;
+      widget.user.isGoogle = true;
     });
   }
 
   void gButtonPressedSignOut() async {
-    try {
-      await GoogleSignInApi.logout();
-      setState(() {
-        googleConnect = false;
-      });
-    } catch (e) {
-      return;
-    }
+    return;
   }
 
   @override
@@ -58,25 +49,43 @@ class _UserPageState extends State<UserPage> {
           height: double.infinity,
           width: double.infinity,
           decoration: background(),
-          child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 25,
-                vertical: 120,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                    onPressed: () => {Navigator.pop(context)},
+                    icon: const Icon(FontAwesomeIcons.signOutAlt)),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Service(
-                    connect: () => {gButtonPressedLogin()},
-                    disconnect: () => {gButtonPressedSignOut()},
-                    isConnect: googleConnect,
-                    host: widget.host,
-                    name: "Google",
-                    icon: const Icon(FontAwesomeIcons.google),
+              SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 120,
                   ),
-                ],
-              )))
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Service(
+                        connect: () => {gButtonPressedLogin()},
+                        disconnect: () => {gButtonPressedSignOut()},
+                        isConnect: widget.user.isGoogle,
+                        host: widget.host,
+                        name: "Google",
+                        icon: const Icon(FontAwesomeIcons.google),
+                      ),
+                      const SizedBox(height: 10),
+                      Service(
+                          connect: () => {},
+                          disconnect: () => {},
+                          icon: const Icon(FontAwesomeIcons.reddit),
+                          host: widget.host,
+                          isConnect: widget.user.isReddit,
+                          name: "Reddit")
+                    ],
+                  )),
+            ],
+          ))
     ]));
   }
 }

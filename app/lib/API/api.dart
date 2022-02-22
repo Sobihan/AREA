@@ -106,3 +106,10 @@ Future<http.Response> stopJob(
       body: jsonEncode({'jobToken': jobToken, 'stop': isRun}));
   return response;
 }
+
+Future<http.Response> getUserServices(
+    {required String token, required String host}) async {
+  Uri url = Uri.parse("http://$host:8080/api/v1/get-user-loged-api");
+  final response = await http.post(url, headers: {'authToken': token});
+  return response;
+}
