@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:area/API/api.dart';
 import 'package:area/API/google.dart';
 import 'package:area/API/reddit.dart';
@@ -7,6 +9,13 @@ import 'package:area/Models/google.dart';
 import 'package:area/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:oauth2_client/google_oauth2_client.dart';
+import 'package:oauth2_client/access_token_response.dart';
+
+GoogleOAuth2Client googleClient = GoogleOAuth2Client(
+    redirectUri:
+        'com.example.area:/oauth2redirect', //Just one slash, required by Google specs
+    customUriScheme: 'com.example.area');
 
 class UserPage extends StatefulWidget {
   final String host;
@@ -20,29 +29,28 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   void gButtonPressedLogin() async {
-    final user;
+    AccessTokenResponse t;
     try {
-      user = await GoogleSignInApi.login();
-    } catch (e) {
+      t = await googleClient.getTokenWithAuthCodeFlow(
+          clientId:
+              "789963154068-fkl9gdj0d898pcs5poa63av7fegto54b.apps.googleusercontent.com",
+          scopes: [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/gmail.readonly",
+            "https://www.googleapis.com/auth/userinfo.profile"
+          ]);
+    } catch (error) {
       return;
     }
-
-    if (user != null) {
-      final token = await user.authentication;
-      Google googleUser =
-          Google.fromGoogleSignInAccount(google: user, token: token);
-      final response = await updateApi(
-          token: widget.user.token,
-          host: widget.host,
-          type: 'GOOGLE',
-          serviceToken: googleUser.accessToken);
-      setState(() {
-        widget.user.isGoogle = true;
-      });
-      GoogleSignInApi.logout();
-    } else {
-      return;
-    }
+    final responseService = await updateApi(
+        token: widget.user.token,
+        host: widget.host,
+        type: 'GOOGLE',
+        serviceToken: t.refreshToken);
+    if (responseService.statusCode != 200) return;
+    setState(() {
+      widget.user.isGoogle = true;
+    });
   }
 
   void gButtonPressedSignOut() async {
