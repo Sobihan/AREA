@@ -90,14 +90,12 @@ class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
     final response = await createUpdate(
         area: result, host: widget.host, token: widget.user.token);
     print(response.statusCode);
-    await Future.delayed(const Duration(seconds: 2), () {});
     setState(() {});
   }
 
   void delete(String jobToken) async {
     await deleteJob(
         token: widget.user.token, host: widget.host, jobToken: jobToken);
-    await Future.delayed(const Duration(seconds: 2), () {});
     setState(() {});
   }
 

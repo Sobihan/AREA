@@ -51,19 +51,29 @@ class _JobState extends State<Job> {
           height: 150,
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Switch(
-                  autofocus: true,
-                  activeColor: Colors.green,
-                  value: isRun,
-                  onChanged: (value) {
-                    setState(() {
-                      isRun = !widget.area.runNow;
-                    });
-                    widget.callback();
-                  },
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    widget.area.name,
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Switch(
+                      autofocus: true,
+                      activeColor: Colors.green,
+                      value: isRun,
+                      onChanged: (value) {
+                        setState(() {
+                          isRun = !widget.area.runNow;
+                        });
+                        widget.callback();
+                      },
+                    ),
+                  )
+                ],
               ),
               const SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
