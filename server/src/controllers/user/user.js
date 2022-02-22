@@ -62,6 +62,8 @@ const authenticate = (req, res, next) => {
 const googleRegisterOrAuthenticate = (req, res, next) => {
     let isSuccess = true;
     let isSuccess_2 = true;
+    //const data = req.body.response;
+    console.log(req.body);
 
     user_prisma.findUniqueAuthenticate(req.body.response.profileObj.email)
     .catch((e) => {
@@ -72,6 +74,8 @@ const googleRegisterOrAuthenticate = (req, res, next) => {
         if (isSuccess == true && user != null && req.body.response.profileObj.googleId == user.password){
             console.log('googleAuthenticate SUCESSFUL');
             res.status(200).json({
+                data: req.body.response,
+                data: req.body.response.tokenObj.session_state,
                 success: true,
                 body: 'googleAuthentication done!',
                 token: user.token,

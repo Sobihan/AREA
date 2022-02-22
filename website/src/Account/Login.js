@@ -168,6 +168,8 @@ export function Login()
               <Grid item>
                 <GoogleLogin
                   clientId="789963154068-jq4283e019useue1vfa8d8a19go9istp.apps.googleusercontent.com"
+                  //accessType="offline"
+                  //responseType="code"
                   buttonText="Log in with Google"
                   onSuccess={OAuthGoogle}
                   onFailure={() => {setShowError(true)}}
