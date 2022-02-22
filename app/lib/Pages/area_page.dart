@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:async';
 import 'package:area/Components/Area/dismiss.dart';
 import 'package:area/Components/Area/fbutton.dart';
 import 'package:area/Components/Area/new_area.dart';
@@ -30,6 +30,7 @@ class AreaPage extends StatefulWidget {
 
 class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
   late AnimationController _controllerCircular;
+  Timer? timer;
 
   Future<String> _getData() async {
     final response = await getJobs(host: widget.host, token: widget.user.token);
@@ -40,6 +41,8 @@ class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    timer = Timer.periodic(
+        const Duration(seconds: 5), (Timer t) => setState(() {}));
     _controllerCircular = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
