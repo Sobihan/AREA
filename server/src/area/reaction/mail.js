@@ -11,7 +11,7 @@ var nodemailer = require('nodemailer');
     }
     });
 */
-function sendMail(transporter, from, to, subject, text) {
+function sendMail(transporter, to, subject, text) {
     var opt = {
         from: from,
         to: to,
@@ -27,12 +27,30 @@ function sendMail(transporter, from, to, subject, text) {
     });
 }
 
+function sendMailReaction(token, args) {
+    sendMail(nodemailer.createTransport({
+        service: args[0],
+        auth: {
+            user: args[1],
+            pass: args[2]
+        }
+        }), args[3], arsg[4], args[5]);
+}
+
+function checkSendMail(token, args) {
+    return args.length == 6;
+}
+
 const mailInfo = new Map();
 
 mailInfo.set("sendMail", {
     name:"sendMail",
     description:"Send a mail on trigger",
     args: [
-        {text: "user_mail", text: "user_password", text: "to", text: "subject", text: "text"}
+        {text: "service", text: "user_mail", text: "user_password", text: "to", text: "subject", text: "text"}
     ]
 });
+
+module.exports.mailInfo = mailInfo;
+module.exports.sendMailReaction = sendMailReaction;
+module.exports.checkSendMail = checkSendMail;
