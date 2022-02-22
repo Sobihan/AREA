@@ -43,16 +43,14 @@ class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
     _controllerCircular = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
-    )..addListener(() {
-        setState(() {});
-      });
+    )..addListener(() {});
     _controllerCircular.repeat();
   }
 
   @override
   void dispose() {
-    super.dispose();
     _controllerCircular.dispose();
+    super.dispose();
   }
 
   List<Area> parseData(String? data) {
