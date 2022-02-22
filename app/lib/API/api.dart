@@ -122,6 +122,7 @@ Future<http.Response> updateApi(
   Uri url = Uri.parse("http://$host:8080/api/v1/update-api-token");
   final response = await http.post(url,
       headers: {'Content-Type': 'application/json', 'authToken': token},
-      body: jsonEncode({'type': type, 'token': serviceToken}));
+      body:
+          jsonEncode({'type': type, 'token': serviceToken, 'mobile': 'true'}));
   return response;
 }
