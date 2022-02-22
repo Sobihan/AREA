@@ -37,34 +37,13 @@ class _AreaPageState extends State<AreaPage> {
   @override
   void initState() {
     super.initState();
-    // await
-    // Map<String, dynamic> data = {
-    //   "name": "Area Name",
-    //   "interval": "15",
-    //   "action": {
-    //     "name": "Action Name",
-    //     "config": [
-    //       {"set1": "settings"},
-    //       {"set2": "null"}
-    //     ]
-    //   },
-    //   "reaction": {
-    //     "name": "Reaction Name",
-    //     "config": [
-    //       {"set3": "settings"},
-    //       {"set4": "null"}
-    //     ]
-    //   }
-    // };
-    // area = Area.fromJson(json: data);
   }
 
   List<Area> parseData(String? data) {
-    // print(data);
     final json = jsonDecode(data!);
     List<Area> areas = [];
+    print(json["job"]);
     int size = json["job"].length;
-    print(json["job"][0]);
     for (int i = 0; i < size; i += 1) {
       areas.add(Area.fromJson(json: json["job"][i]));
     }
@@ -97,7 +76,16 @@ class _AreaPageState extends State<AreaPage> {
     result.clean();
     final response = await createUpdate(
         area: result, host: widget.host, token: widget.user.token);
-    print(response.body);
+    print(response.statusCode);
+    await Future.delayed(const Duration(seconds: 2), () {});
+    setState(() {});
+  }
+
+  void delete(String jobToken) async {
+    await deleteJob(
+        token: widget.user.token, host: widget.host, jobToken: jobToken);
+    await Future.delayed(const Duration(seconds: 2), () {});
+    setState(() {});
   }
 
   List<Widget> getArea(List<Area> areas) {
@@ -106,7 +94,8 @@ class _AreaPageState extends State<AreaPage> {
     for (int i = 0; i < size; i += 1) {
       widgets.add(dismiss(
           widget: Job(host: widget.host, area: areas[i]),
-          onDismissed: () => print("hellooo")));
+          onDismissed: () => delete(areas[i].token)));
+      widgets.add(const SizedBox(height: 10));
     }
     return widgets;
   }
@@ -131,9 +120,11 @@ class _AreaPageState extends State<AreaPage> {
                     (BuildContext context, AsyncSnapshot<String> snapshot) {
                   if (snapshot.hasData) {
                     List<Area> areas = parseData(snapshot.data);
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: getArea(areas),
+                    return SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: getArea(areas),
+                      ),
                     );
                   } else {
                     return Text("Wait");
