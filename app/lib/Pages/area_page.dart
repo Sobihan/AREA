@@ -128,22 +128,34 @@ class _AreaPageState extends State<AreaPage> {
                 horizontal: 25,
                 vertical: 120,
               ),
-              child: FutureBuilder(
-                future: _getData(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  if (snapshot.hasData) {
-                    List<Area> areas = parseData(snapshot.data);
-                    return SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: getArea(areas),
-                      ),
-                    );
-                  } else {
-                    return Text("Wait");
-                  }
-                },
+              child: Column(
+                children: [
+                  const Text(
+                    "AREAS",
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  FutureBuilder(
+                    future: _getData(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      if (snapshot.hasData) {
+                        List<Area> areas = parseData(snapshot.data);
+                        return SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: getArea(areas),
+                          ),
+                        );
+                      } else {
+                        return Text("Wait");
+                      }
+                    },
+                  ),
+                ],
               ))),
       // child: Column(
       //   mainAxisAlignment: MainAxisAlignment.center,
