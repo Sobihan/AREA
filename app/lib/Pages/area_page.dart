@@ -28,15 +28,31 @@ class AreaPage extends StatefulWidget {
   State<AreaPage> createState() => _AreaPageState();
 }
 
-class _AreaPageState extends State<AreaPage> {
+class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
+  late AnimationController _controllerCircular;
+
   Future<String> _getData() async {
     final response = await getJobs(host: widget.host, token: widget.user.token);
     return response.body;
   }
+  // bool reloading = false;
 
   @override
   void initState() {
     super.initState();
+    _controllerCircular = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..addListener(() {
+        setState(() {});
+      });
+    _controllerCircular.repeat();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controllerCircular.dispose();
   }
 
   List<Area> parseData(String? data) {
@@ -150,20 +166,15 @@ class _AreaPageState extends State<AreaPage> {
                           ),
                         );
                       } else {
-                        return const Text("Wait");
+                        return CircularProgressIndicator(
+                          value: _controllerCircular.value,
+                          semanticsLabel: 'Linear progress indicator',
+                        );
                       }
                     },
                   ),
                 ],
               ))),
-      // child: Column(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     dismiss(
-      //         widget: Job(host: widget.host, area: area),
-      //         onDismissed: () => print("hello")),
-      //   ],
-      // ))),
       fbutton(onPressed: () => newArea())
     ]));
   }

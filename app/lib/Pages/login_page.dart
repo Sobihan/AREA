@@ -171,7 +171,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         token: userToken,
         isGoogle: jsonService['google'],
         isReddit: jsonService['reddit']);
-    print(userConnect.isGoogle);
     final googleisConnect = await GoogleSignInApi.isConnect();
     if (googleisConnect) {
       GoogleSignInApi.logout();
