@@ -8,7 +8,7 @@ Future<String> getRedditCode() async {
   try {
     response = await FlutterWebAuth.authenticate(
         url:
-            'https://www.reddit.com/api/v1/authorize?client_id=${globals.clientID}&response_type=code&state=TEST&redirect_uri=com.example.area://callback&scope=identity,account,mysubreddits,subscribe',
+            'https://www.reddit.com/api/v1/authorize?client_id=${globals.clientID}&response_type=code&state=TEST&redirect_uri=com.example.area://callback&scope=identity,account,mysubreddits,subscribe,privatemessages,read',
         callbackUrlScheme: "com.example.area");
   } catch (error) {
     return "error";
