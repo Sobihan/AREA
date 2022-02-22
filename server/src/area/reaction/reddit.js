@@ -16,7 +16,7 @@ async function send_request(token, url, data) {
     return data;
 }
 
-async function submit_post(token, subreddit, title, text)
+async function submitPost(token, subreddit, title, text)
 {
     return send_request(token, "https://oauth.reddit.com/api/submit", {
             api_type: 'json',
@@ -26,6 +26,16 @@ async function submit_post(token, subreddit, title, text)
             text: text,
         }
     );
+};
+
+async function submitPostReaction(token, args)
+{
+    return submitPost(token, args[0], args[1], args[2]);
+};
+
+async function checkSubmitPost(token, args)
+{
+    return args.length == 3;
 };
 
 async function send_pm(token, to, subject, text)
@@ -40,9 +50,9 @@ async function send_pm(token, to, subject, text)
     );
 };
 
-const redditPostInfo = new Map();
+const redditInfo = new Map();
 
-redditPostInfo.set("redditPost", {
+redditInfo.set("redditPost", {
     name:"redditPost",
     description:"Submit a post into a subreddit on trigger",
     args: [
@@ -50,12 +60,14 @@ redditPostInfo.set("redditPost", {
     ]
 });
 
-const redditPMInfo = new Map();
-
-redditPMInfo.set("redditPM", {
+redditInfo.set("redditPM", {
     name:"redditPM",
     description:"Send a pm to a reddit user on trigger",
     args: [
         {text: "to", text: "subject", text: "text"}
     ]
 });
+
+module.exports.redditInfo = redditInfo;
+module.exports.submitRedditPost = submitPostReaction;
+module.exports.checkSubmitRedditPost = checkSubmitPost;
