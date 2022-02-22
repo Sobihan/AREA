@@ -57,7 +57,7 @@ export function JobsList()
   const [jobsList, setJobsList] = React.useState(null);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [editJob, setEditJob] = React.useState(null);
-  const [cookies] = useCookies(['user']);
+  const [cookies, setCookie] = useCookies(['user']);
 
   const closeDialog = () => {
     setOpenDialog(false);
@@ -77,6 +77,10 @@ export function JobsList()
       })
     };
     const response = await fetch('/api/v1/search-job', requestOptions);
+    if (response.status !== 200) {
+      setCookie('logged', "false", { path: '/' });
+      window.location.reload();
+    }
     const respdata = await response.json();
     setJobsList(respdata);
     Sleep(5000).then(() => {
