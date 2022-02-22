@@ -88,12 +88,26 @@ class _AreaPageState extends State<AreaPage> {
     setState(() {});
   }
 
+  void stop(String jobToken, bool isRun) async {
+    await stopJob(
+        token: widget.user.token,
+        jobToken: jobToken,
+        host: widget.host,
+        isRun: isRun);
+    await Future.delayed(const Duration(seconds: 2), () {});
+    setState(() {});
+  }
+
   List<Widget> getArea(List<Area> areas) {
     int size = areas.length;
     List<Widget> widgets = [];
     for (int i = 0; i < size; i += 1) {
       widgets.add(dismiss(
-          widget: Job(host: widget.host, area: areas[i]),
+          widget: Job(
+            host: widget.host,
+            area: areas[i],
+            callback: () => stop(areas[i].token, areas[i].runNow),
+          ),
           onDismissed: () => delete(areas[i].token)));
       widgets.add(const SizedBox(height: 10));
     }

@@ -13,10 +13,12 @@ class Area {
       required this.action,
       required this.reaction,
       required this.interval,
-      required this.name});
+      required this.name,
+      required this.runNow});
 
   factory Area.fromJson({required dynamic json}) {
     return Area(
+        runNow: !json['is_stoped'],
         token: json["jobToken"],
         action: CustomAction.fromJson(json: json),
         reaction: Reaction.fromJson(json: json),
@@ -36,6 +38,7 @@ class Area {
 
   factory Area.error() {
     return Area(
+        runNow: false,
         token: "Error",
         action: CustomAction(config: ["Error"], name: "Error"),
         reaction: Reaction(config: ["Error"], name: "Error"),

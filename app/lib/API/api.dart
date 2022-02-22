@@ -94,3 +94,15 @@ Future<http.Response> deleteJob(
       body: jsonEncode({'jobToken': jobToken}));
   return response;
 }
+
+Future<http.Response> stopJob(
+    {required String token,
+    required String jobToken,
+    required String host,
+    required bool isRun}) async {
+  Uri url = Uri.parse("http://$host:8080/api/v1/stop-job");
+  final response = await http.post(url,
+      headers: {'Content-Type': 'application/json', 'authToken': token},
+      body: jsonEncode({'jobToken': jobToken, 'stop': isRun}));
+  return response;
+}
