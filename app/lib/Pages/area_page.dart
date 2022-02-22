@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:async';
 import 'package:area/Components/Area/dismiss.dart';
 import 'package:area/Components/Area/fbutton.dart';
 import 'package:area/Components/Area/new_area.dart';
@@ -30,6 +30,7 @@ class AreaPage extends StatefulWidget {
 
 class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
   late AnimationController _controllerCircular;
+  Timer? timer;
 
   Future<String> _getData() async {
     final response = await getJobs(host: widget.host, token: widget.user.token);
@@ -40,19 +41,19 @@ class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    timer = Timer.periodic(
+        const Duration(seconds: 5), (Timer t) => setState(() {}));
     _controllerCircular = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
-    )..addListener(() {
-        setState(() {});
-      });
+    )..addListener(() {});
     _controllerCircular.repeat();
   }
 
   @override
   void dispose() {
-    super.dispose();
     _controllerCircular.dispose();
+    super.dispose();
   }
 
   List<Area> parseData(String? data) {
@@ -92,14 +93,12 @@ class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
     final response = await createUpdate(
         area: result, host: widget.host, token: widget.user.token);
     print(response.statusCode);
-    await Future.delayed(const Duration(seconds: 2), () {});
     setState(() {});
   }
 
   void delete(String jobToken) async {
     await deleteJob(
         token: widget.user.token, host: widget.host, jobToken: jobToken);
-    await Future.delayed(const Duration(seconds: 2), () {});
     setState(() {});
   }
 
