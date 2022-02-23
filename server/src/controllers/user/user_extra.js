@@ -126,7 +126,8 @@ async function connectGoogle(info)
                     return {code:200, json:{
                         success: true,
                         body: 'googleAuthentication done!',
-                        registerUser
+                        //registerUser
+                        token: registerUser.token
                         }
                     };
                 }
@@ -162,13 +163,17 @@ async function google(data, token, is_mobile)
 
     console.log("userData =", JSON.stringify(userData));
 
+    var userToken = userData.json.token;
+
+/*
     if (userData.json.token != undefined) {
         var userToken = userData.json.token;
     }
     else if (userData.json.registerUser.token != undefined) {
         var userToken = userData.json.registerUser.token;
+        //var userToken = userData.json.registerUser;
     }
-
+*/
     if (userData.code == 200) {
         try {
             var user = await api_access.updateApiToken(userToken, token, "GOOGLE", disableAt, data.tokens.access_token, data.tokens.refresh_token, is_mobile)
