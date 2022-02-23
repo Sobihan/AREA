@@ -75,11 +75,6 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
         .then((data) => {
             if (isSuccess == true && data.info != undefined && data.tokens != undefined) {
                 console.log('getGoogle SUCESSFUL');
-                //const is_mobile = JSON.parse(req.body.is_mobile)
-                //const mobile = Boolean(is_mobile);
-
-                //console.log('req.body.is_mobile =', req.body.is_mobile);
-                //console.log('JSON.stringify(req.body.is_mobile) =', JSON.stringify(req.body.is_mobile));
 
                 user_extra.google(data, req.body.response.code, req.body.is_mobile)
                 .catch((e) => {
@@ -88,12 +83,12 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
                 })
                 .then((responce) => {
                     if (isSuccess_2 == true){
-                        console.log('Register SUCESSFUL');
-                        console.log("responce =", JSON.stringify(responce))
+                        console.log('google SUCESSFUL');
+                        //console.log("responce =", JSON.stringify(responce))
                         res.status(responce.code).json(responce.json);
                     }
                     else {
-                        console.log('Register FAIL');
+                        console.log('google FAIL');
                         res.status(responce.code).json(responce.json);
                     }
                 });
@@ -109,111 +104,13 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
 
     }
     else { //c'est le MOBILE
+        console.log('getGoogle NOT IMPLEMENTED FAIL');
         res.status(401).json({
             success: false,
             body: 'getGoogle Failed'
         });
     }
 
-
-
-
-
-/*
-    api_access.getGoogle(req.body.token)
-    .catch((e) => {
-        isSuccess = false;
-        console.log(e);
-    })
-    .then((user) => {
-        if (isSuccess == true){
-            console.log('getGoogleAccessToken SUCESSFUL');
-/-*
-            res.status(200).json({
-                data: req.body.response,
-                data: req.body.response.tokenObj.session_state,
-                success: true,
-                body: 'googleAuthentication done!',
-                token: user.token,
-            });
-*-/
-        }
-        else {
-            console.log('getGoogleAccessToken FAIL');
-/-*
-            user_prisma.createUser(req.body.response.profileObj.email, req.body.response.profileObj.email, req.body.response.profileObj.googleId, req.body.response.profileObj.givenName, req.body.response.profileObj.familyName)
-            .catch((e) => {
-                isSuccess_2 = false;
-                console.log(e);
-            })
-            .then((user) => {
-                if (isSuccess_2 == true){
-                    console.log('googleRegister SUCESSFUL');
-                    res.status(200).json({
-                        success: true,
-                        body: 'googleRegistration done!',
-                        user
-                    });
-                }
-                else {
-                    console.log('googleRegisterOrAuthenticate FAIL');
-                    res.status(401).json({
-                        success: false,
-                        body: 'googleRegisterOrAuthenticate Failed'
-                    });
-                }
-            });
-*-/
-        }
-    });
-*/
-
-
-
-
-/*
-    user_prisma.findUniqueAuthenticate(req.body.response.profileObj.email)
-    .catch((e) => {
-        isSuccess = false;
-        console.log(e);
-    })
-    .then((user) => {
-        if (isSuccess == true && user != null && req.body.response.profileObj.googleId == user.password){
-            console.log('googleAuthenticate SUCESSFUL');
-            res.status(200).json({
-                data: req.body.response,
-                data: req.body.response.tokenObj.session_state,
-                success: true,
-                body: 'googleAuthentication done!',
-                token: user.token,
-            });
-        }
-        else {
-            user_prisma.createUser(req.body.response.profileObj.email, req.body.response.profileObj.email, req.body.response.profileObj.googleId, req.body.response.profileObj.givenName, req.body.response.profileObj.familyName)
-            .catch((e) => {
-                isSuccess_2 = false;
-                console.log(e);
-            })
-            .then((user) => {
-                if (isSuccess_2 == true){
-                    console.log('googleRegister SUCESSFUL');
-                    res.status(200).json({
-                        success: true,
-                        body: 'googleRegistration done!',
-                        user
-                    });
-                }
-                else {
-                    console.log('googleRegisterOrAuthenticate FAIL');
-                    res.status(401).json({
-                        success: false,
-                        body: 'googleRegisterOrAuthenticate Failed'
-                    });
-                }
-            });
-        }
-    });
-*/
     console.log('authenticate');
     console.log(req.body);
 };

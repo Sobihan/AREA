@@ -76,6 +76,7 @@ async function getGoogleUserInfo(access_token)
 
 async function getGoogle(token)
 {
+    console.log("inside getGoogle")
     var tokens = await getGoogleAccessToken(token);
     var info = await getGoogleUserInfo(tokens.access_token);
 
@@ -101,12 +102,12 @@ async function connectGoogle(info)
     }
     finally {
         if (!is_failed && user != null && info.id == user.password) {
-            console.log('googleAuthenticate SUCESSFUL');
+            console.log('connectGoogle findUniqueAuthenticate SUCESSFUL');
             return {code:200, json:{
                 //data: req.body.response,
                 //data: req.body.response.tokenObj.session_state,
                 success: true,
-                body: 'googleAuthentication done!',
+                body: 'connectGoogle googleAuthentication done!',
                 token: user.token,
                 }
             };
@@ -121,24 +122,18 @@ async function connectGoogle(info)
             }
             finally {
                 if (!is_failed_2) {
-                    console.log('googleRegister SUCESSFUL');
-                    console.log('registerUser =', JSON.stringify(registerUser));
+                    console.log('connectGoogle googleRegister SUCESSFUL');
+                    //console.log('registerUser =', JSON.stringify(registerUser));
                     return {code:200, json:{
                         success: true,
-                        body: 'googleAuthentication done!',
-                        //registerUser
+                        body: 'googleRegister done!',
                         token: registerUser.token
                         }
                     };
                 }
                 else {
-                    console.log('googleRegisterOrAuthenticate FAIL');
+                    console.log('connectGoogle googleRegister FAIL');
                     return null;
-                    /*return {code:401, json:{
-                        success: false,
-                        body: 'googleRegisterOrAuthenticate Failed'
-                        }
-                    };*/
                 }
             }
         }
@@ -148,32 +143,22 @@ async function connectGoogle(info)
 async function google(data, token, is_mobile)
 {
     console.log("inside google")
-    //let isSuccess = true;
     let is_failed = false;
-    var userData = await connectGoogle(data.info); //need try catch finally
+    var userData = await connectGoogle(data.info);
+
     if (userData == null) {
-        console.log("google FAIL")
+        console.log("google from inside FAIL")
         return {code:401, json:{
             success: false,
             body: 'google Failed'
             }
         };
     }
+
     const disableAt = (Date.now() + ((data.tokens.expires_in - 200) * 1000));
-
-    console.log("userData =", JSON.stringify(userData));
-
+    //console.log("userData =", JSON.stringify(userData));
     var userToken = userData.json.token;
 
-/*
-    if (userData.json.token != undefined) {
-        var userToken = userData.json.token;
-    }
-    else if (userData.json.registerUser.token != undefined) {
-        var userToken = userData.json.registerUser.token;
-        //var userToken = userData.json.registerUser;
-    }
-*/
     if (userData.code == 200) {
         try {
             var user = await api_access.updateApiToken(userToken, token, "GOOGLE", disableAt, data.tokens.access_token, data.tokens.refresh_token, is_mobile)
@@ -185,16 +170,8 @@ async function google(data, token, is_mobile)
         finally {
             if (!is_failed) {
                 console.log('updateApiToken GOOGLE SUCESSFUL');
-                console.log('user =', JSON.stringify(user));
+                //console.log('user =', JSON.stringify(user));
                 return userData;
-/*
-                return {code:200, json:{
-                    success: true,
-                    body: 'googleAuthentication done!',
-                    user
-                    }
-                };
-*/
             }
             else {
                 console.log('updateApiToken GOOGLE FAIL');
@@ -205,39 +182,16 @@ async function google(data, token, is_mobile)
                 };
             }
         }
-
-
-
-
-        //api_access.updateApiToken(userData.json.token, token, "GOOGLE", disableAt, data.tokens.access_token, data.tokens.refresh_token, is_mobile)
-
-/*
-        api_access.updateApiToken(userToken, token, "GOOGLE", disableAt, data.tokens.access_token, data.tokens.refresh_token, is_mobile)
-        .catch((e) => {
-            isSuccess = false;
-            console.log(e);
-        })
-        .then((user) => {
-            if (isSuccess == true){
-                console.log('updateApiToken GOOGLE SUCESSFUL');
-                return userData;
-            }
-            else {
-                console.log('updateApiToken GOOGLE FAIL');
-                return {code:401, json:{
-                    success: false,
-                    body: 'updateApiToken GOOGLE Failed'
-                    }
-                };
-            }
-        });*/
     }
     else {
         console.log('connectGoogle, userData.code != 200');
-        return userData;
+        //return userData;
+        return {code:401, json:{
+            success: false,
+            body: 'google Failed'
+            }
+        };
     }
-
-    //return userData;
 }
 
 module.exports.getGoogleAccessToken = getGoogleAccessToken;
