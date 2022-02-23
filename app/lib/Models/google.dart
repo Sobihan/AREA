@@ -6,9 +6,11 @@ class Google {
   final String googleID;
   final String displayName;
   final String email;
+  final String refreshToken;
 
   Google(
-      {required this.accessToken,
+      {required this.refreshToken,
+      required this.accessToken,
       required this.googleID,
       required this.displayName,
       required this.email});
@@ -17,6 +19,7 @@ class Google {
       {required GoogleSignInAccount? google,
       required GoogleSignInAuthentication token}) {
     return Google(
+        refreshToken: '',
         accessToken: token.accessToken ?? '',
         googleID: google!.id,
         displayName: google.displayName ?? '',
@@ -27,6 +30,7 @@ class Google {
   String toString() {
     final Map<String, dynamic> data = <String, dynamic>{
       'profileObj': {
+        'refreshToken': refreshToken,
         'accessToken': accessToken,
         'googleId': googleID,
         'givenName': displayName.split(' ')[0],
@@ -40,6 +44,7 @@ class Google {
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{
       'profileObj': {
+        'refreshToken': refreshToken,
         'accessToken': accessToken,
         'googleId': googleID,
         'givenName': displayName.split(' ')[0],

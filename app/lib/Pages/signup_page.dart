@@ -216,7 +216,8 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
       final response = await getGoogleInfo(accessToken: t.accessToken!);
       final json = jsonDecode(response.body);
       googleUser = Google(
-          accessToken: t.refreshToken!,
+          refreshToken: t.refreshToken!,
+          accessToken: t.accessToken!,
           googleID: json["id"],
           displayName: json["name"],
           email: json["email"]);
