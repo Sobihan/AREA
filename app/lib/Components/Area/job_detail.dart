@@ -87,7 +87,8 @@ class _DetailState extends State<Detail> {
       ),
     ];
     for (int i = 0; i < actionConfig; i += 1) {
-      String key = widget.area.action.config[i].keys.toList()[0];
+      String key = widget.area.action.config[i]["key"];
+      if (key == "userToken") continue;
       actionSections.add(Text(key));
       actionSections.add(inputsAction[i]);
     }
@@ -99,7 +100,8 @@ class _DetailState extends State<Detail> {
       )
     ];
     for (int i = 0; i < reactionConfig; i += 1) {
-      String key = widget.area.reaction.config[i].keys.toList()[0];
+      String key = widget.area.reaction.config[i]["key"];
+      if (key == "userToken") continue;
       reactionSection.add(Text(key));
       reactionSection.add(inputsReaction[i]);
     }

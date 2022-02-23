@@ -1,6 +1,7 @@
+import 'package:area/Models/reaction.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:area/Models/reaction.dart';
+import 'package:area/Models/action.dart';
 import 'package:area/Components/Area/input_section.dart';
 
 //ignore: must_be_immutable
@@ -15,8 +16,8 @@ class NewReaction extends StatefulWidget {
 }
 
 class _NewReactionState extends State<NewReaction> {
-  List<String> reactionNames = [];
-  String currentreaction = "";
+  List<String> actionNames = [];
+  String currentAction = "";
   List<TextEditingController> controllers = [];
   List<Container> inputs = [];
   List<String> configName = [];
@@ -25,15 +26,15 @@ class _NewReactionState extends State<NewReaction> {
   void initState() {
     super.initState();
     for (int i = 0; i < widget.reactions.length; i += 1) {
-      reactionNames.add(widget.reactions[i]["ReactionName"]);
+      actionNames.add(widget.reactions[i]["ReactionName"]);
     }
-    currentreaction = reactionNames[0];
+    currentAction = actionNames[0];
     for (int i = 0; i < 5; i += 1) {
       controllers.add(TextEditingController());
       inputs.add(inputSection(controller: controllers[i]));
       controllers[i].addListener(() => saveConfig(i));
     }
-    widget.reaction.name = currentreaction;
+    widget.reaction.name = currentAction;
   }
 
   void clean() {
@@ -45,7 +46,7 @@ class _NewReactionState extends State<NewReaction> {
   List<String> getConfigName() {
     List<String> configName = [];
     for (int i = 0; i < widget.reactions.length; i += 1) {
-      if (widget.reactions[i]["ReactionName"] == currentreaction) {
+      if (widget.reactions[i]["ReactionName"] == currentAction) {
         for (int j = 0; j < widget.reactions[i]["config"].length; j += 1) {
           configName.add(widget.reactions[i]["config"][j].keys.toList()[0]);
         }
@@ -103,20 +104,28 @@ class _NewReactionState extends State<NewReaction> {
             icon: const Icon(
               FontAwesomeIcons.arrowDown,
               size: 15,
-              color: Colors.white,
+              color: Colors.black,
             ),
+            //  dropdownColor: C,
+            // dropdownColor: Colors.black,
             style: const TextStyle(color: Colors.black),
             onChanged: (String? newValue) {
-              if (newValue == currentreaction) return;
+              if (newValue == currentAction) return;
               setState(() {
-                currentreaction = newValue!;
+                currentAction = newValue!;
               });
-              widget.reaction.config = [{}, {}, {}, {}, {}];
+              widget.reaction.config = [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ];
               clean();
               widget.reaction.name = newValue!;
             },
-            value: currentreaction,
-            items: reactionNames.map<DropdownMenuItem<String>>((String value) {
+            value: currentAction,
+            items: actionNames.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
