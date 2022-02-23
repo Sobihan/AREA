@@ -2,11 +2,11 @@ import 'package:area/Components/Common/color.dart';
 import 'package:area/Models/area.dart';
 import 'package:flutter/material.dart';
 
+//ignore: must_be_immutable
 class Detail extends StatefulWidget {
   final String host;
-  final Area area;
-  const Detail({Key? key, required this.host, required this.area})
-      : super(key: key);
+  Area area;
+  Detail({Key? key, required this.host, required this.area}) : super(key: key);
   @override
   State<Detail> createState() => _DetailState();
 }
@@ -18,8 +18,47 @@ class _DetailState extends State<Detail> {
   List<Widget> inputsAction = [];
   List<TextEditingController> controllersReaction = [];
   List<Widget> inputsReaction = [];
+  late Area cpy;
+  List<String> actionList = [];
+  List<String> reactionList = [];
+  @override
+  void initState() {
+    cpy = widget.area.copy();
+    super.initState();
+    for (int i = 0; i < widget.area.action.config.length; i += 1) {
+      String key = widget.area.action.config[i]["key"];
+      actionList.add(key);
+    }
+    for (int i = 0; i < widget.area.reaction.config.length; i += 1) {
+      String key = widget.area.reaction.config[i]["key"];
+      reactionList.add(key);
+    }
+  }
+
+  List<String> getActionsConfig() {
+    // print(widget.area.action.config);
+    List<String> data = [];
+    for (int i = 0; i < actionConfig; i += 1) {
+      // print("ici");
+      // print(widget.area.action.config[i]["key"]);
+      // print("ici");
+      String key = widget.area.action.config[i].keys.toList()[0];
+      data.add(key);
+    }
+    return data;
+  }
+
+  List<String> getReactionConfig() {
+    List<String> data = [];
+    for (int i = 0; i < reactionConfig; i += 1) {
+      String key = widget.area.reaction.config[i].keys.toList()[0];
+      data.add(key);
+    }
+    return data;
+  }
 
   void cleanData() {
+    print(widget.area.toString());
     int sizeAction = controllersAction.length;
     int sizeReaction = controllersReaction.length;
     if (sizeAction == 0 && sizeReaction == 0) return;
@@ -35,22 +74,44 @@ class _DetailState extends State<Detail> {
     inputsReaction = [];
   }
 
+  void saveConfigAction(int index) {
+    List<String> config = actionList;
+    // print("dans saveconfig");
+    // print(config);
+    // print("dehors saveconfig");
+    // print("haut");
+    // print(config);
+    // print("bas");
+    if (controllersAction[index].text.isEmpty) return;
+    widget.area.action.config[index] = {
+      config[index]: controllersAction[index].text
+    };
+  }
+
+  void saveConfigReaction(int index) {
+    List<String> config = reactionList;
+    if (controllersReaction[index].text.isEmpty) return;
+    widget.area.reaction.config[index] = {
+      config[index]: controllersReaction[index].text
+    };
+  }
+
   void getData() {
     cleanData();
     actionConfig = widget.area.action.config.length;
     reactionConfig = widget.area.reaction.config.length;
     for (int i = 0; i < actionConfig; i += 1) {
-      String key = widget.area.action.config[i].keys.toList()[0];
-      controllersAction
-          .add(TextEditingController(text: widget.area.action.config[i][key]));
+      String key = widget.area.action.config[i]["value"];
+      controllersAction.add(TextEditingController(text: key));
+      controllersAction[i].addListener(() => saveConfigAction(i));
       inputsAction.add(TextField(
           controller: controllersAction[i],
           style: const TextStyle(color: Colors.white)));
     }
     for (int i = 0; i < reactionConfig; i += 1) {
-      String key = widget.area.reaction.config[i].keys.toList()[0];
-      controllersReaction.add(
-          TextEditingController(text: widget.area.reaction.config[i][key]));
+      String key = widget.area.reaction.config[i]["value"];
+      controllersReaction.add(TextEditingController(text: key));
+      controllersReaction[i].addListener(() => saveConfigReaction(i));
       inputsReaction.add(TextField(
         controller: controllersReaction[i],
         style: const TextStyle(color: Colors.white),
@@ -126,12 +187,20 @@ class _DetailState extends State<Detail> {
       actions: [
         TextButton(
             onPressed: () {
-              Navigator.pop(context, "close");
+              Navigator.pop(context, widget.area);
+            },
+            child: const Text("Save",
+                style: TextStyle(
+                  color: Colors.black,
+                ))),
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context, null);
             },
             child: const Text("Close",
                 style: TextStyle(
                   color: Colors.black,
-                )))
+                ))),
       ],
     );
   }

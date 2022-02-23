@@ -57,4 +57,20 @@ class Area {
     }
     return false;
   }
+
+  Area copy() {
+    Area ne = Area(
+        token: token,
+        action: action.copy(),
+        reaction: reaction.copy(),
+        interval: interval,
+        name: name,
+        runNow: runNow);
+    return ne;
+  }
+
+  void transform() {
+    action.transform();
+    reaction.transform();
+  }
 }
