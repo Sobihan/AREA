@@ -1,15 +1,13 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import GoogleIcon from '@mui/icons-material/Google';
 import GoogleLogin from 'react-google-login';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { useCookies } from 'react-cookie';
 
 export function GoogleService()
 {
-  const [cookies, setCookie] = useCookies(['user']);
+  const [cookies] = useCookies(['user']);
 
   const OAuthGoogle = async (response) => {
     const requestOptions = {
@@ -44,11 +42,6 @@ export function GoogleService()
           <GoogleIcon />
           <h3>Google</h3>
           <div style={{backgroundColor: "#9BE89B", color: "white", padding: 4, "border-radius": 5}}>Status: Connected</div>
-          <Button variant="contained" color="error" startIcon={<RemoveCircleIcon />} onClick={() => {
-            setCookie('google', "false", { path: '/' });
-          }}>
-            Disconnect
-          </Button>
         </ Stack>
       }
     </ Paper>

@@ -137,7 +137,7 @@ export function Services()
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Welcome
+              Services
             </Typography>
           </Toolbar>
         </AppBar>
