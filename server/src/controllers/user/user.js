@@ -64,12 +64,9 @@ const authenticate = (req, res, next) => {
 const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
     let isSuccess = true;
     let isSuccess_2 = true;
-    //const data = req.body.response;
     console.log(req.body);
-    //{tokens: tokens, info: info}
 
-    if (!req.body.is_mobile && req.body.test != undefined) { //c'est le WEB
-        //api_access.getGoogle(req.body.response.code)
+    if (!req.body.is_mobile/* && req.body.test != undefined*/) { //c'est le WEB
         user_extra.getGoogle(req.body.response.code)
         .catch((e) => {
             isSuccess = false;
@@ -78,7 +75,12 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
         .then((data) => {
             if (isSuccess == true && data.info != undefined && data.tokens != undefined) {
                 console.log('getGoogle SUCESSFUL');
-                //const responce = user_extra.google(data, req.body.response.code, req.body.is_mobile);
+                //const is_mobile = JSON.parse(req.body.is_mobile)
+                //const mobile = Boolean(is_mobile);
+
+                //console.log('req.body.is_mobile =', req.body.is_mobile);
+                //console.log('JSON.stringify(req.body.is_mobile) =', JSON.stringify(req.body.is_mobile));
+
                 user_extra.google(data, req.body.response.code, req.body.is_mobile)
                 .catch((e) => {
                     isSuccess_2 = false;
@@ -87,31 +89,14 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
                 .then((responce) => {
                     if (isSuccess_2 == true){
                         console.log('Register SUCESSFUL');
+                        console.log("responce =", JSON.stringify(responce))
                         res.status(responce.code).json(responce.json);
-                        /*res.status(200).json({
-                            success: true,
-                            body: 'Registration done!',
-                            user
-                        });*/
                     }
                     else {
                         console.log('Register FAIL');
                         res.status(responce.code).json(responce.json);
-                        /*res.status(401).json({
-                            success: false,
-                            body: 'Registration Failed'
-                        });*/
                     }
                 });
-
-                //res.status(responce.code).json(responce.json);
-                /*
-                res.status(200).json({
-                    success: true,
-                    body: 'getGoogle done!',
-                    user: user
-                });
-                */
             }
             else {
                 console.log('getGoogle FAIL');
@@ -129,6 +114,11 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
             body: 'getGoogle Failed'
         });
     }
+
+
+
+
+
 /*
     api_access.getGoogle(req.body.token)
     .catch((e) => {

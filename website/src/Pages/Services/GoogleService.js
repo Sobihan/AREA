@@ -35,8 +35,8 @@ export function GoogleService()
             <div style={{backgroundColor: "#FF9494", color: "white", padding: 4, "border-radius": 5}}>Status: Disconnected</div>
             <GoogleLogin
               clientId="789963154068-jq4283e019useue1vfa8d8a19go9istp.apps.googleusercontent.com"
-              //accessType="offline"
-              //responseType="code"
+              accessType="offline"
+              responseType="code"
               buttonText="CONNECT MY ACCOUNT"
               onSuccess={OAuthGoogle}
               onFailure={() => {console.log("fail")}}
