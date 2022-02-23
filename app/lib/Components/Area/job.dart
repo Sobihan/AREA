@@ -1,15 +1,21 @@
+import 'package:area/API/api.dart';
 import 'package:area/Components/Area/job_detail.dart';
 import 'package:area/Components/Common/rect.dart';
 import 'package:area/Components/Common/color.dart';
 import 'package:area/Models/area.dart';
+import 'package:area/Models/user.dart';
 import 'package:flutter/material.dart';
 
 class Job extends StatefulWidget {
   final String host;
   final Area area;
   final Function callback;
+  final Function reload;
+  final User user;
   const Job(
       {Key? key,
+      required this.user,
+      required this.reload,
       required this.host,
       required this.area,
       required this.callback})
@@ -27,9 +33,22 @@ class _JobState extends State<Job> {
   }
 
   void _more() async {
+    // print("dans more");
+    // print(widget.area.action.config);
+    // print("dehors");
     var result = await showDialog(
         context: context,
         builder: (_) => Detail(area: widget.area, host: widget.host));
+    if (result == null) return;
+    Area nresult = result as Area;
+    // print(result.reaction.config);
+    nresult.transform();
+    print(nresult.toString());
+    print(nresult.token);
+    final response = await createUpdate(
+        area: nresult, host: widget.host, token: widget.user.token);
+    print(response.statusCode);
+    widget.reload();
   }
 
   @override

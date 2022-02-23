@@ -34,9 +34,9 @@ class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
 
   Future<String> _getData() async {
     final response = await getJobs(host: widget.host, token: widget.user.token);
+    // print(response.body);
     return response.body;
   }
-  // bool reloading = false;
 
   @override
   void initState() {
@@ -64,6 +64,10 @@ class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
       areas.add(Area.fromJson(json: json["job"][i]));
     }
     return areas;
+  }
+
+  void reload() {
+    setState(() {});
   }
 
   void newArea() async {
@@ -118,9 +122,11 @@ class _AreaPageState extends State<AreaPage> with TickerProviderStateMixin {
     for (int i = 0; i < size; i += 1) {
       widgets.add(dismiss(
           widget: Job(
+            user: widget.user,
             host: widget.host,
             area: areas[i],
             callback: () => stop(areas[i].token, areas[i].runNow),
+            reload: () => reload(),
           ),
           onDismissed: () => delete(areas[i].token)));
       widgets.add(const SizedBox(height: 10));
