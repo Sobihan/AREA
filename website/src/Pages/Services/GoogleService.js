@@ -19,6 +19,7 @@ export function GoogleService()
         'authToken': cookies.token
       },
       body: JSON.stringify({
+        is_mobile: false,
         type: "GOOGLE",
         token: response
       })

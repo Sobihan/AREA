@@ -68,20 +68,8 @@ export function Login()
       },
       body: JSON.stringify({
         is_mobile: false,
-        //token: response
         response
       })
-      //body: JSON.stringify({response})
-/*
-      body: JSON.stringify({
-        is_mobile: false,
-        token: response
-      })
-*/
-      /*body: {
-            is_mobile: false,
-            response: JSON.stringify({response})
-          }*/
     };
     const responseLogin = await fetch('/api/v1/google-auth', requestLogin);
     if (responseLogin.status === 200) {

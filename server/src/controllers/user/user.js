@@ -104,7 +104,7 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
 
     }
     else { //c'est le MOBILE
-        console.log('getGoogle NOT IMPLEMENTED FAIL');
+        console.log('getGoogle MOBILE NOT IMPLEMENTED FAIL');
         res.status(401).json({
             success: false,
             body: 'getGoogle Failed'
