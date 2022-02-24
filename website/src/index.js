@@ -8,6 +8,7 @@ import { SignUp } from './Account/SignUp';
 import { OAuthCallback } from './OAuth/OAuthCallback';
 import { Home } from './Pages/Home';
 import { Services } from './Pages/Services';
+import { Account } from './Account/Account';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +20,7 @@ ReactDOM.render(
             <Route path="/oauth2_callback" element={<OAuthCallback />}/>
             <Route path="/login" element={<Login />}/>
             <Route path="/signup" element={<SignUp />}/>
+            <Route path="/account" element={<Account />}/>
           </Routes>
       </BrowserRouter>
     </CookiesProvider>
