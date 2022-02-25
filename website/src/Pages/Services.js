@@ -25,6 +25,7 @@ import { useCookies } from 'react-cookie';
 import CircularProgress from '@mui/material/CircularProgress';
 import { RedditService } from './Services/RedditService';
 import { GoogleService } from './Services/GoogleService';
+import Avatar from '@mui/material/Avatar';
 
 const drawerWidth = 240;
 
@@ -176,6 +177,16 @@ export function Services()
                   <MiscellaneousServicesIcon />
                 </ListItemIcon>
                 <ListItemText primary="Services" />
+              </ListItem>
+              <ListItem button onClick={
+                () => {
+                  window.location = "/account";
+                }
+              }>
+                <ListItemIcon>
+                  <Avatar sx={{ width: 24, height: 24 }} />
+                </ListItemIcon>
+                <ListItemText primary="Account" />
               </ListItem>
               <ListItem button onClick={
                 () => {

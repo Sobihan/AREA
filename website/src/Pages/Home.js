@@ -29,6 +29,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useCookies } from 'react-cookie';
 import { JobsList } from './Home/JobsList';
 import { CreateJob } from './Home/CreateJob';
+import Avatar from '@mui/material/Avatar';
 
 const drawerWidth = 240;
 
@@ -196,6 +197,16 @@ export function Home()
                 <MiscellaneousServicesIcon />
               </ListItemIcon>
               <ListItemText primary="Services" />
+            </ListItem>
+            <ListItem button onClick={
+              () => {
+                window.location = "/account";
+              }
+            }>
+              <ListItemIcon>
+                <Avatar sx={{ width: 24, height: 24 }} />
+              </ListItemIcon>
+              <ListItemText primary="Account" />
             </ListItem>
             <ListItem button onClick={
               () => {

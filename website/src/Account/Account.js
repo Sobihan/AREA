@@ -29,6 +29,7 @@ import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
 import SaveIcon from '@mui/icons-material/Save';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const drawerWidth = 240;
 
@@ -82,6 +83,7 @@ export function Account()
   const [open, setOpen] = React.useState(true);
   const [user, setUser] = React.useState("");
   const [edit, setEdit] = React.useState(true);
+  const [selectedImage, setSelectedImage] = React.useState(null);
   const [cookies, setCookie] = useCookies(['user']);
 
   const handleUserData = async () => {
@@ -97,7 +99,35 @@ export function Account()
     setUser(respdata.user);
   };
 
+  const getBase64 = (file) => {
+    return new Promise(resolve => {
+      let baseURL = "";
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        baseURL = reader.result;
+        resolve(baseURL);
+      };
+    });
+  };
+
+  const getFile = (base64File) => {
+    const byteString = atob(base64File.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i += 1) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const newBlob = new Blob([ab], {
+      type: 'image/jpeg',
+    });
+    return newBlob;
+  };
+
   const handleSave = async () => {
+    if (selectedImage !== null) {
+      user.avatar = await getBase64(selectedImage);
+    }
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -106,13 +136,13 @@ export function Account()
       },
       body: JSON.stringify({
         name: user.name,
-        lstName: user.lstName
+        lstName: user.lstName,
+        avatar: user.avatar
       })
     };
     await fetch('/api/v1/update-user-data', requestOptions);
+    window.location.reload();
   };
-
-
 
   if (cookies.logged !== "true") {
     window.location = "/login";
@@ -123,6 +153,7 @@ export function Account()
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
   if (user === "") {
     handleUserData();
     return (
@@ -202,6 +233,16 @@ export function Account()
               </ListItem>
               <ListItem button onClick={
                 () => {
+                  window.location = "/account";
+                }
+              }>
+                <ListItemIcon>
+                  <Avatar sx={{ width: 24, height: 24 }} />
+                </ListItemIcon>
+                <ListItemText primary="Account" />
+              </ListItem>
+              <ListItem button onClick={
+                () => {
                   setCookie('logged', "false", { path: '/' });
                   window.location.reload();
                 }
@@ -237,11 +278,47 @@ export function Account()
             >
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                 <Stack direction="row" alignItems="center" spacing={4}>
-                  <Avatar
-                    sx={{ width: 128, height: 128 }}
+                  <Stack
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
                   >
-                    ?
-                  </Avatar>
+                    {user.avatar !== null ?
+                      <Avatar
+                        sx={{ width: 128, height: 128 }}
+                        src={URL.createObjectURL(getFile(user.avatar))}
+                      />:
+                      <Avatar
+                        sx={{ width: 128, height: 128 }}
+                      >
+                        ?
+                      </Avatar>
+                    }
+                    {edit ?
+                      null:
+                      <Stack
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        spacing={1}
+                      >
+                        <label htmlFor="contained-button-file">
+                          <input
+                            accept="image/*"
+                            id="contained-button-file"
+                            multiple type="file"
+                            style={{display: 'none'}}
+                            onChange={e => setSelectedImage(e.target.files[0])}
+                          />
+                          <Button variant="contained" component="span" startIcon={<CameraAltIcon />}>
+                            Upload
+                          </Button>
+                        </label>
+                        {selectedImage !== null ? <h6>{selectedImage.name}</h6>: null}
+                      </ Stack>
+                    }
+                  </Stack>
                   <h3>{user.username}</h3>
                   <TextField
                     disabled={edit}
@@ -267,8 +344,7 @@ export function Account()
                     <Button variant="contained" color="primary" startIcon={<EditIcon />} onClick={() => {setEdit(false)}}>
                       Edit
                     </Button>:
-                    <Button variant="contained" color="secondary" startIcon={<EditIcon />} onClick={() => {
-                      setEdit(true);
+                    <Button variant="contained" color="secondary" startIcon={<SaveIcon />} onClick={() => {
                       handleSave();
                     }}>
                       Save
