@@ -83,12 +83,33 @@ class _UserPageState extends State<UserPage> {
           style: const TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
         ),
+        widget.user.username != widget.user.email
+            ? Text(
+                "@${widget.user.username}",
+                style: const TextStyle(color: Colors.white),
+              )
+            : const SizedBox.shrink(),
         Text(
           widget.user.email,
           style: const TextStyle(color: Colors.white60),
         )
       ],
     );
+  }
+
+  void onClick() async {
+    var result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => EditProfilPage(user: widget.user)));
+    if (result == null) return;
+    User newUser = result as User;
+    if (widget.user.isNotEqual(newUser) == false) return;
+    final response = await update(user: newUser, host: widget.host);
+    if (response.statusCode != 200) return;
+    setState(() {
+      widget.user.lastName = newUser.lastName;
+      widget.user.name = newUser.name;
+      widget.user.avatar = newUser.avatar;
+    });
   }
 
   @override
@@ -109,11 +130,7 @@ class _UserPageState extends State<UserPage> {
               ),
               Profile(
                   imagePath: widget.user.avatar,
-                  onClicked: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            EditProfilPage(user: widget.user)));
-                  },
+                  onClicked: () => onClick(),
                   isEdit: false),
               const SizedBox(height: 24),
               buildName(),

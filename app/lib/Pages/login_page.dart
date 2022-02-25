@@ -127,7 +127,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         await getUserServices(token: token, host: widget.host);
     final jsonService = jsonDecode(serviceResponse.body);
     User user = User.fromJson(
-        avatar: 'null',
+        avatar: jsonDecode(responseUser.body)['user']['avatar'] == null ||
+                jsonDecode(responseUser.body)['user']['avatar'] == ''
+            ? 'null'
+            : jsonDecode(responseUser.body)['user']['avatar'],
         token: token,
         json: jsonDecode(responseUser.body)['user'],
         isGoogle: jsonService['google'],
@@ -190,7 +193,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     final jsonService = jsonDecode(serviceResponse.body);
 
     User userConnect = User.fromJson(
-        avatar: 'null',
+        avatar: jsonDecode(responseUser.body)['user']['avatar'] == null ||
+                jsonDecode(responseUser.body)['user']['avatar'] == ''
+            ? 'null'
+            : jsonDecode(responseUser.body)['user']['avatar'],
         json: jsonDecode(responseUser.body)['user'],
         token: userToken,
         isGoogle: jsonService['google'],

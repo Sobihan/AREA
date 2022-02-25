@@ -1,5 +1,7 @@
 import 'package:area/Components/Common/color.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' as Io;
+import 'dart:convert';
 
 class Profile extends StatefulWidget {
   final String imagePath;
@@ -18,19 +20,28 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Widget buildImage() {
-    ImageProvider image = Image.asset('assets/defaultProfil.png').image;
+    ImageProvider image;
+    if (widget.imagePath == "null") {
+      image = Image.asset('assets/defaultProfil.png').image;
+    } else {
+      image = Image.memory(base64Decode(widget.imagePath)).image;
+    }
+
     return buildCircle(
       all: 3,
       color: Colors.white,
       child: ClipOval(
-        child: Material(
-          color: Colors.white,
-          child: Ink.image(
-            image: image,
-            fit: BoxFit.cover,
-            width: 100,
-            height: 100,
-            child: InkWell(onTap: widget.onClicked),
+        child: GestureDetector(
+          onTap: () => widget.onClicked,
+          child: Material(
+            color: Colors.white,
+            child: Ink.image(
+              image: image,
+              fit: BoxFit.cover,
+              width: 100,
+              height: 100,
+              child: InkWell(onTap: widget.onClicked),
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:area/Models/area.dart';
 import 'package:area/Models/google.dart';
+import 'package:area/Models/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -124,5 +125,17 @@ Future<http.Response> updateApi(
       headers: {'Content-Type': 'application/json', 'authToken': token},
       body:
           jsonEncode({'type': type, 'token': serviceToken, 'mobile': 'true'}));
+  return response;
+}
+
+Future<http.Response> update({required User user, required String host}) async {
+  Uri url = Uri.parse("http://$host:8080/api/v1/update-user-data");
+  final response = await http.post(url,
+      headers: {'Content-Type': 'application/json', 'authToken': user.token},
+      body: jsonEncode({
+        "name": user.name,
+        "lstName": user.lastName,
+        "avatar": user.avatar != "null" ? user.avatar : ""
+      }));
   return response;
 }

@@ -40,7 +40,7 @@ class _NumbersState extends State<Numbers> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        buildNumber(nbService, nbService == 0 ? "Service" : "Services"),
+        buildNumber(nbService, nbService <= 1 ? "Service" : "Services"),
       ],
     );
   }

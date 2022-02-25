@@ -2,9 +2,9 @@ class User {
   final String token;
   final String username;
   final String email;
-  final String name;
-  final String lastName;
-  final String avatar;
+  String name;
+  String lastName;
+  String avatar;
   bool isGoogle;
   bool isReddit;
 
@@ -46,5 +46,25 @@ class User {
     };
 
     return data.toString();
+  }
+
+  User copy() {
+    User nu = User(
+        avatar: avatar,
+        token: token,
+        name: name,
+        lastName: lastName,
+        username: username,
+        isGoogle: isGoogle,
+        isReddit: isReddit,
+        email: email);
+    return nu;
+  }
+
+  bool isNotEqual(User other) {
+    if (other.avatar != avatar ||
+        other.lastName != other.lastName ||
+        other.name != name) return true;
+    return false;
   }
 }
