@@ -4,9 +4,12 @@ import 'package:area/API/api.dart';
 import 'package:area/API/google.dart';
 import 'package:area/API/reddit.dart';
 import 'package:area/Components/Login/background.dart';
+import 'package:area/Components/User/numbers.dart';
+import 'package:area/Components/User/profile.dart';
 import 'package:area/Components/User/service.dart';
 import 'package:area/Models/google.dart';
 import 'package:area/Models/user.dart';
+import 'package:area/Pages/edit_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
@@ -72,6 +75,22 @@ class _UserPageState extends State<UserPage> {
     });
   }
 
+  Widget buildName() {
+    return Column(
+      children: [
+        Text(
+          "${widget.user.name} ${widget.user.lastName}",
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+        ),
+        Text(
+          widget.user.email,
+          style: const TextStyle(color: Colors.white60),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -88,33 +107,35 @@ class _UserPageState extends State<UserPage> {
                     onPressed: () => {Navigator.pop(context)},
                     icon: const Icon(FontAwesomeIcons.signOutAlt)),
               ),
-              SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 25,
-                    vertical: 120,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Service(
-                        connect: () => {gButtonPressedLogin()},
-                        disconnect: () => {gButtonPressedSignOut()},
-                        isConnect: widget.user.isGoogle,
-                        host: widget.host,
-                        name: "Google",
-                        icon: const Icon(FontAwesomeIcons.google),
-                      ),
-                      const SizedBox(height: 10),
-                      Service(
-                          connect: () => {rbuttonPressed()},
-                          disconnect: () => {},
-                          icon: const Icon(FontAwesomeIcons.reddit),
-                          host: widget.host,
-                          isConnect: widget.user.isReddit,
-                          name: "Reddit")
-                    ],
-                  )),
+              Profile(
+                  imagePath: widget.user.avatar,
+                  onClicked: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            EditProfilPage(user: widget.user)));
+                  },
+                  isEdit: false),
+              const SizedBox(height: 24),
+              buildName(),
+              const SizedBox(height: 24),
+              Numbers(user: widget.user),
+              const SizedBox(height: 24),
+              Service(
+                connect: () => {gButtonPressedLogin()},
+                disconnect: () => {gButtonPressedSignOut()},
+                isConnect: widget.user.isGoogle,
+                host: widget.host,
+                name: "Google",
+                icon: const Icon(FontAwesomeIcons.google),
+              ),
+              const SizedBox(height: 10),
+              Service(
+                  connect: () => {rbuttonPressed()},
+                  disconnect: () => {},
+                  icon: const Icon(FontAwesomeIcons.reddit),
+                  host: widget.host,
+                  isConnect: widget.user.isReddit,
+                  name: "Reddit"),
             ],
           ))
     ]));

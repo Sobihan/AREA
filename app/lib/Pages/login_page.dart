@@ -20,6 +20,7 @@ import '../Components/Login/input_section.dart';
 import 'package:delayed_display/delayed_display.dart';
 
 import 'package:oauth2_client/google_oauth2_client.dart';
+import 'dart:io' as Io;
 
 GoogleOAuth2Client googleClient = GoogleOAuth2Client(
     redirectUri:
@@ -126,6 +127,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         await getUserServices(token: token, host: widget.host);
     final jsonService = jsonDecode(serviceResponse.body);
     User user = User.fromJson(
+        avatar: 'null',
         token: token,
         json: jsonDecode(responseUser.body)['user'],
         isGoogle: jsonService['google'],
@@ -186,12 +188,15 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     final serviceResponse =
         await getUserServices(token: userToken, host: widget.host);
     final jsonService = jsonDecode(serviceResponse.body);
+
     User userConnect = User.fromJson(
+        avatar: 'null',
         json: jsonDecode(responseUser.body)['user'],
         token: userToken,
         isGoogle: jsonService['google'],
         isReddit: jsonService['reddit']);
     final actionReaction = await getActionRea(host: widget.host);
+    print(userConnect.avatar);
     reload();
     Navigator.push(
       context,
