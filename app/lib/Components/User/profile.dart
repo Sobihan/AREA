@@ -31,17 +31,14 @@ class _ProfileState extends State<Profile> {
       all: 3,
       color: Colors.white,
       child: ClipOval(
-        child: GestureDetector(
-          onTap: () => widget.onClicked,
-          child: Material(
-            color: Colors.white,
-            child: Ink.image(
-              image: image,
-              fit: BoxFit.cover,
-              width: 100,
-              height: 100,
-              child: InkWell(onTap: widget.onClicked),
-            ),
+        child: Material(
+          color: Colors.white,
+          child: Ink.image(
+            image: image,
+            fit: BoxFit.cover,
+            width: 100,
+            height: 100,
+            child: InkWell(onTap: widget.onClicked),
           ),
         ),
       ),
