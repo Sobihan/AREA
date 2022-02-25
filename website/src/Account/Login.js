@@ -95,7 +95,7 @@ export function Login()
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(https://wallup.net/wp-content/uploads/2016/05/25/163541-fabric-texture-plaid.jpg)',
+          backgroundImage: 'url(https://cdn.wallpapersafari.com/52/4/Bj8NrO.png)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -164,20 +164,16 @@ export function Login()
             >
               Sign In
             </Button>
-            <Grid container spacing={{ xs: 2 }}>
+            <Grid container>
               <Grid item>
                 <GoogleLogin
                   clientId="789963154068-jq4283e019useue1vfa8d8a19go9istp.apps.googleusercontent.com"
-                  buttonText="Log in with Google"
+                  buttonText="SIGN IN WITH GOOGLE"
                   onSuccess={OAuthGoogle}
                   onFailure={() => {setShowError(true)}}
                   cookiePolicy={'single_host_origin'}
                 />
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item>
-                <Link href="signup" variant="body2">
+                <Link href="signup" variant="body2" sx={{ ml: 2 }}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
