@@ -21,7 +21,8 @@ class User {
       {required dynamic json,
       required String token,
       required isGoogle,
-      required isReddit}) {
+      required isReddit,
+      required avatar}) {
     return User(
         isGoogle: isGoogle,
         isReddit: isReddit,
@@ -30,7 +31,7 @@ class User {
         email: json['email'],
         lastName: json['lstName'] ?? '',
         name: json['name'] ?? '',
-        avatar: json['avatar'] ?? '');
+        avatar: avatar ?? '');
   }
 
   @override

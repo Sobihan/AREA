@@ -1,6 +1,7 @@
 import 'package:area/Components/Common/color.dart';
 import 'package:area/Models/user.dart';
 import 'package:area/Pages/area_page.dart';
+import 'package:area/Pages/edit_profile_page.dart';
 import 'package:area/Pages/help_page.dart';
 import 'package:area/Pages/user_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
