@@ -29,6 +29,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useCookies } from 'react-cookie';
 import { JobsList } from './Home/JobsList';
 import { CreateJob } from './Home/CreateJob';
+import CircularProgress from '@mui/material/CircularProgress';
 import Avatar from '@mui/material/Avatar';
 
 const drawerWidth = 240;
@@ -116,9 +117,36 @@ export function Home()
   const [open, setOpen] = React.useState(true);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [cookies, setCookie] = useCookies(['user']);
+  const [user, setUser] = React.useState("");
 
   const closeDialog = () => {
     setOpenDialog(false);
+  };
+
+  const getFile = (base64File) => {
+    const byteString = atob(base64File.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i += 1) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const newBlob = new Blob([ab], {
+      type: 'image/jpeg',
+    });
+    return newBlob;
+  };
+
+  const handleUserData = async () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': cookies.token
+      }
+    };
+    const response = await fetch('/api/v1/get-user-data', requestOptions);
+    const respdata = await response.json();
+    setUser(respdata.user);
   };
 
   if (cookies.logged !== "true") {
@@ -130,136 +158,147 @@ export function Home()
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="absolute" open={open}>
-        <Toolbar
-          sx={{
-            pr: '24px',
-          }}
-        >
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer}
+
+  if (user === "") {
+    handleUserData();
+    return (
+      <Grid container justifyContent="center" alignItems="center">
+        <CircularProgress />
+      </Grid>
+    );
+  }
+  else {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="absolute" open={open}>
+          <Toolbar
             sx={{
-              marginRight: '36px',
-              ...(open && { display: 'none' }),
+              pr: '24px',
             }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: '36px',
+                ...(open && { display: 'none' }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              Welcome
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              px: [1],
+            }}
           >
-            Welcome
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <Toolbar
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <List>
+            <div>
+              <ListItem button onClick={
+                () => {
+                  navigate('/');
+                }
+              }>
+                <ListItemIcon>
+                  <WorkIcon />
+                </ListItemIcon>
+                <ListItemText primary="Jobs" />
+              </ListItem>
+              <ListItem button onClick={
+                () => {
+                  window.location = "/services";
+                }
+              }>
+                <ListItemIcon>
+                  <MiscellaneousServicesIcon />
+                </ListItemIcon>
+                <ListItemText primary="Services" />
+              </ListItem>
+              <ListItem button onClick={
+                () => {
+                  window.location = "/account";
+                }
+              }>
+                <ListItemIcon>
+                  {user.avatar ? <Avatar sx={{ width: 24, height: 24 }} src={URL.createObjectURL(getFile(user.avatar))} />:<Avatar sx={{ width: 24, height: 24 }} />}
+                </ListItemIcon>
+                <ListItemText primary="Account" />
+              </ListItem>
+              <ListItem button onClick={
+                () => {
+                  setCookie('logged', "false", { path: '/' });
+                  window.location.reload();
+                }
+              }>
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItem>
+            </div>
+          </List>
+          <Divider />
+        </Drawer>
+        <Box
+          component="main"
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            px: [1],
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
           }}
         >
-          <IconButton onClick={toggleDrawer}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </Toolbar>
-        <Divider />
-        <List>
-          <div>
-            <ListItem button onClick={
-              () => {
-                navigate('/');
-              }
-            }>
-              <ListItemIcon>
-                <WorkIcon />
-              </ListItemIcon>
-              <ListItemText primary="Jobs" />
-            </ListItem>
-            <ListItem button onClick={
-              () => {
-                window.location = "/services";
-              }
-            }>
-              <ListItemIcon>
-                <MiscellaneousServicesIcon />
-              </ListItemIcon>
-              <ListItemText primary="Services" />
-            </ListItem>
-            <ListItem button onClick={
-              () => {
-                window.location = "/account";
-              }
-            }>
-              <ListItemIcon>
-                <Avatar sx={{ width: 24, height: 24 }} />
-              </ListItemIcon>
-              <ListItemText primary="Account" />
-            </ListItem>
-            <ListItem button onClick={
-              () => {
-                setCookie('logged', "false", { path: '/' });
-                window.location.reload();
-              }
-            }>
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Logout" />
-            </ListItem>
-          </div>
-        </List>
-        <Divider />
-      </Drawer>
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
-          flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto',
-        }}
-      >
-      <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={3}>
-            <JobsList />
-          </Grid>
-          <Fab color="primary" sx={{ position: 'absolute', bottom: 16, right: 16 }} variant="extended" onClick={() => {setOpenDialog(true)}}>
-            <AddCircleIcon sx={{ mr: 1 }} />
-            New AREA
-          </Fab>
-        </Container>
-        <BootstrapDialog
-          fullWidth={true}
-          maxWidth={"lg"}
-          onClose={closeDialog}
-          aria-labelledby="create-jobs-title"
-          open={openDialog}
-        >
-          <BootstrapDialogTitle id="create-jobs-title" onClose={closeDialog}>
-            Create AREA
-          </BootstrapDialogTitle>
-          <DialogContent dividers>
-            <CreateJob />
-          </DialogContent>
-        </BootstrapDialog>
+        <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              <JobsList />
+            </Grid>
+            <Fab color="primary" sx={{ position: 'absolute', bottom: 16, right: 16 }} variant="extended" onClick={() => {setOpenDialog(true)}}>
+              <AddCircleIcon sx={{ mr: 1 }} />
+              New AREA
+            </Fab>
+          </Container>
+          <BootstrapDialog
+            fullWidth={true}
+            maxWidth={"lg"}
+            onClose={closeDialog}
+            aria-labelledby="create-jobs-title"
+            open={openDialog}
+          >
+            <BootstrapDialogTitle id="create-jobs-title" onClose={closeDialog}>
+              Create AREA
+            </BootstrapDialogTitle>
+            <DialogContent dividers>
+              <CreateJob />
+            </DialogContent>
+          </BootstrapDialog>
+        </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
 }

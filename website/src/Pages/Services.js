@@ -79,6 +79,7 @@ export function Services()
   const [ServicesList, setServicesList] = React.useState(null);
   const [open, setOpen] = React.useState(true);
   const [cookies, setCookie] = useCookies(['user']);
+  const [user, setUser] = React.useState("");
 
   if (cookies.logged !== "true") {
     window.location = "/login";
@@ -86,6 +87,32 @@ export function Services()
       <h3>Redirecting...</h3>
     );
   }
+
+  const getFile = (base64File) => {
+    const byteString = atob(base64File.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i += 1) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const newBlob = new Blob([ab], {
+      type: 'image/jpeg',
+    });
+    return newBlob;
+  };
+
+  const handleUserData = async () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': cookies.token
+      }
+    };
+    const response = await fetch('/api/v1/get-user-data', requestOptions);
+    const respdata = await response.json();
+    setUser(respdata.user);
+  };
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -109,7 +136,7 @@ export function Services()
       });
     }
   };
-  if (ServicesList) {
+  if (ServicesList && user !== "") {
     return (
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -184,7 +211,7 @@ export function Services()
                 }
               }>
                 <ListItemIcon>
-                  <Avatar sx={{ width: 24, height: 24 }} />
+                  {user.avatar ? <Avatar sx={{ width: 24, height: 24 }} src={URL.createObjectURL(getFile(user.avatar))} />:<Avatar sx={{ width: 24, height: 24 }} />}
                 </ListItemIcon>
                 <ListItemText primary="Account" />
               </ListItem>
@@ -230,6 +257,7 @@ export function Services()
   }
   else {
     getServices();
+    handleUserData();
     return (
       <Grid container justifyContent="center" alignItems="center">
         <CircularProgress />
