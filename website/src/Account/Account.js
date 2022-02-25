@@ -237,7 +237,7 @@ export function Account()
                 }
               }>
                 <ListItemIcon>
-                  <Avatar sx={{ width: 24, height: 24 }} />
+                  {user.avatar ? <Avatar sx={{ width: 24, height: 24 }} src={URL.createObjectURL(getFile(user.avatar))} />:<Avatar sx={{ width: 24, height: 24 }} />}
                 </ListItemIcon>
                 <ListItemText primary="Account" />
               </ListItem>
