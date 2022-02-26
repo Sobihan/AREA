@@ -30,6 +30,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
 import SaveIcon from '@mui/icons-material/Save';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import AndroidIcon from '@mui/icons-material/Android';
 
 const drawerWidth = 240;
 
@@ -350,6 +351,16 @@ export function Account()
                       Save
                     </Button>
                   }
+                </Stack>
+              </Paper>
+              <Paper sx={{ mt: 2, p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Stack direction="row" alignItems="center" spacing={4}>
+                  <h3>Miscellaneous</h3>
+                  <Button style={{width: 180}} variant="contained" color="success" startIcon={<AndroidIcon />} onClick={() => {
+                    window.location.href = "http://localhost:8081/client.apk";
+                  }}>
+                    Download APK
+                  </Button>
                 </Stack>
               </Paper>
             </Grid>
