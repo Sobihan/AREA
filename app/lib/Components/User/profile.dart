@@ -1,5 +1,7 @@
 import 'package:area/Components/Common/color.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' as Io;
+import 'dart:convert';
 
 class Profile extends StatefulWidget {
   final String imagePath;
@@ -18,7 +20,13 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Widget buildImage() {
-    ImageProvider image = Image.asset('assets/defaultProfil.png').image;
+    ImageProvider image;
+    if (widget.imagePath == "null") {
+      image = Image.asset('assets/defaultProfil.png').image;
+    } else {
+      image = Image.memory(base64Decode(widget.imagePath)).image;
+    }
+
     return buildCircle(
       all: 3,
       color: Colors.white,

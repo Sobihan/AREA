@@ -131,7 +131,10 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
         await getUserServices(token: token, host: widget.host);
     final serviceJson = jsonDecode(responseService.body);
     User user = User.fromJson(
-        avatar: 'null',
+        avatar: jsonDecode(responseUser.body)['user']['avatar'] == null ||
+                jsonDecode(responseUser.body)['user']['avatar'] == ''
+            ? 'null'
+            : jsonDecode(responseUser.body)['user']['avatar'],
         token: token,
         json: jsonDecode(responseUser.body)['user'],
         isGoogle: serviceJson['google'],
@@ -246,7 +249,10 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
         await getUserServices(token: userToken, host: widget.host);
     final jsonService = jsonDecode(serviceResponse.body);
     User userConnect = User.fromJson(
-        avatar: 'null',
+        avatar: jsonDecode(responseUser.body)['user']['avatar'] == null ||
+                jsonDecode(responseUser.body)['user']['avatar'] == ''
+            ? 'null'
+            : jsonDecode(responseUser.body)['user']['avatar'],
         json: jsonDecode(responseUser.body)['user'],
         token: userToken,
         isGoogle: jsonService['google'],
