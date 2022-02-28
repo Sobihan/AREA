@@ -1,14 +1,14 @@
 version: "3"
 services:
-  app:
-    container_name: area_app
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    image: area/app
-    volumes:
-      - ./app-apk/:/usr/src/app/build/app/outputs/flutter-apk/
-    stdin_open: true
+#   app:
+#     container_name: area_app
+#     build:
+#       context: ./app
+#       dockerfile: Dockerfile
+#     image: area/app
+#     volumes:
+#       - ./app-apk/:/usr/src/app/build/app/outputs/flutter-apk/
+#     stdin_open: true
   frontend:
     container_name: area_webs
     build:

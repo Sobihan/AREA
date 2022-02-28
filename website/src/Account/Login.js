@@ -66,7 +66,10 @@ export function Login()
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({response})
+      body: JSON.stringify({
+        is_mobile: false,
+        response
+      })
     };
     const responseLogin = await fetch('/api/v1/google-auth', requestLogin);
     if (responseLogin.status === 200) {
@@ -168,6 +171,8 @@ export function Login()
               <Grid item>
                 <GoogleLogin
                   clientId="789963154068-jq4283e019useue1vfa8d8a19go9istp.apps.googleusercontent.com"
+                  accessType="offline"
+                  responseType="code"
                   buttonText="SIGN IN WITH GOOGLE"
                   onSuccess={OAuthGoogle}
                   onFailure={() => {setShowError(true)}}
