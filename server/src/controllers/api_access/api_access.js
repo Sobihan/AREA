@@ -1,8 +1,11 @@
 const api_access = require('../../db_management/api_access/db_api_access');
+const user_extra = require('../user/user_extra');
 
 const ApiAuth = (req, res, next) => {
     let isSuccess = true;
     let isSuccess_2 = true;
+    let isSuccess_3 = true;
+    //console.log("req.body =", JSON.stringify(req.body));
     const mobile = JSON.parse(req.body.mobile)
     const is_mobile = Boolean(mobile);
 
@@ -92,20 +95,38 @@ const ApiAuth = (req, res, next) => {
 
     }
 
-    else if (req.body.type == 'GOOGLE') {
-        console.log('ApiAuth GOOGLE side in progresse');
-
-        api_access.updateApiToken(req.header('authtoken'), 'req.body.token', req.body.type, 0, 'data.access_token', 'data.refresh_token', is_mobile)
+    if (req.body.type == 'GOOGLE' && !is_mobile) {
+        console.log('ApiAuth GOOGLE web side in progresse');
+        //console.log("req.body =", JSON.stringify(req.body));
+        user_extra.getGoogleAccessToken(req.body.token)
         .catch((e) => {
             isSuccess_2 = false;
             console.log(e);
         })
-        .then((user) => {
-            if (isSuccess_2 == true){
+        .then((token) => {
+            if (isSuccess_2 == true) {
                 console.log('ApiAuth GOOGLE SUCESS');
-                res.status(200).json({
-                    body: 'ApiAuth google done!',
-                    user
+                const disableAt = (Date.now() + ((token.expires_in - 200) * 1000));
+
+                api_access.updateApiToken(req.header('authtoken'), req.body.token, req.body.type, disableAt, token.access_token, token.refresh_token, is_mobile)
+                .catch((e) => {
+                    isSuccess_3 = false;
+                    console.log(e);
+                })
+                .then((user) => {
+                    if (isSuccess_3 == true) {
+                        console.log('updateApiToken ApiAuth SUCESS');
+                        res.status(200).json({
+                            body: 'updateApiToken ApiAuth done!',
+                            user
+                        });
+                    }
+                    else {
+                        console.log('updateApiToken ApiAuth FAIL');
+                        res.status(401).json({
+                            body: 'updateApiToken ApiAuth Failed'
+                        });
+                    }
                 });
             }
             else {
@@ -115,7 +136,29 @@ const ApiAuth = (req, res, next) => {
                 });
             }
         });
+
+        // api_access.updateApiToken(req.header('authtoken'), 'req.body.token', req.body.type, 0, 'data.access_token', 'data.refresh_token', is_mobile)
+        // .catch((e) => {
+        //     isSuccess_2 = false;
+        //     console.log(e);
+        // })
+        // .then((user) => {
+        //     if (isSuccess_2 == true){
+        //         console.log('ApiAuth GOOGLE SUCESS');
+        //         res.status(200).json({
+        //             body: 'ApiAuth google done!',
+        //             user
+        //         });
+        //     }
+        //     else {
+        //         console.log('ApiAuth GOOGLE FAIL');
+        //         res.status(401).json({
+        //             body: 'ApiAuth google Failed'
+        //         });
+        //     }
+        // });
     }
+    else if (req.body.type == 'GOOGLE' && is_mobile) {}
 };
 
 const getLogedIn = (req, res, next) => {
