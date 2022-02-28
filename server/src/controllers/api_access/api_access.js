@@ -5,6 +5,7 @@ const ApiAuth = (req, res, next) => {
     let isSuccess = true;
     let isSuccess_2 = true;
     let isSuccess_3 = true;
+    console.log('SOSOBI... req.body =', JSON.stringify(req.body));
     //console.log("req.body =", JSON.stringify(req.body));
     const mobile = JSON.parse(req.body.mobile)
     const is_mobile = Boolean(mobile);

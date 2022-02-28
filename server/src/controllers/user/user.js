@@ -64,7 +64,8 @@ const authenticate = (req, res, next) => {
 const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
     let isSuccess = true;
     let isSuccess_2 = true;
-    console.log(req.body);
+    console.log('SOSOBI... req.body =', JSON.stringify(req.body));
+    //console.log(req.body);
 
     if (!req.body.is_mobile/* && req.body.test != undefined*/) { //c'est le WEB
         user_extra.getGoogle(req.body.response.code)
