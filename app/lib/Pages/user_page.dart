@@ -49,7 +49,8 @@ class _UserPageState extends State<UserPage> {
         token: widget.user.token,
         host: widget.host,
         type: 'GOOGLE',
-        serviceToken: t.refreshToken);
+        serviceToken: t.refreshToken,
+        accessToken: t.accessToken!);
     if (responseService.statusCode != 200) return;
     setState(() {
       widget.user.isGoogle = true;
