@@ -10,6 +10,7 @@ action.set("testAction", twitch.testAction);
 action.set("getRandomPoem", poem.getRandomPoem);
 action.set("getAPOD", nasa.getAPOD);
 action.set("NewLike", youtube.NewLike);
+action.set("overXLike", youtube.overXLike);
 
 module.exports.action = action;
 
@@ -22,6 +23,7 @@ checkAction.set("testAction", twitch.checktestAction);
 checkAction.set("getRandomPoem", poem.checkGetRandomPoem);
 checkAction.set("getAPOD", nasa.checkGetAPOD);
 checkAction.set("NewLike", youtube.checkNewLike);
+checkAction.set("overXLike", youtube.checkOverXLike);
 
 module.exports.checkAction = checkAction;
 
