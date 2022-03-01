@@ -13,21 +13,26 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { useNavigate } from 'react-router';
 import GoogleLogin from 'react-google-login';
-
+import { useCookies } from 'react-cookie';
 import { Sleep } from '../Sleep';
-import { User } from './User';
-import { OAuthGoogle } from '../OAuth/OAuthGoogle';
 
 export function Login()
 {
   let navigate = useNavigate();
   const [showSuccess, setShowSuccess] = React.useState(false);
   const [showError, setShowError] = React.useState(false);
+  const [cookies, setCookie] = useCookies(['user']);
 
+  if (cookies.logged === "true") {
+    window.location = "/";
+    return (
+      <h3>Redirecting...</h3>
+    );
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const requestOptions = {
+    const requestLogin = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -37,21 +42,51 @@ export function Login()
         password: formData.get('password')
       })
     };
-    const response = await fetch('/api/v1/authenticate', requestOptions);
-    if (response.status === 200) {
+    const responseLogin = await fetch('/api/v1/authenticate', requestLogin);
+    if (responseLogin.status === 200) {
+      const respdata = await responseLogin.json();
+      setCookie('token', respdata.token, { path: '/' });
+      setCookie('logged', "true", { path: '/' });
       setShowError(false);
       setShowSuccess(true);
-      const respdata = await response.json();
-      Sleep(2000).then(() => {
-        User.token = respdata.token;
-        User.email = formData.get('email');
-        User.logged = true;
+      Sleep(1000).then(() => {
         navigate('/');
       });
     }
     else {
+      setCookie('logged', "false", { path: '/' });
       setShowSuccess(false);
       setShowError(true);
+      return;
+    }
+  };
+  const OAuthGoogle = async (response) => {
+    const requestLogin = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        is_mobile: false,
+        response
+      })
+    };
+    const responseLogin = await fetch('/api/v1/google-auth', requestLogin);
+    if (responseLogin.status === 200) {
+      const respdata = await responseLogin.json();
+      setCookie('token', respdata.token, { path: '/' });
+      setCookie('logged', "true", { path: '/' });
+      setShowError(false);
+      setShowSuccess(true);
+      Sleep(1000).then(() => {
+        navigate('/');
+      });
+    }
+    else {
+      setCookie('logged', "false", { path: '/' });
+      setShowSuccess(false);
+      setShowError(true);
+      return;
     }
   };
   return (
@@ -63,7 +98,7 @@ export function Login()
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(https://source.unsplash.com/random)',
+          backgroundImage: 'url(https://cdn.wallpapersafari.com/52/4/Bj8NrO.png)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -98,10 +133,10 @@ export function Login()
             }
             { showError ?
               <Grid item xs={12}>
-                  <Alert severity="error">
+                <Alert severity="error">
                   <AlertTitle>Error</AlertTitle>
                   Login failed — <strong>please retry</strong>
-                  </Alert>
+                </Alert>
               </Grid>: null
             }
             <TextField
@@ -132,23 +167,18 @@ export function Login()
             >
               Sign In
             </Button>
-            <Grid container spacing={{ xs: 2 }}>
+            <Grid container>
               <Grid item>
                 <GoogleLogin
                   clientId="789963154068-jq4283e019useue1vfa8d8a19go9istp.apps.googleusercontent.com"
-                  buttonText="Log in with Google"
+                  accessType="offline"
+                  responseType="code"
+                  buttonText="SIGN IN WITH GOOGLE"
                   onSuccess={OAuthGoogle}
                   onFailure={() => {setShowError(true)}}
                   cookiePolicy={'single_host_origin'}
                 />
-              </Grid>
-              <Grid item>
-                
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item>
-                <Link href="signup" variant="body2">
+                <Link href="signup" variant="body2" sx={{ ml: 2 }}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

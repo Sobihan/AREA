@@ -1,7 +1,7 @@
 {
-  "name": "dashboard",
+  "name": "area",
   "version": "1.0.0",
-  "description": "Dashboard",
+  "description": "area",
   "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,17 +19,20 @@
   "homepage": "https://github.com/EpitechPromo2024/B-DEV-500-PAR-5-1-dashboard-alexandre1.berthomier#readme",
   "devDependencies": {
     "express": "^4.17.1",
-    "prisma": "^3.8.1"
+    "prisma": "^3.10.0"
   },
   "proxy": "http://backend:5000",
   "dependencies": {
-    "@prisma/client": "^3.8.1",
+    "@prisma/client": "^3.10.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "discord.js": "^13.6.0",
     "follow-redirects": "^1.14.5",
-    "node-fetch": "^2.6.6",
+    "node-fetch": "^2.6.7",
     "node-twitch": "^0.4.5",
-    "twitter-webhooks": "^0.3.3",
-    "utf8": "^3.0.0"
+    "toad-scheduler": "^1.6.0",
+    "utf8": "^3.0.0",
+    "youtubei": "^0.0.1-rc.28",
+    "yt-channel-info": "^3.0.0"
   }
 }
