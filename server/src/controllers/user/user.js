@@ -67,7 +67,7 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
     console.log('SOSOBI... req.body =', JSON.stringify(req.body));
     //console.log(req.body);
 
-    if (!req.body.is_mobile/* && req.body.test != undefined*/) { //c'est le WEB
+    if (!req.body.is_mobile) { //c'est le WEB
         user_extra.getGoogle(req.body.response.code)
         .catch((e) => {
             isSuccess = false;

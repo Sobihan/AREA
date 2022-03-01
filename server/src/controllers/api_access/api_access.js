@@ -137,29 +137,30 @@ const ApiAuth = (req, res, next) => {
                 });
             }
         });
-
-        // api_access.updateApiToken(req.header('authtoken'), 'req.body.token', req.body.type, 0, 'data.access_token', 'data.refresh_token', is_mobile)
-        // .catch((e) => {
-        //     isSuccess_2 = false;
-        //     console.log(e);
-        // })
-        // .then((user) => {
-        //     if (isSuccess_2 == true){
-        //         console.log('ApiAuth GOOGLE SUCESS');
-        //         res.status(200).json({
-        //             body: 'ApiAuth google done!',
-        //             user
-        //         });
-        //     }
-        //     else {
-        //         console.log('ApiAuth GOOGLE FAIL');
-        //         res.status(401).json({
-        //             body: 'ApiAuth google Failed'
-        //         });
-        //     }
-        // });
     }
-    else if (req.body.type == 'GOOGLE' && is_mobile) {}
+    else if (req.body.type == 'GOOGLE' && is_mobile) {
+        const disableAt = (Date.now() + ((2000 - 200) * 1000));
+        api_access.updateApiToken(req.header('authtoken'), "", req.body.type, disableAt, req.body.accessToken, req.body.token, is_mobile)
+        .catch((e) => {
+            isSuccess_2 = false;
+            console.log(e);
+        })
+        .then((user) => {
+            if (isSuccess_2 == true) {
+                console.log('updateApiToken ApiAuth MOBILE SUCESS');
+                res.status(200).json({
+                    body: 'updateApiToken ApiAuth mobile done!',
+                    user
+                });
+            }
+            else {
+                console.log('updateApiToken ApiAuth MOBILE FAIL');
+                res.status(401).json({
+                    body: 'updateApiToken ApiAuth mobile Failed'
+                });
+            }
+        });
+    }
 };
 
 const getLogedIn = (req, res, next) => {
