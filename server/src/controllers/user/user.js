@@ -112,7 +112,7 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
             console.log(e);
         })
         .then((user) => {
-            if (isSuccess == true){
+            if (isSuccess == true) {
                 console.log('connectGoogleMobile SUCESSFUL');
                 const disableAt = (Date.now() + ((2000 - 200) * 1000));
                 api_access.updateApiToken(user.json.token, "", "GOOGLE", disableAt, req.body.accessToken, req.body.refreshToken, req.body.is_mobile)

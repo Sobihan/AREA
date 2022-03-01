@@ -11,6 +11,8 @@ action.set("getRandomPoem", poem.getRandomPoem);
 action.set("getAPOD", nasa.getAPOD);
 action.set("NewLike", youtube.NewLike);
 action.set("overXLike", youtube.overXLike);
+action.set("newView", youtube.newView);
+action.set("overXView", youtube.overXView);
 
 module.exports.action = action;
 
@@ -24,6 +26,8 @@ checkAction.set("getRandomPoem", poem.checkGetRandomPoem);
 checkAction.set("getAPOD", nasa.checkGetAPOD);
 checkAction.set("NewLike", youtube.checkNewLike);
 checkAction.set("overXLike", youtube.checkOverXLike);
+checkAction.set("newView", youtube.checkNewView);
+checkAction.set("overXView", youtube.checkOverXView);
 
 module.exports.checkAction = checkAction;
 
