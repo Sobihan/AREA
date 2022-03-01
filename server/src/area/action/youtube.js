@@ -118,8 +118,7 @@ function overXView(actionArgs, callback, reactionArgs)
     }
 }
 
-
-//new video
+//new videos
 function newVideos(actionArgs, callback, reactionArgs)
 {
     let isSuccess = true;
@@ -133,9 +132,7 @@ function newVideos(actionArgs, callback, reactionArgs)
         console.log(e);
     })
     .then((channel) => {
-        if (isSuccess == true/* && video != null && video != undefined && video.viewCount != undefined && video.viewCount != views*/) {
-
-
+        if (isSuccess == true) {
             channel.nextVideos()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -144,42 +141,14 @@ function newVideos(actionArgs, callback, reactionArgs)
             .then(() => {
                 if (isSuccess_2 == true && channel.videos != undefined && channel.videos.length >= 1 && lastVideoID != channel.videos[0].id){
                     console.log('channel.nextVideos SUCESSFUL');
-
                     search.changeArgs(actionArgs, "lastVideoID", channel.videos[0].id);
-                    //console.log('testgetStream SUCESSFUL');
-                    //console.log('video = ', JSON.stringify(video));
-                    //console.log('video.likeCount = ', JSON.stringify(video.viewCount));
                     search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as published a new video titled \"" + channel.videos[0].title + "\", it has a duration of " + channel.videos[0].duration + " seconds.\n");
                     callback(reactionArgs);
-
-                    //console.log('channel = ', JSON.stringify(channel));
-                    //console.log("\n\n");
-                    //console.log('channel.videos = ', JSON.stringify(channel.videos));
-                    //console.log('channel.videos.length = ', JSON.stringify(channel.videos.length));
-                    //console.log("\n\n");
-                    //console.log('channel.videos[0] = ', JSON.stringify(channel.videos[0]));
-
-                    /*res.status(200).json({
-                        success: true,
-                        body: 'Stop job done!'
-                    });*/
                 }
                 else {
                     console.log('stopJob FAIL');
-                    /*res.status(401).json({
-                        success: false,
-                        body: 'Stop job Failed'
-                    });*/
                 }
             });
-            
-            
-            //console.log('testgetStream SUCESSFUL');
-            //console.log('video = ', JSON.stringify(video));
-            //console.log('video.viewCount = ', JSON.stringify(video.viewCount));
-            //search.changeArgs(actionArgs, "views", video.viewCount);
-            //search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " view count as changed.\n New view counter is " + video.viewCount + " views.\n");
-            //callback(reactionArgs);
         }
         else {
             console.log('testgetStream FAIL');
@@ -189,30 +158,36 @@ function newVideos(actionArgs, callback, reactionArgs)
 
 
 //reached targeted number of videos
-function newViewer(actionArgs, callback, reactionArgs)
+function overXVideos(actionArgs, callback, reactionArgs)
 {
     let isSuccess = true;
-    const videoCount = search.args(actionArgs, "videoCount"); //added by us
+    const videoCount = search.args(actionArgs, "videoCount"); //needed
     const channelName = search.args(actionArgs, "channelName"); //needed
+    const done = search.args(actionArgs, "done"); //added by us
 
-    //youtube.getVideo(videoURL)
-    youtube.findOne(channelName, {type: "channel"})
-    .catch((e) => {
-        isSuccess = false;
-        console.log(e);
-    })
-    .then((channel) => {
-        if (isSuccess == true/* && video != null && video != undefined && video.viewCount != undefined && video.viewCount != viewers*/) {
-            console.log('newViewer SUCESSFUL');
-            console.log('channel = ', JSON.stringify(channel));
-            //console.log('video.likeCount = ', JSON.stringify(video.viewCount));
-            //search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views as been reached.\n New views counter is " + video.viewCount + " views.\n");
-            //callback(reactionArgs);
-        }
-        else {
-            console.log('testgetStream FAIL');
-        }
-    });
+    if (!done) {
+        youtube.findOne(channelName, {type: "channel"})
+        .catch((e) => {
+            isSuccess = false;
+            console.log(e);
+        })
+        .then((channel) => {
+            console.log('channel.videoCount = ', JSON.stringify(channel.videoCount));
+            if (isSuccess == true && channel != null && channel != undefined && channel.videoCount != undefined && channel.videoCount >= videoCount) {
+                console.log('newViewer SUCESSFUL');
+                search.changeArgs(actionArgs, "done", true);
+                //search.changeArgs(actionArgs, "videoCount", channel.videoCount);
+                //console.log('channel = ', JSON.stringify(channel));
+                //console.log('video.likeCount = ', JSON.stringify(video.viewCount));
+                //search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views as been reached.\n New views counter is " + video.viewCount + " views.\n");
+                search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as reached the targeted number of videos uploaded.\n New video counter is " + channel.videoCount + " video.\n");
+                callback(reactionArgs);
+            }
+            else {
+                console.log('testgetStream FAIL');
+            }
+        });
+    }
 }
 
 
@@ -221,7 +196,7 @@ module.exports.overXLike = overXLike;
 module.exports.newView = newView;
 module.exports.overXView = overXView;
 module.exports.newVideos = newVideos;
-module.exports.newViewer = newViewer; //overXVideos
+module.exports.overXVideos = overXVideos;
 
 
 
@@ -270,11 +245,11 @@ function checkNewVideos(userToken, actionArgs)
     return true;
 }
 
-function checkNewViewer(userToken, actionArgs)
+function checkOverXVideos(userToken, actionArgs)
 {
     search.AddArgs(actionArgs, "userToken", userToken);
-    search.AddArgs(actionArgs, "viewers", 0);
-    if (search.args(actionArgs, "channelName") == null)
+    search.AddArgs(actionArgs, "done", false);
+    if (search.args(actionArgs, "channelName") == null && search.args(actionArgs, "videoCount") == null)
         return false;
     return true;
 }
@@ -284,7 +259,7 @@ module.exports.checkOverXLike = checkOverXLike;
 module.exports.checkNewView = checkNewView;
 module.exports.checkOverXView = checkOverXView;
 module.exports.checkNewVideos = checkNewVideos;
-module.exports.checkNewViewer = checkNewViewer;
+module.exports.checkOverXVideos = checkOverXVideos;
 
 
 
@@ -332,11 +307,12 @@ youtubeInfo.set("newVideos", {
     ]
 });
 
-youtubeInfo.set("newViewer", { //overXVideos
-    name: "newViewer",
-    description: "To know if a Youtube channel viewer counter changed.",
+youtubeInfo.set("overXVideos", {
+    name: "overXVideos",
+    description: "To know if a Youtube channel as reached the targeted number of videos.",
     args: [
-        {channelName: "The channel's name you wish to monitor."}
+        {channelName: "The channel's name you wish to monitor."},
+        {videoCount: "Targeted number of videos."}
     ]
 });
 

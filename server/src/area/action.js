@@ -13,7 +13,7 @@ action.set("overXLike", youtube.overXLike);
 action.set("newView", youtube.newView);
 action.set("overXView", youtube.overXView);
 action.set("newVideos", youtube.newVideos);
-action.set("newViewer", youtube.newViewer);
+action.set("overXVideos", youtube.overXVideos);
 
 module.exports.action = action;
 
@@ -29,7 +29,7 @@ checkAction.set("overXLike", youtube.checkOverXLike);
 checkAction.set("newView", youtube.checkNewView);
 checkAction.set("overXView", youtube.checkOverXView);
 checkAction.set("newVideos", youtube.checkNewVideos);
-checkAction.set("newViewer", youtube.checkNewViewer);
+checkAction.set("overXVideos", youtube.checkOverXVideos);
 
 module.exports.checkAction = checkAction;
 
