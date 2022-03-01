@@ -61,9 +61,6 @@ function overXLike(actionArgs, callback, reactionArgs)
     }
 }
 
-
-
-
 //change view counter
 function newView(actionArgs, callback, reactionArgs)
 {
@@ -122,10 +119,109 @@ function overXView(actionArgs, callback, reactionArgs)
 }
 
 
+//new video
+function newVideos(actionArgs, callback, reactionArgs)
+{
+    let isSuccess = true;
+    let isSuccess_2 = true;
+    const lastVideoID = search.args(actionArgs, "lastVideoID"); //added by us
+    const channelName = search.args(actionArgs, "channelName"); //needed
+
+    youtube.findOne(channelName, {type: "channel"})
+    .catch((e) => {
+        isSuccess = false;
+        console.log(e);
+    })
+    .then((channel) => {
+        if (isSuccess == true/* && video != null && video != undefined && video.viewCount != undefined && video.viewCount != views*/) {
+
+
+            channel.nextVideos()
+            .catch((e) => {
+                isSuccess_2 = false;
+                console.log(e);
+            })
+            .then(() => {
+                if (isSuccess_2 == true && channel.videos != undefined && channel.videos.length >= 1 && lastVideoID != channel.videos[0].id){
+                    console.log('channel.nextVideos SUCESSFUL');
+
+                    search.changeArgs(actionArgs, "lastVideoID", channel.videos[0].id);
+                    //console.log('testgetStream SUCESSFUL');
+                    //console.log('video = ', JSON.stringify(video));
+                    //console.log('video.likeCount = ', JSON.stringify(video.viewCount));
+                    search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as published a new video titled \"" + channel.videos[0].title + "\", it has a duration of " + channel.videos[0].duration + " seconds.\n");
+                    callback(reactionArgs);
+
+                    //console.log('channel = ', JSON.stringify(channel));
+                    //console.log("\n\n");
+                    //console.log('channel.videos = ', JSON.stringify(channel.videos));
+                    //console.log('channel.videos.length = ', JSON.stringify(channel.videos.length));
+                    //console.log("\n\n");
+                    //console.log('channel.videos[0] = ', JSON.stringify(channel.videos[0]));
+
+                    /*res.status(200).json({
+                        success: true,
+                        body: 'Stop job done!'
+                    });*/
+                }
+                else {
+                    console.log('stopJob FAIL');
+                    /*res.status(401).json({
+                        success: false,
+                        body: 'Stop job Failed'
+                    });*/
+                }
+            });
+            
+            
+            //console.log('testgetStream SUCESSFUL');
+            //console.log('video = ', JSON.stringify(video));
+            //console.log('video.viewCount = ', JSON.stringify(video.viewCount));
+            //search.changeArgs(actionArgs, "views", video.viewCount);
+            //search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " view count as changed.\n New view counter is " + video.viewCount + " views.\n");
+            //callback(reactionArgs);
+        }
+        else {
+            console.log('testgetStream FAIL');
+        }
+    });
+}
+
+
+//reached targeted number of videos
+function newViewer(actionArgs, callback, reactionArgs)
+{
+    let isSuccess = true;
+    const videoCount = search.args(actionArgs, "videoCount"); //added by us
+    const channelName = search.args(actionArgs, "channelName"); //needed
+
+    //youtube.getVideo(videoURL)
+    youtube.findOne(channelName, {type: "channel"})
+    .catch((e) => {
+        isSuccess = false;
+        console.log(e);
+    })
+    .then((channel) => {
+        if (isSuccess == true/* && video != null && video != undefined && video.viewCount != undefined && video.viewCount != viewers*/) {
+            console.log('newViewer SUCESSFUL');
+            console.log('channel = ', JSON.stringify(channel));
+            //console.log('video.likeCount = ', JSON.stringify(video.viewCount));
+            //search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views as been reached.\n New views counter is " + video.viewCount + " views.\n");
+            //callback(reactionArgs);
+        }
+        else {
+            console.log('testgetStream FAIL');
+        }
+    });
+}
+
+
 module.exports.NewLike = NewLike;
 module.exports.overXLike = overXLike;
 module.exports.newView = newView;
 module.exports.overXView = overXView;
+module.exports.newVideos = newVideos;
+module.exports.newViewer = newViewer; //overXVideos
 
 
 
@@ -165,10 +261,30 @@ function checkOverXView(userToken, actionArgs)
     return true;
 }
 
+function checkNewVideos(userToken, actionArgs)
+{
+    search.AddArgs(actionArgs, "userToken", userToken);
+    search.AddArgs(actionArgs, "lastVideoID", "");
+    if (search.args(actionArgs, "channelName") == null)
+        return false;
+    return true;
+}
+
+function checkNewViewer(userToken, actionArgs)
+{
+    search.AddArgs(actionArgs, "userToken", userToken);
+    search.AddArgs(actionArgs, "viewers", 0);
+    if (search.args(actionArgs, "channelName") == null)
+        return false;
+    return true;
+}
+
 module.exports.checkNewLike = checkNewLike;
 module.exports.checkOverXLike = checkOverXLike;
 module.exports.checkNewView = checkNewView;
 module.exports.checkOverXView = checkOverXView;
+module.exports.checkNewVideos = checkNewVideos;
+module.exports.checkNewViewer = checkNewViewer;
 
 
 
@@ -205,6 +321,22 @@ youtubeInfo.set("overXView", {
     args: [
         {videoURL: "The URL of the video you wish to monitor."},
         {views: "Targeted number of views."}
+    ]
+});
+
+youtubeInfo.set("newVideos", {
+    name: "newVideos",
+    description: "To know if a Youtube channel as uploaded a new video.",
+    args: [
+        {channelName: "The channel's name you wish to monitor."}
+    ]
+});
+
+youtubeInfo.set("newViewer", { //overXVideos
+    name: "newViewer",
+    description: "To know if a Youtube channel viewer counter changed.",
+    args: [
+        {channelName: "The channel's name you wish to monitor."}
     ]
 });
 
