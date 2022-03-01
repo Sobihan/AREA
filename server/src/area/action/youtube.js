@@ -37,24 +37,28 @@ function overXLike(actionArgs, callback, reactionArgs)
     let isSuccess = true;
     const likes = search.args(actionArgs, "likes");  //needed
     const videoURL = search.args(actionArgs, "videoURL"); //needed
+    const done = search.args(actionArgs, "done"); //needed
 
-    youtube.getVideo(videoURL)
-    .catch((e) => {
-        isSuccess = false;
-        console.log(e);
-    })
-    .then((video) => {
-        if (isSuccess == true && video != null && video != undefined && video.likeCount != undefined && video.likeCount >= likes) {
-            console.log('testgetStream SUCESSFUL');
-            //console.log('video = ', JSON.stringify(video));
-            console.log('video.likeCount = ', JSON.stringify(video.likeCount));
-            search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like as been reached.\n New like counter is " + video.likeCount + " likes.\n");
-            callback(reactionArgs);
-        }
-        else {
-            console.log('testgetStream FAIL');
-        }
-    });
+    if (!done) {
+        youtube.getVideo(videoURL)
+        .catch((e) => {
+            isSuccess = false;
+            console.log(e);
+        })
+        .then((video) => {
+            if (isSuccess == true && video != null && video != undefined && video.likeCount != undefined && video.likeCount >= likes) {
+                search.changeArgs(actionArgs, "done", true);
+                console.log('testgetStream SUCESSFUL');
+                //console.log('video = ', JSON.stringify(video));
+                console.log('video.likeCount = ', JSON.stringify(video.likeCount));
+                search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like as been reached.\n New like counter is " + video.likeCount + " likes.\n");
+                callback(reactionArgs);
+            }
+            else {
+                console.log('testgetStream FAIL');
+            }
+        });
+    }
 }
 
 
@@ -81,6 +85,7 @@ function checkNewLike(userToken, actionArgs)
 function checkOverXLike(userToken, actionArgs)
 {
     search.AddArgs(actionArgs, "userToken", userToken);
+    search.AddArgs(actionArgs, "done", false);
     if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "likes") == null)
         return false;
     return true;
