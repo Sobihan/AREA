@@ -44,8 +44,17 @@ Future<http.Response> signInWithGoogle(
   final response = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
-    body: user.toJson(),
+    body: jsonEncode({
+      "is_mobile": true,
+      "refreshToken": user.refreshToken,
+      "accessToken": user.accessToken,
+      "googleId": user.googleID,
+      "givenName": user.displayName.split(' ')[0],
+      "familyName": user.displayName.split(' ')[1],
+      "email": user.email
+    }),
   );
+  print(response.body);
   return response;
 }
 
@@ -119,12 +128,22 @@ Future<http.Response> updateApi(
     {required String token,
     required String host,
     required String type,
-    required serviceToken}) async {
+    required serviceToken,
+    String accessToken = ""}) async {
   Uri url = Uri.parse("http://$host:8080/api/v1/update-api-token");
   final response = await http.post(url,
       headers: {'Content-Type': 'application/json', 'authToken': token},
-      body:
-          jsonEncode({'type': type, 'token': serviceToken, 'mobile': 'true'}));
+      body: type == "GOOGLE"
+          ? jsonEncode({
+              'type': type,
+              'token': serviceToken,
+              'mobile': 'true',
+              'accessToken': accessToken
+            })
+          : jsonEncode(
+              {'type': type, 'token': serviceToken, 'mobile': 'true'}));
+  print(response.body);
+  print(response.statusCode);
   return response;
 }
 
