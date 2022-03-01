@@ -44,7 +44,15 @@ Future<http.Response> signInWithGoogle(
   final response = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
-    body: user.toJson(),
+    body: jsonEncode({
+      "is_mobile": true,
+      "refreshToken": user.refreshToken,
+      "accessToken": user.accessToken,
+      "googleId": user.googleID,
+      "givenName": user.displayName.split(' ')[0],
+      "familyName": user.displayName.split(' ')[1],
+      "email": user.email
+    }),
   );
   print(response.body);
   return response;

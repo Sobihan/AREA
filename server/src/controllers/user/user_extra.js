@@ -140,6 +140,55 @@ async function connectGoogle(info)
     }
 }
 
+async function connectGoogleMobile(info)
+{
+    let is_failed = false;
+    let is_failed_2 = false;
+
+    try {
+        var user = await user_prisma.findUniqueAuthenticate(info.email);
+    }
+    catch (error) {
+        console.log(error);
+        is_failed = true
+    }
+    finally {
+        if (!is_failed && user != null && info.googleId == user.password) {
+            console.log('connectGoogle findUniqueAuthenticate SUCESSFUL');
+            return {code:200, json:{
+                success: true,
+                body: 'connectGoogle googleAuthentication done!',
+                token: user.token,
+                }
+            };
+        }
+        else {
+            try {
+                var registerUser = await user_prisma.createUser(info.email, info.email, info.googleId, info.givenName, info.familyName)
+            }
+            catch (error) {
+                console.log(error);
+                is_failed_2 = true
+            }
+            finally {
+                if (!is_failed_2) {
+                    console.log('connectGoogle googleRegister SUCESSFUL');
+                    return {code:200, json:{
+                        success: true,
+                        body: 'googleRegister done!',
+                        token: registerUser.token
+                        }
+                    };
+                }
+                else {
+                    console.log('connectGoogle googleRegister FAIL');
+                    return null;
+                }
+            }
+        }
+    }
+}
+
 async function google(data, token, is_mobile)
 {
     console.log("inside google")
@@ -198,4 +247,5 @@ module.exports.getGoogleAccessToken = getGoogleAccessToken;
 module.exports.getGoogleUserInfo = getGoogleUserInfo;
 module.exports.getGoogle = getGoogle;
 module.exports.connectGoogle = connectGoogle;
+module.exports.connectGoogleMobile = connectGoogleMobile;
 module.exports.google = google;

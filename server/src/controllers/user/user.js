@@ -67,7 +67,7 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
     console.log('SOSOBI... req.body =', JSON.stringify(req.body));
     //console.log(req.body);
 
-    if (!req.body.is_mobile/* && req.body.test != undefined*/) { //c'est le WEB
+    if (!req.body.is_mobile) { //c'est le WEB
         user_extra.getGoogle(req.body.response.code)
         .catch((e) => {
             isSuccess = false;
@@ -106,9 +106,45 @@ const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
     }
     else { //c'est le MOBILE
         console.log('getGoogle MOBILE NOT IMPLEMENTED FAIL');
-        res.status(401).json({
-            success: false,
-            body: 'getGoogle Failed'
+        user_extra.connectGoogleMobile(req.body)
+        .catch((e) => {
+            isSuccess = false;
+            console.log(e);
+        })
+        .then((user) => {
+            if (isSuccess == true) {
+                console.log('connectGoogleMobile SUCESSFUL');
+                const disableAt = (Date.now() + ((2000 - 200) * 1000));
+                api_access.updateApiToken(user.json.token, "", "GOOGLE", disableAt, req.body.accessToken, req.body.refreshToken, req.body.is_mobile)
+                .catch((e) => {
+                    isSuccess_2 = false;
+                    console.log(e);
+                })
+                .then((job) => {
+                    if (isSuccess_2 == true){
+                        console.log('updateApiToken SUCESSFUL');
+                        res.status(200).json({
+                            success: true,
+                            body: 'updateApiToken done!',
+                            token: job.token
+                        });
+                    }
+                    else {
+                        console.log('updateApiToken FAIL');
+                        res.status(401).json({
+                            success: false,
+                            body: 'updateApiToken Failed'
+                        });
+                    }
+                });
+            }
+            else {
+                console.log('connectGoogleMobile FAIL');
+                res.status(401).json({
+                    success: false,
+                    body: 'getGoogle Failed'
+                });
+            }
         });
     }
 
