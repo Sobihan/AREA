@@ -514,6 +514,34 @@ async function findJob(authToken, name, action, reaction) {
     }
 }
 
+async function getRelaunchJob() {
+    const job = await main.prisma.job.findMany({
+        where: {
+            is_stoped: false,
+        },
+        select: {
+            jobToken: true,
+            //name: true,
+            action: true,
+            actionArg: {
+                select: {
+                    key: true,
+                    value: true,
+                },
+            },
+            reaction: true,
+            reactionArg: {
+                select: {
+                    key: true,
+                    value: true,
+                },
+            },
+            interval: true,
+        }
+    })
+    return job;
+}
+
 module.exports.updateJob = updateJob;
 module.exports.updateActionArg = updateActionArg;
 module.exports.updateReactionArg = updateReactionArg;
@@ -523,3 +551,4 @@ module.exports.deleteJob = deleteJob;
 module.exports.findUniqueJob = findUniqueJob;
 module.exports.stopJob = stopJob;
 module.exports.findJob = findJob;
+module.exports.getRelaunchJob = getRelaunchJob;

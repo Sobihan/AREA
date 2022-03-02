@@ -170,9 +170,10 @@ function overXVideos(actionArgs, callback, reactionArgs)
             console.log(e);
         })
         .then((channel) => {
-            console.log('channel.videoCount = ', JSON.stringify(channel.videoCount));
+            //console.log('channel.videoCount = ', JSON.stringify(channel.videoCount));
             if (isSuccess == true && channel != null && channel != undefined && channel.videoCount != undefined && channel.videoCount >= videoCount) {
                 //console.log('newViewer SUCESSFUL');
+                console.log('channel.videoCount = ', JSON.stringify(channel.videoCount));
                 search.changeArgs(actionArgs, "done", true);
                 search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as reached the targeted number of videos uploaded.\n New video counter is " + channel.videoCount + " video.\n");
                 callback(reactionArgs);

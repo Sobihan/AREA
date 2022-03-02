@@ -60,10 +60,31 @@ app.get('*', (req, res) => {
     });
 });
 
+const job_extra = require('./controllers/job/job_extra')
+
+// app.on('listening', job_extra.launchJobOnStart());
+// app.on('listening', function () {
+//     // server ready to accept connections here
+//     console.log(`Server running at http://${hostname}:${port}/`);
+//     job_extra.launchJobOnStart()
+// });
+
 // Configure our server to listen on the port defiend by our port variable
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
+    job_extra.launchJobOnStart()
 });
+
+// const job_extra = require('./controllers/job/job_extra')
+
+// // app.on('listening', job_extra.launchJobOnStart());
+// app.on('listening', function () {
+//     // server ready to accept connections here
+//     job_extra.launchJobOnStart()
+// });
+
+
+
 /*
 async function findUniqueToken(token) {
     const user = await prisma.user.findMany({

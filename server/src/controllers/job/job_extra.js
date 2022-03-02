@@ -174,10 +174,106 @@ function removeJob(jobToken)
     scheduler.removeById(jobToken);
 }
 
+function launchJobOnStart()
+{
+    let isSuccess = true;
+
+    job.getRelaunchJob()
+    .catch((e) => {
+        isSuccess = false;
+        console.log(e);
+    })
+    .then((job) => {
+        if (isSuccess == true && job != null && job != undefined){
+            console.log('getRelaunchJob SUCESSFUL');
+            //console.log('job = ', JSON.stringify(job));
+            const lenght = job.length;
+            var actionArg = [];
+            var reactionArg = [];
+
+            //for (let i = 0; i < lenght; i++) {
+            for (let i = 0; i < lenght; i++) {
+                const actionArgLenght = job[i].actionArg.length;
+                const reactionArgLenght = job[i].reactionArg.length;
+                console.log("i =", i);
+                console.log("job[i].jobToken =", job[i].jobToken);
+                console.log("job[i].action =", job[i].action);
+                for (let j = 0; j < actionArgLenght; j++) {
+                    var actionArgObject = {};
+                    // console.log("job[i].actionArg[j].key =", job[i].actionArg[j].key)
+                    // console.log("job[i].actionArg[j].value =", job[i].actionArg[j].value)
+                    //tmpJsonData["actions"] = getReAction(infoAction.get(infoActionKeys[i]).actions);
+
+                    // actionArg[job[i].actionArg[j].key] = job[i].actionArg[j].value;
+                    actionArgObject[job[i].actionArg[j].key] = job[i].actionArg[j].value;
+                    actionArg.push(actionArgObject);
+                }
+                console.log("actionArg =", actionArg);
+                //console.log("job[i] =", job[i].jobToken);
+                console.log("job[i].reaction =", job[i].reaction);
+                for (let j = 0; j < reactionArgLenght; j++) {
+                    var reactionArgObject = {};
+                    // console.log("job[i].reactionArg[j].key =", job[i].reactionArg[j].key)
+                    // console.log("job[i].reactionArg[j].value =", job[i].reactionArg[j].value)
+                    //tmpJsonData["actions"] = getReAction(infoAction.get(infoActionKeys[i]).actions);
+
+                    // reactionArg[job[i].reactionArg[j].key] = job[i].reactionArg[j].value;
+                    reactionArgObject[job[i].reactionArg[j].key] = job[i].reactionArg[j].value;
+                    reactionArg.push(reactionArgObject);
+                }
+                console.log("reactionArg =", reactionArg);
+                //console.log("job[i] =", job[i].jobToken);
+                console.log("job[i].interval =", job[i].interval);
+                console.log("\n\n");
+
+                const jobToLaunch = getJob(job[i].action, actionArg, job[i].reaction, reactionArg);
+                const job1 = new SimpleIntervalJob(
+                    { seconds: job[i].interval, runImmediately: true },
+                    jobToLaunch,
+                    job[i].jobToken
+                );
+                scheduler.addSimpleIntervalJob(job1);
+
+            }
+
+            //console.log('job = ', job);
+            //console.log('job[0] = ', job[0]);
+            //console.log('job[0].job = ', job[0].job);
+/*
+            res.status(200).json({
+                success: true,
+                body: 'Find job done!',
+                job: job[0].job,
+            });
+*/
+        }
+        else {
+            console.log('getRelaunchJob FAIL');
+/*
+            res.status(401).json({
+                success: false,
+                body: 'Find job Failed'
+            });
+*/
+        }
+    });
+}
+
+/*
+                    const jobToLaunch = getJob(req.body.action, actionArgJson, req.body.reaction, reactionArgJson);
+                    const job1 = new SimpleIntervalJob(
+                        { seconds: req.body.interval, runImmediately: req.body.runNow },
+                        jobToLaunch,
+                        good_job.jobToken
+                    );
+                    scheduler.addSimpleIntervalJob(job1);
+*/
+
 
 module.exports.updateJob_extra = updateJob_extra;
 module.exports.checkGetJob = checkGetJob;
 module.exports.stopJob = stopJob;
 module.exports.getReAction = getReAction;
 module.exports.removeJob = removeJob;
+module.exports.launchJobOnStart = launchJobOnStart;
 //module.exports.getJob = getJob;
