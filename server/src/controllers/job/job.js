@@ -247,35 +247,25 @@ const getReActionInfo = (req, res, next) => {
         jsonArr.push(tmpJsonData);
     }
 
+/*
+    for (let i = 0; i < infoReactionKeys.length; i++) {
+        let tmpJsonData = {}
+        tmpJsonData["name"] = infoReaction.get(infoReactionKeys[i]).name;
+        tmpJsonData["reactions"] = job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
+        jsonArr.push(tmpJsonData);
+    }
+*/
+
     for (let i = 0; i < infoReactionKeys.length; i++) {
         let tmpJsonData = {}
         let isAdded = false;
         const lenght = jsonArr.length;
         for (let j = 0; j < lenght; j++) {
-            //console.log("jsonArr[i] =", JSON.stringify(jsonArr[i]));
-
-            //console.log("jsonArr[i].name =", JSON.stringify(jsonArr[i].name));
-
-            //if (JSON.stringify(jsonArr[j].name) == infoReaction.get(infoReactionKeys[i]).name)
             if (jsonArr[j].name == infoReaction.get(infoReactionKeys[i]).name) {
-                console.log("Found !!!");
                 jsonArr[j]["reactions"] = job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
-                //tmpJsonData["reactions"] = job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
-                //jsonArr.slice(j, 0, tmpJsonData);
-                //jsonArr[j].push(job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions));
-                //jsonArr[j].push(tmpJsonData);
-                //jsonArr.push(tmpJsonData);
                 isAdded = true;
             }
-
-            //if (jsonArr[i].name == infoReaction.get(infoReactionKeys[i]).name)
-            //    console.log("jsonArr[i].name =", jsonArr[i].name);
         }
-        //console.log("name =", JSON.stringify(infoReaction.get(infoReactionKeys[i]).name));
-
-        //console.log("name =", infoReaction.get(infoReactionKeys[i]).name);
-
-        //if (jsonArr.name)
         if (!isAdded) {
             tmpJsonData["name"] = infoReaction.get(infoReactionKeys[i]).name;
             tmpJsonData["reactions"] = job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions);

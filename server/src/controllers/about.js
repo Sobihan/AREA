@@ -14,12 +14,30 @@ const about = (req, res, next) => {
         tmpJsonData["actions"] = getReAction(infoAction.get(infoActionKeys[i]).actions);
         jsonArr.push(tmpJsonData);
     }
-
+/*
     for (let i = 0; i < infoReactionKeys.length; i++) {
         let tmpJsonData = {}
         tmpJsonData["name"] = infoReaction.get(infoReactionKeys[i]).name;
         tmpJsonData["reactions"] = getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
         jsonArr.push(tmpJsonData);
+    }
+*/
+
+    for (let i = 0; i < infoReactionKeys.length; i++) {
+        let tmpJsonData = {}
+        let isAdded = false;
+        const lenght = jsonArr.length;
+        for (let j = 0; j < lenght; j++) {
+            if (jsonArr[j].name == infoReaction.get(infoReactionKeys[i]).name) {
+                jsonArr[j]["reactions"] = getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
+                isAdded = true;
+            }
+        }
+        if (!isAdded) {
+            tmpJsonData["name"] = infoReaction.get(infoReactionKeys[i]).name;
+            tmpJsonData["reactions"] = getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
+            jsonArr.push(tmpJsonData);
+        }
     }
 
     res.status(200).json({
