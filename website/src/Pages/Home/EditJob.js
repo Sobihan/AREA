@@ -299,6 +299,12 @@ export function EditJob(jobJson)
               )
             ): null}
           </Stack>
+          {action !== '' && action.description ?
+            <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} sx={{ mt: 1 }}>
+              <h3>DESCRIPTION</h3>
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{action.description}</div>
+            </Stack>: null
+          }
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"
@@ -366,6 +372,12 @@ export function EditJob(jobJson)
               )
             ): null}
           </Stack>
+          {reaction !== '' && reaction.description ?
+            <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} sx={{ mt: 1 }}>
+              <h3>DESCRIPTION</h3>
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{reaction.description}</div>
+            </Stack>: null
+          }
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"

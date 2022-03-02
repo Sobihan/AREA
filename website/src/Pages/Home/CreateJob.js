@@ -22,7 +22,7 @@ export function CreateJob()
 {
   const [areaList, setAreaList] = React.useState("");
   const [areaName, setAreaName] = React.useState("");
-  const [areaInterval, setAreaInterval] = React.useState(0);
+  const [areaInterval, setAreaInterval] = React.useState(600);
   const [action, setAction] = React.useState('');
   const [reaction, setReaction] = React.useState('');
   const [actionArg, setActionArg] = React.useState([]);
@@ -190,7 +190,7 @@ export function CreateJob()
               id="areaInterval"
               label="Seconds"
               name="areaInterval"
-              defaultValue={areaInterval !== 0 ? areaInterval: ""}
+              defaultValue={areaInterval}
               onChange={handleAreaInterval}
             />
           </Stack>
@@ -204,7 +204,7 @@ export function CreateJob()
               Back
             </Button>
             <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleNext} disabled={areaName === "" || areaInterval === 0}>
+            <Button onClick={handleNext} disabled={areaName === "" || areaInterval <= 0}>
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </Box>
@@ -261,6 +261,12 @@ export function CreateJob()
               )
             ): null}
           </Stack>
+          {action !== '' && action.description ?
+            <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} sx={{ mt: 1 }}>
+              <h3>DESCRIPTION</h3>
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{action.description}</div>
+            </Stack>: null
+          }
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"
@@ -329,6 +335,12 @@ export function CreateJob()
             ): null
           }
           </Stack>
+          {reaction !== '' && reaction.description ?
+            <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} sx={{ mt: 1 }}>
+              <h3>DESCRIPTION</h3>
+              <div style={{backgroundColor: "gray", color: "white", padding: 4, "border-radius": 5}}>{reaction.description}</div>
+            </Stack>: null
+          }
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"
