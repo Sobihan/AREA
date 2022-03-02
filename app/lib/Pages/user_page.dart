@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:area/API/api.dart';
 import 'package:area/API/google.dart';
 import 'package:area/API/reddit.dart';
@@ -20,11 +19,12 @@ GoogleOAuth2Client googleClient = GoogleOAuth2Client(
         'com.example.area:/oauth2redirect', //Just one slash, required by Google specs
     customUriScheme: 'com.example.area');
 
+//ignore: must_be_immutable
 class UserPage extends StatefulWidget {
   final String host;
-  final User user;
+  User user;
 
-  const UserPage({Key? key, required this.host, required this.user})
+  UserPage({Key? key, required this.host, required this.user})
       : super(key: key);
   @override
   State<UserPage> createState() => _UserPageState();
@@ -76,13 +76,46 @@ class _UserPageState extends State<UserPage> {
     });
   }
 
+  void reload() async {
+    final responseUser =
+        await getUser(token: widget.user.token, host: widget.host);
+    final serviceResponse =
+        await getUserServices(token: widget.user.token, host: widget.host);
+
+    final jsonService = jsonDecode(serviceResponse.body);
+    User user = User.fromJson(
+        avatar: jsonDecode(responseUser.body)['user']['avatar'] == null ||
+                jsonDecode(responseUser.body)['user']['avatar'] == ''
+            ? 'null'
+            : jsonDecode(responseUser.body)['user']['avatar'],
+        token: widget.user.token,
+        json: jsonDecode(responseUser.body)['user'],
+        isGoogle: jsonService['google'],
+        isReddit: jsonService['reddit']);
+    setState(() {
+      widget.user = user;
+    });
+  }
+
   Widget buildName() {
     return Column(
       children: [
-        Text(
-          "${widget.user.name} ${widget.user.lastName}",
-          style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "${widget.user.name} ${widget.user.lastName}",
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
+            ),
+            const SizedBox(width: 10),
+            GestureDetector(
+                onTap: () => reload(),
+                child: const Icon(FontAwesomeIcons.redo,
+                    color: Colors.white, size: 15))
+          ],
         ),
         widget.user.username != widget.user.email
             ? Text(
