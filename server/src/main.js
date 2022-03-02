@@ -6,6 +6,7 @@ const cors = require('cors');
 const path = require('path');
 const api = require('./routes/routes');
 const about = require('./controllers/about')
+const job_extra = require('./controllers/job/job_extra')
 
 // const Twitch = require('./area/action/twitch');
 // Twitch.getStream("Sardoche");
@@ -60,28 +61,11 @@ app.get('*', (req, res) => {
     });
 });
 
-const job_extra = require('./controllers/job/job_extra')
-
-// app.on('listening', job_extra.launchJobOnStart());
-// app.on('listening', function () {
-//     // server ready to accept connections here
-//     console.log(`Server running at http://${hostname}:${port}/`);
-//     job_extra.launchJobOnStart()
-// });
-
 // Configure our server to listen on the port defiend by our port variable
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
     job_extra.launchJobOnStart()
 });
-
-// const job_extra = require('./controllers/job/job_extra')
-
-// // app.on('listening', job_extra.launchJobOnStart());
-// app.on('listening', function () {
-//     // server ready to accept connections here
-//     job_extra.launchJobOnStart()
-// });
 
 
 

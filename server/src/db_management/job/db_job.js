@@ -521,7 +521,6 @@ async function getRelaunchJob() {
         },
         select: {
             jobToken: true,
-            //name: true,
             action: true,
             actionArg: {
                 select: {
