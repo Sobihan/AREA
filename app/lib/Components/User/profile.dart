@@ -24,7 +24,10 @@ class _ProfileState extends State<Profile> {
     if (widget.imagePath == "null") {
       image = Image.asset('assets/defaultProfil.png').image;
     } else {
-      image = Image.memory(base64Decode(widget.imagePath)).image;
+      print("image--->");
+      print(widget.imagePath);
+      String path = widget.imagePath.split(',')[1];
+      image = Image.memory(base64Decode(path)).image;
     }
 
     return buildCircle(

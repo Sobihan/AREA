@@ -49,7 +49,7 @@ class _EditProfilPageState extends State<EditProfilPage> {
     if (image == null) return;
     String b64 = encodeImage(image.path);
     setState(() {
-      _newUser.avatar = b64;
+      _newUser.avatar = "data:image/png;base64,$b64";
     });
   }
 
