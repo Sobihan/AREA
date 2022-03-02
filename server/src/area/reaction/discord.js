@@ -28,7 +28,8 @@ function sendServerMessages(reactionArgs)
     //bot.users.fetch(server).then(chan => {
     bot.channels.fetch(server).then(chan => {
         chan.send(text);
-    });
+    })
+    .catch(console.error);
 }
 
 function sendPrivateMessages(reactionArgs)
@@ -38,7 +39,8 @@ function sendPrivateMessages(reactionArgs)
 
     bot.users.fetch(user).then(chan => {
         chan.send(text);
-    });
+    })
+    .catch(console.error);
 }
 
 module.exports.sendServerMessages = sendServerMessages;
