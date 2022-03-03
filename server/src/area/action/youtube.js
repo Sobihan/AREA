@@ -185,6 +185,10 @@ function overXVideos(actionArgs, callback, reactionArgs)
     }
 }
 
+//change target by + X to have a new target
+
+//change target by * X to have a new target
+
 module.exports.NewLike = NewLike;
 module.exports.overXLike = overXLike;
 module.exports.newView = newView;

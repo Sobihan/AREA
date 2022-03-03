@@ -7,6 +7,25 @@ const { ToadScheduler, SimpleIntervalJob, Task, AsyncTask } = require('toad-sche
 const scheduler = new ToadScheduler()
 
 async function updateJobAddArgs(jobToken, actionArgJson, reactionArgJson) {
+    let deleteActionArg = await job.deleteActionArgs(jobToken);
+    if (deleteActionArg.count == undefined) {
+        console.log("deleteActionArg =", JSON.stringify(deleteActionArg))
+        console.log('deleteActionArgs FAIL');
+        throw new Error(deleteActionArg);
+    }
+    else {
+        console.log('deleteActionArgs SUCESSFUL');
+    }
+
+    let deleteReactionArg = await job.deleteReactionArgs(jobToken);
+    if (deleteActionArg.count == undefined) {
+        console.log('deleteReactionArgs FAIL');
+        throw new Error(deleteReactionArg);
+    }
+    else {
+        console.log('deleteReactionArgs SUCESSFUL');
+    }
+
     for (const actionArg in actionArgJson) {
         console.log(actionArgJson[actionArg]);
         for (const arg in actionArgJson[actionArg]) {
