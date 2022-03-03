@@ -3,6 +3,7 @@ const poem = require('./action/poem');
 const nasa = require('./action/nasa');
 const youtube = require('./action/youtube');
 const doggo = require('./action/doggo');
+const chuckNorris = require('./action/chuck_norris_facts');
 
 const action = new Map();
 
@@ -16,6 +17,7 @@ action.set("overXView", youtube.overXView);
 action.set("newVideos", youtube.newVideos);
 action.set("overXVideos", youtube.overXVideos);
 action.set("getRandomDog", doggo.getRandomDog);
+action.set("getRandomChuckNorrisFacts", chuckNorris.getRandomChuckNorrisFacts);
 
 module.exports.action = action;
 
@@ -33,6 +35,7 @@ checkAction.set("overXView", youtube.checkOverXView);
 checkAction.set("newVideos", youtube.checkNewVideos);
 checkAction.set("overXVideos", youtube.checkOverXVideos);
 checkAction.set("getRandomDog", doggo.checkGetRandomDog);
+checkAction.set("getRandomChuckNorrisFacts", chuckNorris.checkGetRandomChuckNorrisFacts);
 
 module.exports.checkAction = checkAction;
 
@@ -45,5 +48,6 @@ infoAction.set("poem", {name: "poem", actions: poem.poemInfo});
 infoAction.set("nasa", {name: "nasa", actions: nasa.nasaInfo});
 infoAction.set("youtube", {name: "youtube", actions: youtube.youtubeInfo});
 infoAction.set("doggo", {name: "doggo", actions: doggo.doggoInfo});
+infoAction.set("chuckNorris", {name: "chuckNorris", actions: chuckNorris.chuckNorrisFactsInfo});
 
 module.exports.infoAction = infoAction;
