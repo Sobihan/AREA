@@ -7,6 +7,7 @@ const chuckNorris = require('./action/chuck_norris_facts');
 const cat = require('./action/cat');
 const fox = require('./action/fox');
 const shibaInu = require('./action/shiba_inu');
+const redPanda = require('./action/red_panda');
 
 const action = new Map();
 
@@ -24,6 +25,7 @@ action.set("getRandomChuckNorrisFacts", chuckNorris.getRandomChuckNorrisFacts);
 action.set("getRandomCat", cat.getRandomCat);
 action.set("getRandomFox", fox.getRandomFox);
 action.set("getRandomShibaInu", shibaInu.getRandomShibaInu);
+action.set("getRandomRedPanda", redPanda.getRandomRedPanda);
 
 module.exports.action = action;
 
@@ -45,6 +47,7 @@ checkAction.set("getRandomChuckNorrisFacts", chuckNorris.checkGetRandomChuckNorr
 checkAction.set("getRandomCat", cat.checkGetRandomCat);
 checkAction.set("getRandomFox", fox.checkGetRandomFox);
 checkAction.set("getRandomShibaInu", shibaInu.checkGetRandomShibaInu);
+checkAction.set("getRandomRedPanda", redPanda.checkGetRandomRedPanda);
 
 module.exports.checkAction = checkAction;
 
@@ -61,5 +64,6 @@ infoAction.set("chuckNorris", {name: "chuckNorris", actions: chuckNorris.chuckNo
 infoAction.set("cat", {name: "cat", actions: cat.catInfo});
 infoAction.set("fox", {name: "fox", actions: fox.foxInfo});
 infoAction.set("shibaInu", {name: "shibaInu", actions: shibaInu.shibaInuInfo});
+infoAction.set("redPanda", {name: "redPanda", actions: redPanda.redPandaInfo});
 
 module.exports.infoAction = infoAction;
