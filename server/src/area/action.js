@@ -6,6 +6,7 @@ const doggo = require('./action/doggo');
 const chuckNorris = require('./action/chuck_norris_facts');
 const cat = require('./action/cat');
 const fox = require('./action/fox');
+const shibaInu = require('./action/shiba_inu');
 
 const action = new Map();
 
@@ -22,6 +23,7 @@ action.set("getRandomDog", doggo.getRandomDog);
 action.set("getRandomChuckNorrisFacts", chuckNorris.getRandomChuckNorrisFacts);
 action.set("getRandomCat", cat.getRandomCat);
 action.set("getRandomFox", fox.getRandomFox);
+action.set("getRandomShibaInu", shibaInu.getRandomShibaInu);
 
 module.exports.action = action;
 
@@ -42,6 +44,7 @@ checkAction.set("getRandomDog", doggo.checkGetRandomDog);
 checkAction.set("getRandomChuckNorrisFacts", chuckNorris.checkGetRandomChuckNorrisFacts);
 checkAction.set("getRandomCat", cat.checkGetRandomCat);
 checkAction.set("getRandomFox", fox.checkGetRandomFox);
+checkAction.set("getRandomShibaInu", shibaInu.checkGetRandomShibaInu);
 
 module.exports.checkAction = checkAction;
 
@@ -57,5 +60,6 @@ infoAction.set("doggo", {name: "doggo", actions: doggo.doggoInfo});
 infoAction.set("chuckNorris", {name: "chuckNorris", actions: chuckNorris.chuckNorrisFactsInfo});
 infoAction.set("cat", {name: "cat", actions: cat.catInfo});
 infoAction.set("fox", {name: "fox", actions: fox.foxInfo});
+infoAction.set("shibaInu", {name: "shibaInu", actions: shibaInu.shibaInuInfo});
 
 module.exports.infoAction = infoAction;
