@@ -7,7 +7,7 @@ const chuckNorris = require('./action/chuck_norris_facts');
 const cat = require('./action/cat');
 const fox = require('./action/fox');
 const shibaInu = require('./action/shiba_inu');
-const redPanda = require('./action/red_panda');
+const some_random_api = require('./action/some_random_api');
 
 const action = new Map();
 
@@ -25,7 +25,15 @@ action.set("getRandomChuckNorrisFacts", chuckNorris.getRandomChuckNorrisFacts);
 action.set("getRandomCat", cat.getRandomCat);
 action.set("getRandomFox", fox.getRandomFox);
 action.set("getRandomShibaInu", shibaInu.getRandomShibaInu);
-action.set("getRandomRedPanda", redPanda.getRandomRedPanda);
+action.set("getSomeRandomRedPanda", some_random_api.getSomeRandomRedPanda);
+action.set("getSomeRandomRaccoon", some_random_api.getSomeRandomRaccoon);
+action.set("getSomeRandomKangaroo", some_random_api.getSomeRandomKangaroo);
+action.set("getSomeRandomKoala", some_random_api.getSomeRandomKoala);
+action.set("getSomeRandomJoke", some_random_api.getSomeRandomJoke);
+action.set("getSomeRandomAnimePat", some_random_api.getSomeRandomAnimePat);
+action.set("getSomeRandomAnimeWink", some_random_api.getSomeRandomAnimeWink);
+action.set("getSomeRandomAnimeHug", some_random_api.getSomeRandomAnimeHug);
+action.set("getSomeRandomMeme", some_random_api.getSomeRandomMeme);
 
 module.exports.action = action;
 
@@ -47,7 +55,15 @@ checkAction.set("getRandomChuckNorrisFacts", chuckNorris.checkGetRandomChuckNorr
 checkAction.set("getRandomCat", cat.checkGetRandomCat);
 checkAction.set("getRandomFox", fox.checkGetRandomFox);
 checkAction.set("getRandomShibaInu", shibaInu.checkGetRandomShibaInu);
-checkAction.set("getRandomRedPanda", redPanda.checkGetRandomRedPanda);
+checkAction.set("getSomeRandomRedPanda", some_random_api.checkGetSomeRandom);
+checkAction.set("getSomeRandomRaccoon", some_random_api.checkGetSomeRandom);
+checkAction.set("getSomeRandomKangaroo", some_random_api.checkGetSomeRandom);
+checkAction.set("getSomeRandomKoala", some_random_api.checkGetSomeRandom);
+checkAction.set("getSomeRandomJoke", some_random_api.checkGetSomeRandom);
+checkAction.set("getSomeRandomAnimePat", some_random_api.checkGetSomeRandom);
+checkAction.set("getSomeRandomAnimeWink", some_random_api.checkGetSomeRandom);
+checkAction.set("getSomeRandomAnimeHug", some_random_api.checkGetSomeRandom);
+checkAction.set("getSomeRandomMeme", some_random_api.checkGetSomeRandom);
 
 module.exports.checkAction = checkAction;
 
@@ -64,6 +80,6 @@ infoAction.set("chuckNorris", {name: "chuckNorris", actions: chuckNorris.chuckNo
 infoAction.set("cat", {name: "cat", actions: cat.catInfo});
 infoAction.set("fox", {name: "fox", actions: fox.foxInfo});
 infoAction.set("shibaInu", {name: "shibaInu", actions: shibaInu.shibaInuInfo});
-infoAction.set("redPanda", {name: "redPanda", actions: redPanda.redPandaInfo});
+infoAction.set("someRandomApi", {name: "someRandomApi", actions: some_random_api.someRandomInfo});
 
 module.exports.infoAction = infoAction;
