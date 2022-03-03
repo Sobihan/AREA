@@ -5,6 +5,7 @@ const youtube = require('./action/youtube');
 const doggo = require('./action/doggo');
 const chuckNorris = require('./action/chuck_norris_facts');
 const cat = require('./action/cat');
+const fox = require('./action/fox');
 
 const action = new Map();
 
@@ -20,6 +21,7 @@ action.set("overXVideos", youtube.overXVideos);
 action.set("getRandomDog", doggo.getRandomDog);
 action.set("getRandomChuckNorrisFacts", chuckNorris.getRandomChuckNorrisFacts);
 action.set("getRandomCat", cat.getRandomCat);
+action.set("getRandomFox", fox.getRandomFox);
 
 module.exports.action = action;
 
@@ -39,6 +41,7 @@ checkAction.set("overXVideos", youtube.checkOverXVideos);
 checkAction.set("getRandomDog", doggo.checkGetRandomDog);
 checkAction.set("getRandomChuckNorrisFacts", chuckNorris.checkGetRandomChuckNorrisFacts);
 checkAction.set("getRandomCat", cat.checkGetRandomCat);
+checkAction.set("getRandomFox", fox.checkGetRandomFox);
 
 module.exports.checkAction = checkAction;
 
@@ -53,5 +56,6 @@ infoAction.set("youtube", {name: "youtube", actions: youtube.youtubeInfo});
 infoAction.set("doggo", {name: "doggo", actions: doggo.doggoInfo});
 infoAction.set("chuckNorris", {name: "chuckNorris", actions: chuckNorris.chuckNorrisFactsInfo});
 infoAction.set("cat", {name: "cat", actions: cat.catInfo});
+infoAction.set("fox", {name: "fox", actions: fox.foxInfo});
 
 module.exports.infoAction = infoAction;
