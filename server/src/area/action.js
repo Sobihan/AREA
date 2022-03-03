@@ -8,6 +8,7 @@ const cat = require('./action/cat');
 const fox = require('./action/fox');
 const shibaInu = require('./action/shiba_inu');
 const some_random_api = require('./action/some_random_api');
+const waifu = require('./action/waifu');
 
 const action = new Map();
 
@@ -34,6 +35,7 @@ action.set("getSomeRandomAnimePat", some_random_api.getSomeRandomAnimePat);
 action.set("getSomeRandomAnimeWink", some_random_api.getSomeRandomAnimeWink);
 action.set("getSomeRandomAnimeHug", some_random_api.getSomeRandomAnimeHug);
 action.set("getSomeRandomMeme", some_random_api.getSomeRandomMeme);
+action.set("getRandomWaifu", waifu.getRandomWaifu);
 
 module.exports.action = action;
 
@@ -64,6 +66,7 @@ checkAction.set("getSomeRandomAnimePat", some_random_api.checkGetSomeRandom);
 checkAction.set("getSomeRandomAnimeWink", some_random_api.checkGetSomeRandom);
 checkAction.set("getSomeRandomAnimeHug", some_random_api.checkGetSomeRandom);
 checkAction.set("getSomeRandomMeme", some_random_api.checkGetSomeRandom);
+checkAction.set("getRandomWaifu", waifu.checkGetRandomWaifu);
 
 module.exports.checkAction = checkAction;
 
@@ -81,5 +84,6 @@ infoAction.set("cat", {name: "cat", actions: cat.catInfo});
 infoAction.set("fox", {name: "fox", actions: fox.foxInfo});
 infoAction.set("shibaInu", {name: "shibaInu", actions: shibaInu.shibaInuInfo});
 infoAction.set("someRandomApi", {name: "someRandomApi", actions: some_random_api.someRandomInfo});
+infoAction.set("waifu", {name: "waifu", actions: waifu.waifuInfo});
 
 module.exports.infoAction = infoAction;
