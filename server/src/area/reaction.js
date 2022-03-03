@@ -24,7 +24,7 @@ module.exports.checkReaction = checkReaction;
 const infoReaction = new Map();
 
 //infoReaction.set("testInfo", {name: "testInfo", reactions: test.testInfo});
-infoReaction.set("twitch", {name: "twitch", reactions: test.testInfo});
+//infoReaction.set("twitch", {name: "twitch", reactions: test.testInfo});
 infoReaction.set("discord", {name: "discord", reactions: discord.discordInfo});
 
 module.exports.infoReaction = infoReaction;

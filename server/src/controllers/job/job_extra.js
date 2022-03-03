@@ -2,7 +2,6 @@ const job = require('../../db_management/job/db_job');
 const actions = require('../../area/action');
 const reactions = require('../../area/reaction');
 const { ToadScheduler, SimpleIntervalJob, Task, AsyncTask } = require('toad-scheduler');
-//const { json } = require('body-parser');
 
 const scheduler = new ToadScheduler()
 
@@ -245,4 +244,3 @@ module.exports.stopJob = stopJob;
 module.exports.getReAction = getReAction;
 module.exports.removeJob = removeJob;
 module.exports.launchJobOnStart = launchJobOnStart;
-//module.exports.getJob = getJob;
