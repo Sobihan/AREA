@@ -375,6 +375,7 @@ module.exports.getSomeRandomMeme = getSomeRandomMeme;
 
 function checkGetSomeRandom(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     return true;
 }
 

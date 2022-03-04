@@ -47,6 +47,7 @@ module.exports.getRandomWaifu = getRandomWaifu;
 
 function checkGetRandomWaifu(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     return true;
 }
 

@@ -47,6 +47,7 @@ module.exports.getRandomFox = getRandomFox;
 
 function checkGetRandomFox(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     return true;
 }
 

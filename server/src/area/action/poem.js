@@ -47,6 +47,7 @@ module.exports.getRandomPoem = getRandomPoem;
 
 function checkGetRandomPoem(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     return true;
 }
 

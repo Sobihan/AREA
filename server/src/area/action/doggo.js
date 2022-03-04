@@ -49,6 +49,7 @@ module.exports.getRandomDog = getRandomDog;
 
 function checkGetRandomDog(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     return true;
 }
 

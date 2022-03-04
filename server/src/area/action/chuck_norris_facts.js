@@ -47,6 +47,7 @@ module.exports.getRandomChuckNorrisFacts = getRandomChuckNorrisFacts;
 
 function checkGetRandomChuckNorrisFacts(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     return true;
 }
 

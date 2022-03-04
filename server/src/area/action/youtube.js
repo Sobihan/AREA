@@ -200,6 +200,7 @@ module.exports.overXVideos = overXVideos;
 
 function checkNewLike(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "likes", 0);
     if (search.args(actionArgs, "videoURL") == null)
@@ -209,6 +210,7 @@ function checkNewLike(userToken, actionArgs)
 
 function checkOverXLike(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
     if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "likes") == null || !Number.isInteger(search.args(actionArgs, "likes")))
@@ -218,6 +220,7 @@ function checkOverXLike(userToken, actionArgs)
 
 function checkNewView(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "views", 0);
     if (search.args(actionArgs, "videoURL") == null)
@@ -227,6 +230,7 @@ function checkNewView(userToken, actionArgs)
 
 function checkOverXView(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
     if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "views") == null || !Number.isInteger(search.args(actionArgs, "views")))
@@ -236,6 +240,7 @@ function checkOverXView(userToken, actionArgs)
 
 function checkNewVideos(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "lastVideoID", "");
     if (search.args(actionArgs, "channelName") == null)
@@ -245,6 +250,7 @@ function checkNewVideos(userToken, actionArgs)
 
 function checkOverXVideos(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
     if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "videoCount") == null || !Number.isInteger(search.args(actionArgs, "videoCount")))

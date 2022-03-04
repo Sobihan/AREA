@@ -33,6 +33,7 @@ module.exports.getStream = getStream;
 
 function checkGetStream(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     search.AddArgs(actionArgs, "userToken", userToken);
     if (search.args(actionArgs, "channelName") == null)
         return false;

@@ -47,6 +47,7 @@ module.exports.getRandomCat = getRandomCat;
 
 function checkGetRandomCat(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     return true;
 }
 

@@ -47,6 +47,7 @@ module.exports.getRandomShibaInu = getRandomShibaInu;
 
 function checkGetRandomShibaInu(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     return true;
 }
 

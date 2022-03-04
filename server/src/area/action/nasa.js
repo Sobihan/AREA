@@ -48,6 +48,7 @@ module.exports.getAPOD = getAPOD;
 
 function checkGetAPOD(userToken, actionArgs)
 {
+    search.initializeArgs(actionArgs);
     return true;
 }
 
