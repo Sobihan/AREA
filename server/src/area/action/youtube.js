@@ -131,7 +131,7 @@ function newVideos(actionArgs, callback, reactionArgs)
         console.log(e);
     })
     .then((channel) => {
-        if (isSuccess == true) {
+        if (isSuccess == true && channel != null) {
             channel.nextVideos()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -211,7 +211,7 @@ function checkOverXLike(userToken, actionArgs)
 {
     search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
-    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "likes") == null)
+    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "likes") == null || !Number.isInteger(search.args(actionArgs, "likes")))
         return false;
     return true;
 }
@@ -229,7 +229,7 @@ function checkOverXView(userToken, actionArgs)
 {
     search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
-    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "views") == null)
+    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "views") == null || !Number.isInteger(search.args(actionArgs, "views")))
         return false;
     return true;
 }
@@ -247,7 +247,7 @@ function checkOverXVideos(userToken, actionArgs)
 {
     search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
-    if (search.args(actionArgs, "channelName") == null && search.args(actionArgs, "videoCount") == null)
+    if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "videoCount") == null || !Number.isInteger(search.args(actionArgs, "videoCount")))
         return false;
     return true;
 }
