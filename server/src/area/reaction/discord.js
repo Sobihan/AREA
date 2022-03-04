@@ -43,9 +43,8 @@ module.exports.sendPrivateMessages = sendPrivateMessages;
 function checkSendServerMessages(userToken, reactionArgs)
 {
     search.initializeArgs(reactionArgs);
-    search.AddArgs(reactionArgs, "userToken", userToken);
-    if (/*search.args(reactionArgs, "text") == null ||*/
-        search.args(reactionArgs, "serverID") == null)
+    // search.AddArgs(reactionArgs, "userToken", userToken);
+    if (search.args(reactionArgs, "serverID") == null)
         return false;
     return true;
 }
@@ -53,9 +52,8 @@ function checkSendServerMessages(userToken, reactionArgs)
 function checkSendPrivateMessages(userToken, reactionArgs)
 {
     search.initializeArgs(reactionArgs);
-    search.AddArgs(reactionArgs, "userToken", userToken);
-    if (/*search.args(reactionArgs, "text") == null ||*/
-        search.args(reactionArgs, "userID") == null)
+    // search.AddArgs(reactionArgs, "userToken", userToken);
+    if (search.args(reactionArgs, "userID") == null)
         return false;
     return true;
 }

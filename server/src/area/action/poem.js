@@ -18,7 +18,7 @@ function getRandomPoem(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            console.log('getRandomPoem SUCESSFUL');
+            // console.log('getRandomPoem SUCESSFUL');
 
             response.json()
             .catch((e) => {
@@ -27,17 +27,17 @@ function getRandomPoem(actionArgs, callback, reactionArgs)
             })
             .then((poems) => {
                 if (isSuccess_2 == true) {
-                    console.log('getRandomPoem JSON SUCESSFUL');
+                    // console.log('getRandomPoem JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "Here is your random poem:\n\n\nTitled: " + poems[0].title + "\n\n" + poems[0].content + "\nBy: " + poems[0].poet.name);
                     callback(reactionArgs);
                 }
-                else
-                    console.log('getRandomPoem JSON FAIL');
+                // else
+                //     console.log('getRandomPoem JSON FAIL');
             });
         }
-        else {
-            console.log('getRandomPoem FAIL');
-        }
+        // else {
+        //     console.log('getRandomPoem FAIL');
+        // }
     });
 }
 

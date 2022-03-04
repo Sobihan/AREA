@@ -18,7 +18,7 @@ function getRandomShibaInu(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            console.log('getRandomShibaInu SUCESSFUL');
+            // console.log('getRandomShibaInu SUCESSFUL');
 
             response.json()
             .catch((e) => {
@@ -27,17 +27,17 @@ function getRandomShibaInu(actionArgs, callback, reactionArgs)
             })
             .then((shibaInu) => {
                 if (isSuccess_2 == true) {
-                    console.log('getRandomShibaInu JSON SUCESSFUL');
+                    // console.log('getRandomShibaInu JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "Here is your random picture of a Shiba Inu:\n" + shibaInu);
                     callback(reactionArgs);
                 }
-                else
-                    console.log('getRandomShibaInu JSON FAIL');
+                // else
+                //     console.log('getRandomShibaInu JSON FAIL');
             });
         }
-        else {
-            console.log('getRandomShibaInu FAIL');
-        }
+        // else {
+        //     console.log('getRandomShibaInu FAIL');
+        // }
     });
 }
 

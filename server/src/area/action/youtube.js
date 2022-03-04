@@ -19,14 +19,14 @@ function NewLike(actionArgs, callback, reactionArgs)
         if (isSuccess == true && video != null && video != undefined && video.likeCount != undefined && video.likeCount != likes) {
             //console.log('testgetStream SUCESSFUL');
             //console.log('video = ', JSON.stringify(video));
-            console.log('video.likeCount = ', JSON.stringify(video.likeCount));
+            // console.log('video.likeCount = ', JSON.stringify(video.likeCount));
             search.changeArgs(actionArgs, "likes", video.likeCount);
             search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " like count as changed.\n New like counter is " + video.likeCount + " likes.\n");
             callback(reactionArgs);
         }
-        else {
-            console.log('testgetStream FAIL');
-        }
+        // else {
+        //     console.log('testgetStream FAIL');
+        // }
     });
 }
 
@@ -49,13 +49,13 @@ function overXLike(actionArgs, callback, reactionArgs)
                 search.changeArgs(actionArgs, "done", true);
                 //console.log('testgetStream SUCESSFUL');
                 //console.log('video = ', JSON.stringify(video));
-                console.log('video.likeCount = ', JSON.stringify(video.likeCount));
+                // console.log('video.likeCount = ', JSON.stringify(video.likeCount));
                 search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like as been reached.\n New like counter is " + video.likeCount + " likes.\n");
                 callback(reactionArgs);
             }
-            else {
-                console.log('testgetStream FAIL');
-            }
+            // else {
+            //     console.log('testgetStream FAIL');
+            // }
         });
     }
 }
@@ -76,14 +76,14 @@ function newView(actionArgs, callback, reactionArgs)
         if (isSuccess == true && video != null && video != undefined && video.viewCount != undefined && video.viewCount != views) {
             //console.log('testgetStream SUCESSFUL');
             //console.log('video = ', JSON.stringify(video));
-            console.log('video.viewCount = ', JSON.stringify(video.viewCount));
+            // console.log('video.viewCount = ', JSON.stringify(video.viewCount));
             search.changeArgs(actionArgs, "views", video.viewCount);
             search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " view count as changed.\n New view counter is " + video.viewCount + " views.\n");
             callback(reactionArgs);
         }
-        else {
-            console.log('testgetStream FAIL');
-        }
+        // else {
+        //     console.log('testgetStream FAIL');
+        // }
     });
 }
 
@@ -106,13 +106,13 @@ function overXView(actionArgs, callback, reactionArgs)
                 search.changeArgs(actionArgs, "done", true);
                 //console.log('testgetStream SUCESSFUL');
                 //console.log('video = ', JSON.stringify(video));
-                console.log('video.likeCount = ', JSON.stringify(video.viewCount));
+                // console.log('video.likeCount = ', JSON.stringify(video.viewCount));
                 search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views as been reached.\n New views counter is " + video.viewCount + " views.\n");
                 callback(reactionArgs);
             }
-            else {
-                console.log('testgetStream FAIL');
-            }
+            // else {
+            //     console.log('testgetStream FAIL');
+            // }
         });
     }
 }
@@ -144,14 +144,14 @@ function newVideos(actionArgs, callback, reactionArgs)
                     search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as published a new video titled \"" + channel.videos[0].title + "\", it has a duration of " + channel.videos[0].duration + " seconds.\n");
                     callback(reactionArgs);
                 }
-                else {
-                    console.log('stopJob FAIL');
-                }
+                // else {
+                //     console.log('stopJob FAIL');
+                // }
             });
         }
-        else {
-            console.log('testgetStream FAIL');
-        }
+        // else {
+        //     console.log('testgetStream FAIL');
+        // }
     });
 }
 
@@ -173,14 +173,14 @@ function overXVideos(actionArgs, callback, reactionArgs)
             //console.log('channel.videoCount = ', JSON.stringify(channel.videoCount));
             if (isSuccess == true && channel != null && channel != undefined && channel.videoCount != undefined && channel.videoCount >= videoCount) {
                 //console.log('newViewer SUCESSFUL');
-                console.log('channel.videoCount = ', JSON.stringify(channel.videoCount));
+                // console.log('channel.videoCount = ', JSON.stringify(channel.videoCount));
                 search.changeArgs(actionArgs, "done", true);
                 search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as reached the targeted number of videos uploaded.\n New video counter is " + channel.videoCount + " video.\n");
                 callback(reactionArgs);
             }
-            else {
-                console.log('testgetStream FAIL');
-            }
+            // else {
+            //     console.log('testgetStream FAIL');
+            // }
         });
     }
 }
@@ -201,7 +201,7 @@ module.exports.overXVideos = overXVideos;
 function checkNewLike(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    search.AddArgs(actionArgs, "userToken", userToken);
+    // search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "likes", 0);
     if (search.args(actionArgs, "videoURL") == null)
         return false;
@@ -211,7 +211,7 @@ function checkNewLike(userToken, actionArgs)
 function checkOverXLike(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    search.AddArgs(actionArgs, "userToken", userToken);
+    // search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
     if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "likes") == null || !Number.isInteger(search.args(actionArgs, "likes")))
         return false;
@@ -221,7 +221,7 @@ function checkOverXLike(userToken, actionArgs)
 function checkNewView(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    search.AddArgs(actionArgs, "userToken", userToken);
+    // search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "views", 0);
     if (search.args(actionArgs, "videoURL") == null)
         return false;
@@ -231,7 +231,7 @@ function checkNewView(userToken, actionArgs)
 function checkOverXView(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    search.AddArgs(actionArgs, "userToken", userToken);
+    // search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
     if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "views") == null || !Number.isInteger(search.args(actionArgs, "views")))
         return false;
@@ -241,7 +241,7 @@ function checkOverXView(userToken, actionArgs)
 function checkNewVideos(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    search.AddArgs(actionArgs, "userToken", userToken);
+    // search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "lastVideoID", "");
     if (search.args(actionArgs, "channelName") == null)
         return false;
@@ -251,7 +251,7 @@ function checkNewVideos(userToken, actionArgs)
 function checkOverXVideos(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    search.AddArgs(actionArgs, "userToken", userToken);
+    // search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
     if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "videoCount") == null || !Number.isInteger(search.args(actionArgs, "videoCount")))
         return false;

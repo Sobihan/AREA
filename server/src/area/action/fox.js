@@ -18,7 +18,7 @@ function getRandomFox(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            console.log('getRandomFox SUCESSFUL');
+            // console.log('getRandomFox SUCESSFUL');
 
             response.json()
             .catch((e) => {
@@ -27,17 +27,17 @@ function getRandomFox(actionArgs, callback, reactionArgs)
             })
             .then((fox) => {
                 if (isSuccess_2 == true) {
-                    console.log('getRandomFox JSON SUCESSFUL');
+                    // console.log('getRandomFox JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "Here is your random picture of a fox:\n" + fox.image);
                     callback(reactionArgs);
                 }
-                else
-                    console.log('getRandomFox JSON FAIL');
+                // else
+                //     console.log('getRandomFox JSON FAIL');
             });
         }
-        else {
-            console.log('getRandomFox FAIL');
-        }
+        // else {
+        //     console.log('getRandomFox FAIL');
+        // }
     });
 }
 

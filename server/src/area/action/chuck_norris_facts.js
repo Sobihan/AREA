@@ -18,7 +18,7 @@ function getRandomChuckNorrisFacts(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            console.log('getRandomChuckNorrisFacts SUCESSFUL');
+            // console.log('getRandomChuckNorrisFacts SUCESSFUL');
 
             response.json()
             .catch((e) => {
@@ -27,17 +27,17 @@ function getRandomChuckNorrisFacts(actionArgs, callback, reactionArgs)
             })
             .then((fatcs) => {
                 if (isSuccess_2 == true) {
-                    console.log('getRandomChuckNorrisFacts JSON SUCESSFUL');
+                    // console.log('getRandomChuckNorrisFacts JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "Here is your random Chuck Norris facts, remember they are ALWAYS true:\n" + fatcs.value);
                     callback(reactionArgs);
                 }
-                else
-                    console.log('getRandomChuckNorrisFacts JSON FAIL');
+                // else
+                //     console.log('getRandomChuckNorrisFacts JSON FAIL');
             });
         }
-        else {
-            console.log('getRandomChuckNorrisFacts FAIL');
-        }
+        // else {
+        //     console.log('getRandomChuckNorrisFacts FAIL');
+        // }
     });
 }
 

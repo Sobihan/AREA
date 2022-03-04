@@ -18,7 +18,7 @@ function getAPOD(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            console.log('getAPOD SUCESSFUL');
+            // console.log('getAPOD SUCESSFUL');
 
             response.json()
             .catch((e) => {
@@ -27,18 +27,18 @@ function getAPOD(actionArgs, callback, reactionArgs)
             })
             .then((apod) => {
                 if (isSuccess_2 == true) {
-                    console.log('getAPOD JSON SUCESSFUL');
+                    // console.log('getAPOD JSON SUCESSFUL');
                     //search.AddArgs(reactionArgs, "text", "Here is your astronomy picture of the day:\n\n\nTitled: " + apod.title + "\n" + apod.hdurl + "\n\n\n" + "Explanation: " + apod.explanation + "\n");
                     search.AddArgs(reactionArgs, "text", "Here is your astronomy picture of the day:\n\n\nTitled: " + apod.title + "\n\n" + "Explanation: " + apod.explanation + "\n" + apod.hdurl);
                     callback(reactionArgs);
                 }
-                else
-                    console.log('getAPOD JSON FAIL');
+                // else
+                //     console.log('getAPOD JSON FAIL');
             });
         }
-        else {
-            console.log('getAPOD FAIL');
-        }
+        // else {
+        //     console.log('getAPOD FAIL');
+        // }
     });
 }
 

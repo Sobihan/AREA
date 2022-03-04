@@ -18,7 +18,7 @@ function getRandomWaifu(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            console.log('getRandomCat SUCESSFUL');
+            // console.log('getRandomCat SUCESSFUL');
 
             response.json()
             .catch((e) => {
@@ -27,17 +27,17 @@ function getRandomWaifu(actionArgs, callback, reactionArgs)
             })
             .then((waifu) => {
                 if (isSuccess_2 == true) {
-                    console.log('getRandomCat JSON SUCESSFUL');
+                    // console.log('getRandomCat JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "Here is your random picture of a female character: " + waifu.images[0].url + "\nby: " + waifu.images[0].source);
                     callback(reactionArgs);
                 }
-                else
-                    console.log('getRandomCat JSON FAIL');
+                // else
+                //     console.log('getRandomCat JSON FAIL');
             });
         }
-        else {
-            console.log('getRandomCat FAIL');
-        }
+        // else {
+        //     console.log('getRandomCat FAIL');
+        // }
     });
 }
 

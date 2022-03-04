@@ -18,7 +18,7 @@ function getRandomDog(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            console.log('getRandomDog SUCESSFUL');
+            // console.log('getRandomDog SUCESSFUL');
 
             response.json()
             .catch((e) => {
@@ -27,19 +27,19 @@ function getRandomDog(actionArgs, callback, reactionArgs)
             })
             .then((dog) => {
                 if (isSuccess_2 == true) {
-                    console.log('getRandomDog JSON SUCESSFUL');
+                    // console.log('getRandomDog JSON SUCESSFUL');
                     //search.AddArgs(reactionArgs, "text", "Here is your astronomy picture of the day:\n\n\nTitled: " + apod.title + "\n" + apod.hdurl + "\n\n\n" + "Explanation: " + apod.explanation + "\n");
                     // search.AddArgs(reactionArgs, "text", "Here is your astronomy picture of the day:\n\n\nTitled: " + apod.title + "\n\n" + "Explanation: " + apod.explanation + "\n" + apod.hdurl);
                     search.AddArgs(reactionArgs, "text", "Here is your random picture of a dog:\n" + dog.message);
                     callback(reactionArgs);
                 }
-                else
-                    console.log('getRandomDog JSON FAIL');
+                // else
+                //     console.log('getRandomDog JSON FAIL');
             });
         }
-        else {
-            console.log('getRandomDog FAIL');
-        }
+        // else {
+        //     console.log('getRandomDog FAIL');
+        // }
     });
 }
 

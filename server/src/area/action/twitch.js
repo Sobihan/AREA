@@ -17,13 +17,13 @@ function getStream(actionArgs, callback, reactionArgs)
     })
     .then((twitch) => {
         if (isSuccess == true && twitch.data.length > 0){
-            console.log('testgetStream SUCESSFUL');
+            // console.log('testgetStream SUCESSFUL');
             search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " is Live.\n")
             callback(reactionArgs);
         }
-        else {
-            console.log('testgetStream FAIL');
-        }
+        // else {
+        //     console.log('testgetStream FAIL');
+        // }
     });
 }
 
@@ -34,7 +34,7 @@ module.exports.getStream = getStream;
 function checkGetStream(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    search.AddArgs(actionArgs, "userToken", userToken);
+    //search.AddArgs(actionArgs, "userToken", userToken);
     if (search.args(actionArgs, "channelName") == null)
         return false;
     return true;
