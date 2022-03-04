@@ -1,4 +1,3 @@
-const test = require('./reaction/test');
 const discord = require('./reaction/discord');
 const email = require('./reaction/email');
 
