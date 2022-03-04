@@ -3,9 +3,9 @@ const email = require('./reaction/email');
 
 const reaction = new Map();
 
-reaction.set("sendServerMessages", discord.sendServerMessages);
-reaction.set("sendPrivateMessages", discord.sendPrivateMessages);
-reaction.set("sendEmail", email.sendEmail);
+reaction.set("sendServerMessages", discord.sendServerMessages); //--//
+reaction.set("sendPrivateMessages", discord.sendPrivateMessages); //--//
+reaction.set("sendEmail", email.sendEmail); //--//
 
 module.exports.reaction = reaction;
 

@@ -9,18 +9,21 @@ const fox = require('./action/fox');
 const shibaInu = require('./action/shiba_inu');
 const some_random_api = require('./action/some_random_api');
 const waifu = require('./action/waifu');
+const weather = require('./action/weather');
 
 const action = new Map();
 
-action.set("getStream", twitch.getStream);
+action.set("getStream", twitch.getStream); //--//
+action.set("overXViewer", twitch.overXViewer); //--//
+//action.set("getStreamsIfPlayingX", twitch.getStreamsIfPlayingX); //--//
 action.set("getRandomPoem", poem.getRandomPoem);
 action.set("getAPOD", nasa.getAPOD);
-action.set("NewLike", youtube.NewLike);
-action.set("overXLike", youtube.overXLike);
-action.set("newView", youtube.newView);
-action.set("overXView", youtube.overXView);
-action.set("newVideos", youtube.newVideos);
-action.set("overXVideos", youtube.overXVideos);
+action.set("NewLike", youtube.NewLike); //--//
+action.set("overXLike", youtube.overXLike); //--//
+action.set("newView", youtube.newView); //--//
+action.set("overXView", youtube.overXView); //--//
+action.set("newVideos", youtube.newVideos); //--//
+action.set("overXVideos", youtube.overXVideos); //--//
 action.set("getRandomDog", doggo.getRandomDog);
 action.set("getRandomChuckNorrisFacts", chuckNorris.getRandomChuckNorrisFacts);
 action.set("getRandomCat", cat.getRandomCat);
@@ -36,6 +39,7 @@ action.set("getSomeRandomAnimeWink", some_random_api.getSomeRandomAnimeWink);
 action.set("getSomeRandomAnimeHug", some_random_api.getSomeRandomAnimeHug);
 action.set("getSomeRandomMeme", some_random_api.getSomeRandomMeme);
 action.set("getRandomWaifu", waifu.getRandomWaifu);
+action.set("overXTemperature", weather.overXTemperature); //--//
 
 module.exports.action = action;
 
@@ -44,6 +48,8 @@ module.exports.action = action;
 const checkAction = new Map();
 
 checkAction.set("getStream", twitch.checkGetStream);
+checkAction.set("overXViewer", twitch.checkOverXViewer);
+//checkAction.set("getStreamsIfPlayingX", twitch.checkGetStreamsIfPlayingX);
 checkAction.set("getRandomPoem", poem.checkGetRandomPoem);
 checkAction.set("getAPOD", nasa.checkGetAPOD);
 checkAction.set("NewLike", youtube.checkNewLike);
@@ -67,6 +73,7 @@ checkAction.set("getSomeRandomAnimeWink", some_random_api.checkGetSomeRandom);
 checkAction.set("getSomeRandomAnimeHug", some_random_api.checkGetSomeRandom);
 checkAction.set("getSomeRandomMeme", some_random_api.checkGetSomeRandom);
 checkAction.set("getRandomWaifu", waifu.checkGetRandomWaifu);
+checkAction.set("overXTemperature", weather.checkOverXTemperature);
 
 module.exports.checkAction = checkAction;
 
@@ -85,5 +92,6 @@ infoAction.set("fox", {name: "fox", actions: fox.foxInfo});
 infoAction.set("shibaInu", {name: "shibaInu", actions: shibaInu.shibaInuInfo});
 infoAction.set("someRandomApi", {name: "someRandomApi", actions: some_random_api.someRandomInfo});
 infoAction.set("waifu", {name: "waifu", actions: waifu.waifuInfo});
+infoAction.set("weather", {name: "weather", actions: weather.weatherInfo});
 
 module.exports.infoAction = infoAction;
