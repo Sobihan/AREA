@@ -130,7 +130,7 @@ covidInfo.set("getUpdatedInfo", {
     name: "getUpdatedInfo",
     description: "Informs you of the latest covid information for the chosen country.",
     args: [
-        {country: "The requested streamer channel name."}
+        {country: "The chosen country."}
     ]
 });
 
@@ -138,8 +138,8 @@ covidInfo.set("getOverXActive", {
     name: "getOverXActive",
     description: "Informs you of the latest covid information for the chosen country. When the number of active cases reach the threshold.",
     args: [
-        {country: "The requested streamer channel name."},
-        {threshold: "The requested streamer channel name."}
+        {country: "The chosen country."},
+        {threshold: "The threshold used to trigger the reaction."}
     ]
 });
 
@@ -147,8 +147,8 @@ covidInfo.set("getOverXCritical", {
     name: "getOverXCritical",
     description: "Informs you of the latest covid information for the chosen country. When the number of critical cases reach the threshold.",
     args: [
-        {country: "The requested streamer channel name."},
-        {threshold: "The requested streamer channel name."}
+        {country: "The chosen country."},
+        {threshold: "The threshold used to trigger the reaction."}
     ]
 });
 
