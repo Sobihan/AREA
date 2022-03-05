@@ -15,6 +15,8 @@ const action = new Map();
 
 action.set("getStream", twitch.getStream); //--//
 action.set("overXViewer", twitch.overXViewer); //--//
+action.set("overXViewerAddY", twitch.overXViewerAddY); //--//
+action.set("overXViewerTimesY", twitch.overXViewerTimesY); //--//
 //action.set("getStreamsIfPlayingX", twitch.getStreamsIfPlayingX); //--//
 
 
@@ -86,6 +88,8 @@ const checkAction = new Map();
 
 checkAction.set("getStream", twitch.checkGetStream);
 checkAction.set("overXViewer", twitch.checkOverXViewer);
+checkAction.set("overXViewerAddY", twitch.checkOverXViewerY);
+checkAction.set("overXViewerTimesY", twitch.checkOverXViewerY);
 //checkAction.set("getStreamsIfPlayingX", twitch.checkGetStreamsIfPlayingX);
 
 
