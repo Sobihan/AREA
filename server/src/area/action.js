@@ -10,6 +10,7 @@ const shibaInu = require('./action/shiba_inu');
 const some_random_api = require('./action/some_random_api');
 const waifu = require('./action/waifu');
 const weather = require('./action/weather'); //--//
+const covid = require('./action/covid'); //--//
 
 const action = new Map();
 
@@ -79,6 +80,11 @@ action.set("overXVisibility", weather.overXVisibility); //--//
 action.set("belowXVisibility", weather.belowXVisibility); //--//
 action.set("overXWindSpeed", weather.overXWindSpeed); //--//
 action.set("belowXWindSpeed", weather.belowXWindSpeed); //--//
+
+
+action.set("getUpdatedInfo", covid.getUpdatedInfo); //--//
+action.set("getOverXActive", covid.getOverXActive); //--//
+action.set("getOverXCritical", covid.getOverXCritical); //--//
 
 module.exports.action = action;
 
@@ -153,6 +159,11 @@ checkAction.set("belowXVisibility", weather.checkXVisibility);
 checkAction.set("overXWindSpeed", weather.checkXWindSpeed);
 checkAction.set("belowXWindSpeed", weather.checkXWindSpeed);
 
+
+checkAction.set("getUpdatedInfo", covid.checkGetUpdatedInfo);
+checkAction.set("getOverXActive", covid.checkGetOverX);
+checkAction.set("getOverXCritical", covid.checkGetOverX);
+
 module.exports.checkAction = checkAction;
 
 
@@ -171,5 +182,6 @@ infoAction.set("shibaInu", {name: "shibaInu", actions: shibaInu.shibaInuInfo});
 infoAction.set("someRandomApi", {name: "someRandomApi", actions: some_random_api.someRandomInfo});
 infoAction.set("waifu", {name: "waifu", actions: waifu.waifuInfo});
 infoAction.set("weather", {name: "weather", actions: weather.weatherInfo});
+infoAction.set("covid", {name: "covid", actions: covid.covidInfo});
 
 module.exports.infoAction = infoAction;
