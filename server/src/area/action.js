@@ -1,14 +1,19 @@
 const twitch = require('./action/twitch');
-const twitter = require('./action/twitter');
+const poem = require('./action/poem');
+const nasa = require('./action/nasa');
+const youtube = require('./action/youtube');
 
 const action = new Map();
 
 action.set("getStream", twitch.getStream);
-action.set("testAction", twitch.testAction);
-// action.set("tweet_create", twitch.testAction);
-// action.set("follow", twitch.testAction);
-// action.set("direct_message", twitch.testAction);
-// action.set("tweet_delete", twitch.testAction);
+action.set("getRandomPoem", poem.getRandomPoem);
+action.set("getAPOD", nasa.getAPOD);
+action.set("NewLike", youtube.NewLike);
+action.set("overXLike", youtube.overXLike);
+action.set("newView", youtube.newView);
+action.set("overXView", youtube.overXView);
+action.set("newVideos", youtube.newVideos);
+action.set("overXVideos", youtube.overXVideos);
 
 module.exports.action = action;
 
@@ -17,7 +22,14 @@ module.exports.action = action;
 const checkAction = new Map();
 
 checkAction.set("getStream", twitch.checkGetStream);
-checkAction.set("testAction", twitch.checktestAction);
+checkAction.set("getRandomPoem", poem.checkGetRandomPoem);
+checkAction.set("getAPOD", nasa.checkGetAPOD);
+checkAction.set("NewLike", youtube.checkNewLike);
+checkAction.set("overXLike", youtube.checkOverXLike);
+checkAction.set("newView", youtube.checkNewView);
+checkAction.set("overXView", youtube.checkOverXView);
+checkAction.set("newVideos", youtube.checkNewVideos);
+checkAction.set("overXVideos", youtube.checkOverXVideos);
 
 module.exports.checkAction = checkAction;
 
@@ -25,6 +37,9 @@ module.exports.checkAction = checkAction;
 
 const infoAction = new Map();
 
-infoAction.set("twitch", {name: "twitch", actions: twitch.twitchInfo}/*, {name: "twtich", actions: twitter.twitterInfo}*/);
+infoAction.set("twitch", {name: "twitch", actions: twitch.twitchInfo});
+infoAction.set("poem", {name: "poem", actions: poem.poemInfo});
+infoAction.set("nasa", {name: "nasa", actions: nasa.nasaInfo});
+infoAction.set("youtube", {name: "youtube", actions: youtube.youtubeInfo});
 
 module.exports.infoAction = infoAction;

@@ -18,6 +18,7 @@ function getStream(actionArgs, callback, reactionArgs)
     .then((twitch) => {
         if (isSuccess == true && twitch.data.length > 0){
             console.log('testgetStream SUCESSFUL');
+            search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " is Live.\n")
             callback(reactionArgs);
         }
         else {
@@ -26,25 +27,7 @@ function getStream(actionArgs, callback, reactionArgs)
     });
 }
 
-function testAction(actionArgs, callback, reactionArgs)
-{
-//    console.log(actionArgs);
-
-    var test = search.args(actionArgs, "test");
-    test += 1;
-    search.changeArgs(actionArgs, "test", test);
-/*
-    var data = search.args(actionArgs, "data");
-    console.log("data = ", data);
-    console.log("data.test = ", data.test);
-
-    search.args(actionArgs, "chedg")();
-*/
-    console.log("\nHello action world " + test + "\n");
-}
-
 module.exports.getStream = getStream;
-module.exports.testAction = testAction;
 
 
 
@@ -55,60 +38,8 @@ function checkGetStream(userToken, actionArgs)
         return false;
     return true;
 }
-/*
-function testtt(actionArgs, callback)
-{
-    function makeid(length) {
-        var result           = '';
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for ( var i = 0; i < length; i++ ) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
-
-    function fn60sec(actionArgs, callback)
-    {
-        callback(actionArgs, "data", makeid(5))
-        //data = makeid(5);
-        //console.log("origin data = ", data);
-    }
-
-
-    //fn60sec(data.test);
-    //setInterval(fn60sec, 3*1000);
-    setInterval(fn60sec, 3*1000, actionArgs, callback);
-}
-
-function helloTestt()
-{
-    console.log("sfvghjkiolmp");
-}
-*/
-function checktestAction(userToken, actionArgs)
-{
-    //search.AddArgs(actionArgs, "data", '');
-    //search.AddArgs(actionArgs, "chedg", helloTestt);
-    //var data = {test:''};
-
-    //testtt(actionArgs, search.changeArgs);
-
-/*    let data = '';
-
-    testtt(data)*/
-
-    // if (search.args(actionArgs, "test") == null)
-    //     search.AddArgs(actionArgs, "test", 0);
-
-
-    search.AddArgs(actionArgs, "userToken", userToken);
-
-    return true;
-}
 
 module.exports.checkGetStream = checkGetStream;
-module.exports.checktestAction = checktestAction;
 
 
 
@@ -123,6 +54,7 @@ twitchInfo.set("getStream", {
     ]
 });
 
+<<<<<<< HEAD
 twitchInfo.set("testAction", {
     name:"testAction",
     description:"I am new description",
@@ -176,3 +108,6 @@ function twitch_request(req, callback) {
 
 module.exports.twitchInfo = twitchInfo;
 module.exports.create_callback_hook_sub = create_callback_hook_sub;
+=======
+module.exports.twitchInfo = twitchInfo;
+>>>>>>> main

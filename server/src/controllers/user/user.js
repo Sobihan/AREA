@@ -1,4 +1,6 @@
 const user_prisma = require('../../db_management/user/db_user');
+const api_access = require('../../db_management/api_access/db_api_access');
+const user_extra = require('./user_extra');
 
 const register = (req, res, next) => {
     let isSuccess = true;
@@ -59,49 +61,92 @@ const authenticate = (req, res, next) => {
     console.log('Got body:', req.body);
 };
 
-const googleRegisterOrAuthenticate = (req, res, next) => {
+const googleRegisterOrAuthenticate = (req, res, next) => { //google here//
     let isSuccess = true;
     let isSuccess_2 = true;
+    console.log('SOSOBI... req.body =', JSON.stringify(req.body));
+    //console.log(req.body);
 
-    user_prisma.findUniqueAuthenticate(req.body.response.profileObj.email)
-    .catch((e) => {
-        isSuccess = false;
-        console.log(e);
-    })
-    .then((user) => {
-        if (isSuccess == true && user != null && req.body.response.profileObj.googleId == user.password){
-            console.log('googleAuthenticate SUCESSFUL');
-            res.status(200).json({
-                success: true,
-                body: 'googleAuthentication done!',
-                token: user.token,
-            });
-        }
-        else {
-            user_prisma.createUser(req.body.response.profileObj.email, req.body.response.profileObj.email, req.body.response.profileObj.googleId, req.body.response.profileObj.givenName, req.body.response.profileObj.familyName)
-            .catch((e) => {
-                isSuccess_2 = false;
-                console.log(e);
-            })
-            .then((user) => {
-                if (isSuccess_2 == true){
-                    console.log('googleRegister SUCESSFUL');
-                    res.status(200).json({
-                        success: true,
-                        body: 'googleRegistration done!',
-                        user
-                    });
-                }
-                else {
-                    console.log('googleRegisterOrAuthenticate FAIL');
-                    res.status(401).json({
-                        success: false,
-                        body: 'googleRegisterOrAuthenticate Failed'
-                    });
-                }
-            });
-        }
-    });
+    if (!req.body.is_mobile) { //c'est le WEB
+        user_extra.getGoogle(req.body.response.code)
+        .catch((e) => {
+            isSuccess = false;
+            console.log(e);
+        })
+        .then((data) => {
+            if (isSuccess == true && data.info != undefined && data.tokens != undefined) {
+                console.log('getGoogle SUCESSFUL');
+
+                user_extra.google(data, req.body.response.code, req.body.is_mobile)
+                .catch((e) => {
+                    isSuccess_2 = false;
+                    console.log(e);
+                })
+                .then((responce) => {
+                    if (isSuccess_2 == true){
+                        console.log('google SUCESSFUL');
+                        //console.log("responce =", JSON.stringify(responce))
+                        res.status(responce.code).json(responce.json);
+                    }
+                    else {
+                        console.log('google FAIL');
+                        res.status(responce.code).json(responce.json);
+                    }
+                });
+            }
+            else {
+                console.log('getGoogle FAIL');
+                res.status(401).json({
+                    success: false,
+                    body: 'getGoogle Failed'
+                });
+            }
+        });
+
+    }
+    else { //c'est le MOBILE
+        console.log('getGoogle MOBILE NOT IMPLEMENTED FAIL');
+        user_extra.connectGoogleMobile(req.body)
+        .catch((e) => {
+            isSuccess = false;
+            console.log(e);
+        })
+        .then((user) => {
+            if (isSuccess == true) {
+                console.log('connectGoogleMobile SUCESSFUL');
+                const disableAt = (Date.now() + ((2000 - 200) * 1000));
+                api_access.updateApiToken(user.json.token, "", "GOOGLE", disableAt, req.body.accessToken, req.body.refreshToken, req.body.is_mobile)
+                .catch((e) => {
+                    isSuccess_2 = false;
+                    console.log(e);
+                })
+                .then((job) => {
+                    if (isSuccess_2 == true){
+                        console.log('updateApiToken SUCESSFUL');
+                        res.status(200).json({
+                            success: true,
+                            body: 'updateApiToken done!',
+                            token: job.token
+                        });
+                    }
+                    else {
+                        console.log('updateApiToken FAIL');
+                        res.status(401).json({
+                            success: false,
+                            body: 'updateApiToken Failed'
+                        });
+                    }
+                });
+            }
+            else {
+                console.log('connectGoogleMobile FAIL');
+                res.status(401).json({
+                    success: false,
+                    body: 'getGoogle Failed'
+                });
+            }
+        });
+    }
 
     console.log('authenticate');
     console.log(req.body);

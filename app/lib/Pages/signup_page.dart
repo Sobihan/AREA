@@ -1,6 +1,8 @@
+import 'package:area/API/reddit.dart';
 import 'package:area/Components/Common/bottombar.dart';
 import 'package:area/Components/Login/background.dart';
 import 'package:area/Components/Login/gbutton.dart';
+import 'package:area/Components/Login/rbutton.dart';
 import 'package:area/Components/Login/text_span.dart';
 import 'package:area/Pages/login_page.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,13 @@ import 'package:area/Models/user.dart';
 import 'package:area/API/google.dart';
 import 'package:area/Models/google.dart';
 import 'package:delayed_display/delayed_display.dart';
+import 'package:oauth2_client/google_oauth2_client.dart';
+import 'package:oauth2_client/access_token_response.dart';
+
+GoogleOAuth2Client googleClient = GoogleOAuth2Client(
+    redirectUri:
+        'com.example.area:/oauth2redirect', //Just one slash, required by Google specs
+    customUriScheme: 'com.example.area');
 
 class SignupPage extends StatefulWidget {
   final String host;
@@ -74,13 +83,13 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
     });
   }
 
-  Future<bool> checkError() async {
+  Future<bool> checkError(bool google) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       addError("Check Internet connection");
       return false;
     } // Add Alert Box
-
+    if (google) return true;
     if (_controllerUsername.text.isEmpty) {
       addError("Check your username field");
       return false;
@@ -105,7 +114,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
   }
 
   void signInPressed() async {
-    if (!await checkError()) return;
+    if (!await checkError(false)) return;
     reload();
     final responseSignUp = await register(
         username: _controllerUsername.text,
@@ -118,37 +127,147 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
     }
     String token = jsonDecode(responseSignUp.body)["user"]['token'];
     final responseUser = await getUser(token: token, host: widget.host);
+    final responseService =
+        await getUserServices(token: token, host: widget.host);
+    final serviceJson = jsonDecode(responseService.body);
     User user = User.fromJson(
-        token: token, json: jsonDecode(responseUser.body)['user']);
-    print(user.toString());
+        avatar: jsonDecode(responseUser.body)['user']['avatar'] == null ||
+                jsonDecode(responseUser.body)['user']['avatar'] == ''
+            ? 'null'
+            : jsonDecode(responseUser.body)['user']['avatar'],
+        token: token,
+        json: jsonDecode(responseUser.body)['user'],
+        isGoogle: serviceJson['google'],
+        isReddit: serviceJson['reddit']);
+    final actionReaction = await getActionRea(host: widget.host);
     reload();
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => BottomBar(host: widget.host, user: user)),
+          builder: (context) => BottomBar(
+                host: widget.host,
+                user: user,
+                actionReaction: jsonDecode(actionReaction.body),
+              )),
     );
   }
 
+  // void gButtonPressed() async {
+  //   if (!await checkError(true)) return;
+  //   reload();
+  //   final user;
+  //   try {
+  //     user = await GoogleSignInApi.login();
+  //   } catch (e) {
+  //     return;
+  //   }
+
+  //   if (user == null) return;
+  //   final token = await user.authentication;
+  //   Google googleUser =
+  //       Google.fromGoogleSignInAccount(google: user, token: token);
+  //   final response = await signInWithGoogle(
+  //       user: googleUser, host: widget.host); //Need to check with bend
+  //   if (response.statusCode != 200) {
+  //     addError("Please try Again");
+  //     return;
+  //   }
+  //   String userToken;
+  //   if (jsonDecode(response.body)['token'] == null) {
+  //     userToken = jsonDecode(response.body)['user']['token'];
+  //   } else {
+  //     userToken = jsonDecode(response.body)['token'];
+  //   }
+
+  //   final responseUser = await getUser(token: userToken, host: widget.host);
+  //   final responseService =
+  //       await getUserServices(token: userToken, host: widget.host);
+  //   final jsonService = jsonDecode(responseService.body);
+  //   User userConnect = User.fromJson(
+  //       json: jsonDecode(responseUser.body)['user'],
+  //       token: userToken,
+  //       isGoogle: jsonService['google'],
+  //       isReddit: jsonService['reddit']);
+  //   final googleisConnect = await GoogleSignInApi.isConnect();
+  //   if (googleisConnect) {
+  //     GoogleSignInApi.logout();
+  //   }
+  //   final actionReaction = await getActionRea(host: widget.host);
+  //   reload();
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //         builder: (context) => BottomBar(
+  //               host: widget.host,
+  //               user: userConnect,
+  //               actionReaction: jsonDecode(actionReaction.body),
+  //             )),
+  //   );
+  // }
   void gButtonPressed() async {
-    final user;
+    if (!await checkError(true)) return;
+    reload();
+    Google googleUser;
     try {
-      user = await GoogleSignInApi.login();
-    } catch (e) {
+      AccessTokenResponse t = await googleClient.getTokenWithAuthCodeFlow(
+          clientId:
+              "789963154068-fkl9gdj0d898pcs5poa63av7fegto54b.apps.googleusercontent.com",
+          scopes: [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/gmail.readonly",
+            "https://www.googleapis.com/auth/userinfo.profile"
+          ]);
+      final response = await getGoogleInfo(accessToken: t.accessToken!);
+      final json = jsonDecode(response.body);
+      googleUser = Google(
+          refreshToken: t.refreshToken!,
+          accessToken: t.accessToken!,
+          googleID: json["id"],
+          displayName: json["name"],
+          email: json["email"]);
+    } catch (error) {
+      reload();
+      addError("Please try Again");
       return;
     }
-
-    if (user != null) {
-      final token = await user.authentication;
-
-      Google googleUser =
-          Google.fromGoogleSignInAccount(google: user, token: token);
-      final response = await signInWithGoogle(
-          user: googleUser, host: widget.host); //Need to check with bend
-      print(response.body);
-      print(response.statusCode);
+    final responseToLog =
+        await signInWithGoogle(user: googleUser, host: widget.host);
+    if (responseToLog.statusCode != 200) {
+      reload();
+      addError("Please try Again");
+      return;
+    }
+    String userToken;
+    if (jsonDecode(responseToLog.body)['token'] == null) {
+      userToken = jsonDecode(responseToLog.body)['user']['token'];
     } else {
-      return;
+      userToken = jsonDecode(responseToLog.body)['token'];
     }
+
+    final responseUser = await getUser(token: userToken, host: widget.host);
+    final serviceResponse =
+        await getUserServices(token: userToken, host: widget.host);
+    final jsonService = jsonDecode(serviceResponse.body);
+    User userConnect = User.fromJson(
+        avatar: jsonDecode(responseUser.body)['user']['avatar'] == null ||
+                jsonDecode(responseUser.body)['user']['avatar'] == ''
+            ? 'null'
+            : jsonDecode(responseUser.body)['user']['avatar'],
+        json: jsonDecode(responseUser.body)['user'],
+        token: userToken,
+        isGoogle: jsonService['google'],
+        isReddit: jsonService['reddit']);
+    final actionReaction = await getActionRea(host: widget.host);
+    reload();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BottomBar(
+                host: widget.host,
+                user: userConnect,
+                actionReaction: jsonDecode(actionReaction.body),
+              )),
+    );
   }
 
   Widget buildHeader() {
@@ -166,6 +285,17 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
         style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
       );
     }
+  }
+
+  void rButtonPressed() async {
+    if (!await checkError(true)) return;
+    reload();
+    String accessToken = await signInReddit();
+    if (accessToken == "error") {
+      addError("Please Try Again");
+      return;
+    }
+    reload();
   }
 
   @override
@@ -241,7 +371,12 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
                   const SizedBox(height: 20),
                   DelayedDisplay(
                       delay: const Duration(microseconds: 45000),
-                      child: gbutton(onTap: () => gButtonPressed()))
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          gbutton(onTap: () => gButtonPressed()),
+                        ],
+                      ))
                 ],
               ),
             ),

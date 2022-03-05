@@ -26,10 +26,11 @@ model User {
 model EX_API {
     id        Int      @id @default(autoincrement())
     type      Api_id   //@default(UNKNOWN)
-    token     String   @unique
+    token     String   //@unique
     disableAt BigInt?  @db.BigInt
     acstoken  String?  @unique
     rfstoken  String?  @unique
+    is_mobile Boolean  @default(false)
     user      User?    @relation(fields: [userToken], references: [token])
     userToken String?
     @@unique([type, userToken])
@@ -75,6 +76,5 @@ enum Role {
 
 enum Api_id {
     REDDIT
-    TWITTER
     GOOGLE
 }

@@ -30,7 +30,7 @@ const updateJob = (req, res, next) => {
         }
 
         if (isSuccess == true && user != null && jobToken != ''
-            && req.body.actionArg != '' && req.body.reactionArg != '') {
+            && req.body.actionArg != undefined && req.body.reactionArg != undefined) {
 
             try {
                 var isJobChecked = job_extra.checkGetJob(req.header('authtoken'), req.body.action, req.body.actionArg, req.body.reaction, req.body.reactionArg);
@@ -247,11 +247,30 @@ const getReActionInfo = (req, res, next) => {
         jsonArr.push(tmpJsonData);
     }
 
+/*
     for (let i = 0; i < infoReactionKeys.length; i++) {
         let tmpJsonData = {}
         tmpJsonData["name"] = infoReaction.get(infoReactionKeys[i]).name;
         tmpJsonData["reactions"] = job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
         jsonArr.push(tmpJsonData);
+    }
+*/
+
+    for (let i = 0; i < infoReactionKeys.length; i++) {
+        let tmpJsonData = {}
+        let isAdded = false;
+        const lenght = jsonArr.length;
+        for (let j = 0; j < lenght; j++) {
+            if (jsonArr[j].name == infoReaction.get(infoReactionKeys[i]).name) {
+                jsonArr[j]["reactions"] = job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
+                isAdded = true;
+            }
+        }
+        if (!isAdded) {
+            tmpJsonData["name"] = infoReaction.get(infoReactionKeys[i]).name;
+            tmpJsonData["reactions"] = job_extra.getReAction(infoReaction.get(infoReactionKeys[i]).reactions);
+            jsonArr.push(tmpJsonData);
+        }
     }
 
     res.status(200).json({

@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import { useCookies } from 'react-cookie';
 
 import { Sleep } from '../Sleep';
 
@@ -18,7 +19,14 @@ export function SignUp()
 {
   const [showSuccess, setShowSuccess] = React.useState(false);
   const [showError, setShowError] = React.useState(false);
+  const [cookies] = useCookies(['user']);
 
+  if (cookies.logged === "true") {
+    window.location = "/";
+    return (
+      <h3>Redirecting...</h3>
+    );
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

@@ -29,7 +29,7 @@ class _HelpPagetate extends State<HelpPage> {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text("Help Page")],
+                children: const [Text("Help Page")],
               )))
     ]));
   }

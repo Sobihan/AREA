@@ -6,16 +6,20 @@ class Google {
   final String googleID;
   final String displayName;
   final String email;
+  final String refreshToken;
 
   Google(
-      {required this.accessToken,
+      {required this.refreshToken,
+      required this.accessToken,
       required this.googleID,
       required this.displayName,
       required this.email});
+
   factory Google.fromGoogleSignInAccount(
       {required GoogleSignInAccount? google,
       required GoogleSignInAuthentication token}) {
     return Google(
+        refreshToken: '',
         accessToken: token.accessToken ?? '',
         googleID: google!.id,
         displayName: google.displayName ?? '',
@@ -24,17 +28,35 @@ class Google {
 
   @override
   String toString() {
-    final Map<String, String> data = <String, String>{
-      'accessToken': accessToken,
-      'googleID': googleID,
-      'displayName': displayName,
-      'email': email
+    final Map<String, dynamic> data = <String, dynamic>{
+      'profileObj': {
+        'refreshToken': refreshToken,
+        'accessToken': accessToken,
+        'googleId': googleID,
+        'givenName': displayName.split(' ')[0],
+        'familyName': displayName.split(' ')[1],
+        'email': email
+      }
     };
-    return 'google=${data.toString()}';
+    return data.toString();
+  }
+
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = <String, dynamic>{
+      'profileObj': {
+        'refreshToken': refreshToken,
+        'accessToken': accessToken,
+        'googleId': googleID,
+        'givenName': displayName.split(' ')[0],
+        'familyName': displayName.split(' ')[1],
+        'email': email
+      }
+    };
+    return data;
   }
 
   String toJson() {
-    String data = toString();
-    return jsonEncode(data);
+    Map<String, dynamic> data = toMap();
+    return "{\"response\":${jsonEncode(data)}}";
   }
 }
