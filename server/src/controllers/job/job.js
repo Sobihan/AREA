@@ -106,7 +106,6 @@ const deleteJob = (req, res, next) => {
     let isSuccess_3 = true;
 
     job_extra.removeJob(req.body.jobToken);
-    //scheduler.removeById(req.body.jobToken);
     job.deleteActionArgs(req.body.jobToken)
     .catch((e) => {
         isSuccess = false;
@@ -180,9 +179,6 @@ const searchJob = (req, res, next) => {
     .then((job) => {
         if (isSuccess == true && job != null && job[0] != null){
             console.log('findJob SUCESSFUL');
-            //console.log('job = ', job);
-            //console.log('job[0] = ', job[0]);
-            //console.log('job[0].job = ', job[0].job);
             res.status(200).json({
                 success: true,
                 body: 'Find job done!',
@@ -293,8 +289,6 @@ const testTokenApi = (req, res, next) => {
     .then((resul) => {
         if (isSuccess == true){
             console.log('testTokenApi SUCESSFUL');
-            //console.log("api_getter.apiTokens.get(req.header('authtoken')) =", api_getter.apiTokens.get(req.header('authtoken')));
-            //api_getter.apiTokens.get(req.header('authtoken'));
             console.log("resul =", resul);
             res.status(200).json({
                 success: true,

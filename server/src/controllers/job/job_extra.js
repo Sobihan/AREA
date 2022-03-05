@@ -2,11 +2,29 @@ const job = require('../../db_management/job/db_job');
 const actions = require('../../area/action');
 const reactions = require('../../area/reaction');
 const { ToadScheduler, SimpleIntervalJob, Task, AsyncTask } = require('toad-scheduler');
-//const { json } = require('body-parser');
 
 const scheduler = new ToadScheduler()
 
 async function updateJobAddArgs(jobToken, actionArgJson, reactionArgJson) {
+    let deleteActionArg = await job.deleteActionArgs(jobToken);
+    if (deleteActionArg.count == undefined) {
+        console.log("deleteActionArg =", JSON.stringify(deleteActionArg))
+        console.log('deleteActionArgs FAIL');
+        throw new Error(deleteActionArg);
+    }
+    else {
+        console.log('deleteActionArgs SUCESSFUL');
+    }
+
+    let deleteReactionArg = await job.deleteReactionArgs(jobToken);
+    if (deleteActionArg.count == undefined) {
+        console.log('deleteReactionArgs FAIL');
+        throw new Error(deleteReactionArg);
+    }
+    else {
+        console.log('deleteReactionArgs SUCESSFUL');
+    }
+
     for (const actionArg in actionArgJson) {
         console.log(actionArgJson[actionArg]);
         for (const arg in actionArgJson[actionArg]) {
@@ -174,10 +192,55 @@ function removeJob(jobToken)
     scheduler.removeById(jobToken);
 }
 
+function launchJobOnStart()
+{
+    let isSuccess = true;
+
+    job.getRelaunchJob()
+    .catch((e) => {
+        isSuccess = false;
+        console.log(e);
+    })
+    .then((job) => {
+        if (isSuccess == true && job != null && job != undefined){
+            console.log('getRelaunchJob SUCESSFUL');
+            const lenght = job.length;
+            var actionArg = [];
+            var reactionArg = [];
+
+            for (let i = 0; i < lenght; i++) {
+                const actionArgLenght = job[i].actionArg.length;
+                const reactionArgLenght = job[i].reactionArg.length;
+
+                for (let j = 0; j < actionArgLenght; j++) {
+                    var actionArgObject = {};
+                    actionArgObject[job[i].actionArg[j].key] = job[i].actionArg[j].value;
+                    actionArg.push(actionArgObject);
+                }
+                for (let j = 0; j < reactionArgLenght; j++) {
+                    var reactionArgObject = {};
+                    reactionArgObject[job[i].reactionArg[j].key] = job[i].reactionArg[j].value;
+                    reactionArg.push(reactionArgObject);
+                }
+
+                const jobToLaunch = getJob(job[i].action, actionArg, job[i].reaction, reactionArg);
+                const job1 = new SimpleIntervalJob(
+                    { seconds: job[i].interval, runImmediately: true },
+                    jobToLaunch,
+                    job[i].jobToken
+                );
+                scheduler.addSimpleIntervalJob(job1);
+            }
+        }
+        else {
+            console.log('getRelaunchJob FAIL');
+        }
+    });
+}
 
 module.exports.updateJob_extra = updateJob_extra;
 module.exports.checkGetJob = checkGetJob;
 module.exports.stopJob = stopJob;
 module.exports.getReAction = getReAction;
 module.exports.removeJob = removeJob;
-//module.exports.getJob = getJob;
+module.exports.launchJobOnStart = launchJobOnStart;

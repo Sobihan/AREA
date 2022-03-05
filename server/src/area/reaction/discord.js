@@ -12,20 +12,12 @@ let bot = new Client({intents : [
     ],  partials: ["CHANNEL"]});
 
 bot.login("ODMyNTkwMzUzNzk3NDgwNDQ4.YHmAMQ.bMOLEFu6b2dBZF1oecxw2xxO-R4")
-/*
-bot.on('ready', () => {
-    //console.log(`Logged in as ${bot.user.tag}!`);
-    bot.channels.fetch("832592184552456205").then(chan => {
-        chan.send("JE SUIS UP");
-    });
-});
-*/
+
 function sendServerMessages(reactionArgs)
 {
     const text = search.args(reactionArgs, "text");
     const server = search.args(reactionArgs, "serverID");
 
-    //bot.users.fetch(server).then(chan => {
     bot.channels.fetch(server).then(chan => {
         chan.send(text);
     })
@@ -50,18 +42,18 @@ module.exports.sendPrivateMessages = sendPrivateMessages;
 
 function checkSendServerMessages(userToken, reactionArgs)
 {
-    search.AddArgs(reactionArgs, "userToken", userToken);
-    if (/*search.args(reactionArgs, "text") == null ||*/
-        search.args(reactionArgs, "serverID") == null)
+    search.initializeArgs(reactionArgs);
+    // search.AddArgs(reactionArgs, "userToken", userToken);
+    if (search.args(reactionArgs, "serverID") == null)
         return false;
     return true;
 }
 
 function checkSendPrivateMessages(userToken, reactionArgs)
 {
-    search.AddArgs(reactionArgs, "userToken", userToken);
-    if (/*search.args(reactionArgs, "text") == null ||*/
-        search.args(reactionArgs, "userID") == null)
+    search.initializeArgs(reactionArgs);
+    // search.AddArgs(reactionArgs, "userToken", userToken);
+    if (search.args(reactionArgs, "userID") == null)
         return false;
     return true;
 }

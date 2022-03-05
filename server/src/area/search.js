@@ -12,6 +12,9 @@ function args(argList, search)
 
 function AddArgs(argList, newDataName, newData)
 {
+    //console.log(argList[0]);
+    // if (argList[0] == undefined)
+    //     argList.push({});
     console.log(argList[0]);
     argList[0][newDataName] = newData;
 }
@@ -29,6 +32,13 @@ function changeArgs(argList, search, newData)
     return null;
 }
 
+function initializeArgs(argList)
+{
+    if (argList[0] == undefined)
+        argList.push({});
+}
+
 module.exports.args = args;
 module.exports.AddArgs = AddArgs;
 module.exports.changeArgs = changeArgs;
+module.exports.initializeArgs = initializeArgs;

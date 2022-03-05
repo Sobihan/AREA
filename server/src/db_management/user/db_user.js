@@ -1,16 +1,5 @@
 const main = require('../../main');
 
-/*
-function convertInt(x, base) {
-    const parsed = parseInt(x, base);
-
-    if (isNaN(parsed)) {
-        return 0;
-    }
-    return parsed;
-}
-*/
-
 async function createUser(username, email, password, name, lstName) {
     const user = await main.prisma.user.create({
         data: {
@@ -69,7 +58,6 @@ async function getUserData(authToken) {
     return user;
 }
 
-//module.exports.convertInt = convertInt;
 module.exports.createUser = createUser;
 module.exports.findUniqueAuthenticate = findUniqueAuthenticate;
 module.exports.updateUserData = updateUserData;

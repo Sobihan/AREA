@@ -6,13 +6,8 @@ const cors = require('cors');
 const path = require('path');
 const api = require('./routes/routes');
 const about = require('./controllers/about')
+const job_extra = require('./controllers/job/job_extra')
 
-// const Twitch = require('./area/action/twitch');
-// Twitch.getStream("Sardoche");
-
-//const utf8 = require('utf8');
-//const http_r = require('./http_requester');
-//const controllers = require('./controllers/controllers');
 const prisma = new PrismaClient()
 
 // Create a new express application named 'app'
@@ -63,119 +58,9 @@ app.get('*', (req, res) => {
 // Configure our server to listen on the port defiend by our port variable
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
+    job_extra.launchJobOnStart()
 });
-/*
-async function findUniqueToken(token) {
-    const user = await prisma.user.findMany({
-        where: {
-            token: token,
-            exApi: {
-                some: {
-                    type: 'REDDIT',
-                }
-            }
-        },
-        select: {
-            token: true,
-            exApi: {
-                select: {
-                    token: true,
-                    type: true,
-                    disableAt: true,
-                    acstoken: true,
-                    rfstoken: true,
-                }
-            }
-        }
-    })
-    return user;
-}
 
-async function updateRedditToken(authToken, redditToken) {
-    const user = await prisma.user.update({
-        where: {
-            token: authToken,
-        },
-        data: {
-            exApi: {
-                upsert: {
-                    create: {
-                        type: 'REDDIT',
-                        token: redditToken,
-                    },
-                    update: {
-                        type: 'REDDIT',
-                        token: redditToken,
-                        disableAt: null,
-                        acstoken: null,
-                        rfstoken: null,
-                    },
-                    where: {
-                        type_userToken: {
-                            type: 'REDDIT',
-                            userToken: authToken,
-                        }
-                    },
-                }
-            }
-        }
-    })
-    return user;
-}
-
-async function updateRedditAccessToken(token, acstoken, rfstoken, disableAt) {
-    const user = await prisma.eX_API.update({
-        where: {
-            token: token,
-        },
-        data: {
-            acstoken: acstoken,
-            rfstoken: rfstoken,
-            disableAt: disableAt,
-        }
-    });
-    return user;
-}
-
-function redditGetAcessToken(token, callback) {
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
-
-    const options = {
-        'method': 'POST',
-        'hostname': 'www.reddit.com',
-        'path': '/api/v1/access_token?grant_type=authorization_code&code=' + token + '&redirect_uri=http://localhost/oauth2_callback',
-        'headers': {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': basicAuth
-        },
-        'maxRedirects': 20
-    };
-    http_r.http_req(options, callback)
-};
-
-function redditRefreshAcessToken(token, callback) {
-    const basicAuth = "Basic " + Buffer.from(utf8.encode('qoL2raGY-ElMh7s1jBBAlw:')).toString('base64');
-
-    var options = {
-        'method': 'POST',
-        'hostname': 'www.reddit.com',
-        'path': '/api/v1/access_token?grant_type=refresh_token&refresh_token=' + token + '&redirect_uri=http://localhost/oauth2_callback',
-        'headers': {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': basicAuth
-        },
-        'maxRedirects': 20
-    };
-
-    http_r.http_req(options, callback)
-};
-
-module.exports.findUniqueToken = findUniqueToken;
-module.exports.updateRedditToken = updateRedditToken;
-module.exports.updateRedditAccessToken = updateRedditAccessToken;
-module.exports.redditGetAcessToken = redditGetAcessToken;
-module.exports.redditRefreshAcessToken = redditRefreshAcessToken;
-*/
 module.exports.prisma = prisma;
 
 
