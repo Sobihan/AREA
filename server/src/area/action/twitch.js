@@ -53,7 +53,7 @@ function overXViewer(actionArgs, callback, reactionArgs)
         if (isSuccess == true) {
             if (!done && twitch.data[0] != undefined && twitch.data[0].viewer_count != undefined && twitch.data[0].viewer_count >= viewerCount) {
                 search.changeArgs(actionArgs, "done", true);
-                search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " as reached the targeted viewer count.\n They currently have " + twitch.data[0].viewer_count + " viewers.");
+                search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " as reached the targeted viewer count of " + viewerCount + "viewers.\n They currently have " + twitch.data[0].viewer_count + " viewers.");
                 callback(reactionArgs);
             }
         }

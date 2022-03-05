@@ -1,5 +1,5 @@
-const discord = require('./reaction/discord');
-const email = require('./reaction/email');
+const discord = require('./reaction/discord'); //--//
+const email = require('./reaction/email'); //--//
 
 const reaction = new Map();
 

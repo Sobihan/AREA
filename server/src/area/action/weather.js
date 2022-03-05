@@ -22,8 +22,6 @@ function overXTemperature(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            // console.log('getRandomCat SUCESSFUL');
-
             response.json()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -31,7 +29,6 @@ function overXTemperature(actionArgs, callback, reactionArgs)
             })
             .then((weather) => {
                 if (isSuccess_2 == true && weather != null && weather != undefined && weather.main.temp != undefined && weather.main.feels_like != undefined && weather.main.humidity != undefined && weather.wind.speed != undefined && weather.main.temp >= temperature) {
-                    // console.log('getRandomCat JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "The current temperature is above your threshold of " + temperature + "°C, it's " + weather.main.temp + "°C, but it feels like " + weather.main.feels_like + "°C, the humidity is " + weather.main.humidity + "% and the wind speed is " + weather.wind.speed + "km/h.");
                     callback(reactionArgs);
                 }
@@ -61,8 +58,6 @@ function belowXTemperature(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            // console.log('getRandomCat SUCESSFUL');
-
             response.json()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -70,7 +65,6 @@ function belowXTemperature(actionArgs, callback, reactionArgs)
             })
             .then((weather) => {
                 if (isSuccess_2 == true && weather != null && weather != undefined && weather.main.temp != undefined && weather.main.feels_like != undefined && weather.main.humidity != undefined && weather.wind.speed != undefined && weather.main.temp <= temperature) {
-                    // console.log('getRandomCat JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "The current temperature is below your threshold of " + temperature + "°C, it's " + weather.main.temp + "°C, but it feels like " + weather.main.feels_like + "°C, the humidity is " + weather.main.humidity + "% and the wind speed is " + weather.wind.speed + "km/h.");
                     callback(reactionArgs);
                 }
@@ -100,8 +94,6 @@ function overXHumidity(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            // console.log('getRandomCat SUCESSFUL');
-
             response.json()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -109,7 +101,6 @@ function overXHumidity(actionArgs, callback, reactionArgs)
             })
             .then((weather) => {
                 if (isSuccess_2 == true && weather != null && weather != undefined && weather.main.temp != undefined && weather.main.feels_like != undefined && weather.main.humidity != undefined && weather.main.humidity >= humidity) {
-                    // console.log('getRandomCat JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "The current humidity is above your threshold of " + humidity + "%, it's " + weather.main.humidity + "%, the current temperature is " + weather.main.temp + "°C, but it feels like " + weather.main.feels_like + "°C.");
                     callback(reactionArgs);
                 }
@@ -138,8 +129,6 @@ function belowXHumidity(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            // console.log('getRandomCat SUCESSFUL');
-
             response.json()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -147,7 +136,6 @@ function belowXHumidity(actionArgs, callback, reactionArgs)
             })
             .then((weather) => {
                 if (isSuccess_2 == true && weather != null && weather != undefined && weather.main.temp != undefined && weather.main.feels_like != undefined && weather.main.humidity != undefined && weather.main.humidity <= humidity) {
-                    // console.log('getRandomCat JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "The current humidity is below your threshold of " + humidity + "%, it's " + weather.main.humidity + "%, the current temperature is " + weather.main.temp + "°C, but it feels like " + weather.main.feels_like + "°C.");
                     callback(reactionArgs);
                 }
@@ -178,8 +166,6 @@ function overXVisibility(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            // console.log('getRandomCat SUCESSFUL');
-
             response.json()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -187,7 +173,6 @@ function overXVisibility(actionArgs, callback, reactionArgs)
             })
             .then((weather) => {
                 if (isSuccess_2 == true && weather != null && weather != undefined && weather.main.temp != undefined && weather.main.feels_like != undefined && weather.visibility != undefined && weather.visibility >= visibility) {
-                    // console.log('getRandomCat JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "The current visibility is above your threshold of " + visibility + "km, it's " + weather.visibility + "km, the current temperature is " + weather.main.temp + "°C, but it feels like " + weather.main.feels_like + "°C.");
                     callback(reactionArgs);
                 }
@@ -216,8 +201,6 @@ function belowXVisibility(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            // console.log('getRandomCat SUCESSFUL');
-
             response.json()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -225,7 +208,6 @@ function belowXVisibility(actionArgs, callback, reactionArgs)
             })
             .then((weather) => {
                 if (isSuccess_2 == true && weather != null && weather != undefined && weather.main.temp != undefined && weather.main.feels_like != undefined && weather.visibility != undefined && weather.visibility <= visibility) {
-                    // console.log('getRandomCat JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "The current visibility is below your threshold of " + visibility + "km, it's " + weather.visibility + "km, the current temperature is " + weather.main.temp + "°C, but it feels like " + weather.main.feels_like + "°C.");
                     callback(reactionArgs);
                 }
@@ -255,8 +237,6 @@ function overXWindSpeed(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            // console.log('getRandomCat SUCESSFUL');
-
             response.json()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -264,7 +244,6 @@ function overXWindSpeed(actionArgs, callback, reactionArgs)
             })
             .then((weather) => {
                 if (isSuccess_2 == true && weather != null && weather != undefined && weather.main.temp != undefined && weather.main.feels_like != undefined && weather.wind.speed != undefined && weather.wind.speed >= windSpeed) {
-                    // console.log('getRandomCat JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "The current speed of the wind is above your threshold of " + windSpeed + "km/h, it's " + weather.wind.speed + "km/h, the current temperature is " + weather.main.temp + "°C, but it feels like " + weather.main.feels_like + "°C.");
                     callback(reactionArgs);
                 }
@@ -293,8 +272,6 @@ function belowXWindSpeed(actionArgs, callback, reactionArgs)
     })
     .then((response) => {
         if (isSuccess == true) {
-            // console.log('getRandomCat SUCESSFUL');
-
             response.json()
             .catch((e) => {
                 isSuccess_2 = false;
@@ -302,7 +279,6 @@ function belowXWindSpeed(actionArgs, callback, reactionArgs)
             })
             .then((weather) => {
                 if (isSuccess_2 == true && weather != null && weather != undefined && weather.main.temp != undefined && weather.main.feels_like != undefined && weather.wind.speed != undefined && weather.wind.speed <= windSpeed) {
-                    // console.log('getRandomCat JSON SUCESSFUL');
                     search.AddArgs(reactionArgs, "text", "The current speed of the wind is below your threshold of " + windSpeed + "km/h, it's " + weather.wind.speed + "km/h, the current temperature is " + weather.main.temp + "°C, but it feels like " + weather.main.feels_like + "°C.");
                     callback(reactionArgs);
                 }
