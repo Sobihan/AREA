@@ -59,7 +59,7 @@ const catInfo = new Map();
 
 catInfo.set("getRandomCat", {
     name: "getRandomCat",
-    description: "Give a random cat picture",
+    description: "Give a random cat picture.",
     args: []
 });
 

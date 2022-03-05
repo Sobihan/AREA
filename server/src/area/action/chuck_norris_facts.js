@@ -59,7 +59,7 @@ const chuckNorrisFactsInfo = new Map();
 
 chuckNorrisFactsInfo.set("getRandomChuckNorrisFacts", {
     name: "getRandomChuckNorrisFacts",
-    description: "Give a random and true fact about Chuck Norris",
+    description: "Give a random and true fact about Chuck Norris.",
     args: []
 });
 

@@ -59,7 +59,7 @@ const shibaInuInfo = new Map();
 
 shibaInuInfo.set("getRandomShibaInu", {
     name: "getRandomShibaInu",
-    description: "Give a random Shiba Inu picture",
+    description: "Give a random Shiba Inu picture.",
     args: []
 });
 

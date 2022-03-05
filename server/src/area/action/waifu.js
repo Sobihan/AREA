@@ -59,7 +59,7 @@ const waifuInfo = new Map();
 
 waifuInfo.set("getRandomWaifu", {
     name: "getRandomWaifu",
-    description: "Give a random picture of a female character and the source of said picture",
+    description: "Give a random picture of a female character and the source of said picture.",
     args: []
 });
 

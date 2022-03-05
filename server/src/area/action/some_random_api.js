@@ -387,55 +387,55 @@ const someRandomInfo = new Map();
 
 someRandomInfo.set("getSomeRandomRedPanda", {
     name: "getSomeRandomRedPanda",
-    description: "Give a random red panda picture and fact",
+    description: "Give a random red panda picture and fact.",
     args: []
 });
 
 someRandomInfo.set("getSomeRandomRaccoon", {
     name: "getSomeRandomRaccoon",
-    description: "Give a random raccoon picture and fact",
+    description: "Give a random raccoon picture and fact.",
     args: []
 });
 
 someRandomInfo.set("getSomeRandomKangaroo", {
     name: "getSomeRandomKangaroo",
-    description: "Give a random kangaroo picture and fact",
+    description: "Give a random kangaroo picture and fact.",
     args: []
 });
 
 someRandomInfo.set("getSomeRandomKoala", {
     name: "getSomeRandomKoala",
-    description: "Give a random koala picture and fact",
+    description: "Give a random koala picture and fact.",
     args: []
 });
 
 someRandomInfo.set("getSomeRandomJoke", {
     name: "getSomeRandomJoke",
-    description: "Give a random joke",
+    description: "Give a random joke.",
     args: []
 });
 
 someRandomInfo.set("getSomeRandomAnimePat", {
     name: "getSomeRandomAnimePat",
-    description: "Give a random anime pat GIF",
+    description: "Give a random anime pat GIF.",
     args: []
 });
 
 someRandomInfo.set("getSomeRandomAnimeWink", {
     name: "getSomeRandomAnimeWink",
-    description: "Give a random anime wink GIF",
+    description: "Give a random anime wink GIF.",
     args: []
 });
 
 someRandomInfo.set("getSomeRandomAnimeHug", {
     name: "getSomeRandomAnimeHug",
-    description: "Give a random anime hug GIF",
+    description: "Give a random anime hug GIF.",
     args: []
 });
 
 someRandomInfo.set("getSomeRandomJoke", {
     name: "getSomeRandomJoke",
-    description: "Give a random joke",
+    description: "Give a random joke.",
     args: []
 });
 

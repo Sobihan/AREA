@@ -59,7 +59,7 @@ const poemInfo = new Map();
 
 poemInfo.set("getRandomPoem", {
     name: "getRandomPoem",
-    description: "Give a random poem",
+    description: "Give a random poem.",
     args: []
 });
 

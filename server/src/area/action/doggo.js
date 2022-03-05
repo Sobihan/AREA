@@ -61,7 +61,7 @@ const doggoInfo = new Map();
 
 doggoInfo.set("getRandomDog", {
     name: "getRandomDog",
-    description: "Give a random dog picture",
+    description: "Give a random dog picture.",
     args: []
 });
 
