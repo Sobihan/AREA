@@ -169,7 +169,16 @@ function checkOverXViewer(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
     search.AddArgs(actionArgs, "done", false);
-    if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "viewerCount") == null || !Number.isInteger(search.args(actionArgs, "viewerCount")))
+
+    if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "viewerCount") == null)
+        return false;
+
+    if (+search.args(actionArgs, "viewerCount") != NaN)
+        search.changeArgs(actionArgs, "viewerCount", +search.args(actionArgs, "viewerCount"))
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "viewerCount")))
         return false;
     return true;
 }
@@ -177,8 +186,18 @@ function checkOverXViewer(userToken, actionArgs)
 function checkOverXViewerY(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "viewerCount") == null || search.args(actionArgs, "addViewerCount") == null ||
-        !Number.isInteger(search.args(actionArgs, "viewerCount")) || !Number.isInteger(search.args(actionArgs, "addViewerCount")))
+
+    if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "viewerCount") == null || search.args(actionArgs, "addViewerCount") == null)
+        return false;
+
+    if (+search.args(actionArgs, "viewerCount") != NaN && +search.args(actionArgs, "addViewerCount") != NaN) {
+        search.changeArgs(actionArgs, "viewerCount", +search.args(actionArgs, "viewerCount"))
+        search.changeArgs(actionArgs, "addViewerCount", +search.args(actionArgs, "addViewerCount"))
+    }
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "viewerCount")) || !Number.isInteger(search.args(actionArgs, "addViewerCount")))
         return false;
     return true;
 }

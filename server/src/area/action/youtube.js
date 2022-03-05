@@ -307,7 +307,16 @@ function checkOverXLike(userToken, actionArgs)
     search.initializeArgs(actionArgs);
     // search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
-    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "likes") == null || !Number.isInteger(search.args(actionArgs, "likes")))
+
+    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "likes") == null)
+        return false;
+
+    if (+search.args(actionArgs, "likes") != NaN)
+        search.changeArgs(actionArgs, "likes", +search.args(actionArgs, "likes"))
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "likes")))
         return false;
     return true;
 }
@@ -315,8 +324,18 @@ function checkOverXLike(userToken, actionArgs)
 function checkOverXLikeY(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "likes") == null || search.args(actionArgs, "addLikes") == null ||
-        !Number.isInteger(search.args(actionArgs, "likes")) || !Number.isInteger(search.args(actionArgs, "addLikes")))
+
+    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "likes") == null || search.args(actionArgs, "addLikes") == null)
+        return false;
+
+    if (+search.args(actionArgs, "likes") != NaN && +search.args(actionArgs, "addLikes") != NaN) {
+        search.changeArgs(actionArgs, "likes", +search.args(actionArgs, "likes"))
+        search.changeArgs(actionArgs, "addLikes", +search.args(actionArgs, "addLikes"))
+    }
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "likes")) || !Number.isInteger(search.args(actionArgs, "addLikes")))
         return false;
     return true;
 }
@@ -336,7 +355,16 @@ function checkOverXView(userToken, actionArgs)
     search.initializeArgs(actionArgs);
     // search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
-    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "views") == null || !Number.isInteger(search.args(actionArgs, "views")))
+
+    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "views") == null)
+        return false;
+
+    if (+search.args(actionArgs, "views") != NaN)
+        search.changeArgs(actionArgs, "views", +search.args(actionArgs, "views"))
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "views")))
         return false;
     return true;
 }
@@ -344,8 +372,18 @@ function checkOverXView(userToken, actionArgs)
 function checkOverXViewY(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "views") == null || search.args(actionArgs, "addViews") == null ||
-        !Number.isInteger(search.args(actionArgs, "views")) || !Number.isInteger(search.args(actionArgs, "addViews")))
+
+    if (search.args(actionArgs, "videoURL") == null || search.args(actionArgs, "views") == null || search.args(actionArgs, "addViews") == null)
+        return false;
+
+    if (+search.args(actionArgs, "views") != NaN && +search.args(actionArgs, "addViews") != NaN) {
+        search.changeArgs(actionArgs, "views", +search.args(actionArgs, "views"))
+        search.changeArgs(actionArgs, "addViews", +search.args(actionArgs, "addViews"))
+    }
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "views")) || !Number.isInteger(search.args(actionArgs, "addViews")))
         return false;
     return true;
 }
@@ -365,7 +403,16 @@ function checkOverXVideos(userToken, actionArgs)
     search.initializeArgs(actionArgs);
     // search.AddArgs(actionArgs, "userToken", userToken);
     search.AddArgs(actionArgs, "done", false);
-    if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "videoCount") == null || !Number.isInteger(search.args(actionArgs, "videoCount")))
+
+    if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "videoCount") == null)
+        return false;
+
+    if (+search.args(actionArgs, "videoCount") != NaN)
+        search.changeArgs(actionArgs, "videoCount", +search.args(actionArgs, "videoCount"))
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "videoCount")))
         return false;
     return true;
 }
@@ -373,8 +420,18 @@ function checkOverXVideos(userToken, actionArgs)
 function checkOverXVideosY(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
-    if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "videoCount") == null || search.args(actionArgs, "addVideoCount") == null ||
-        !Number.isInteger(search.args(actionArgs, "videoCount")) || !Number.isInteger(search.args(actionArgs, "addVideoCount")))
+
+    if (search.args(actionArgs, "channelName") == null || search.args(actionArgs, "videoCount") == null || search.args(actionArgs, "addVideoCount") == null)
+        return false;
+
+    if (+search.args(actionArgs, "videoCount") != NaN && +search.args(actionArgs, "addVideoCount") != NaN) {
+        search.changeArgs(actionArgs, "videoCount", +search.args(actionArgs, "videoCount"))
+        search.changeArgs(actionArgs, "addVideoCount", +search.args(actionArgs, "addVideoCount"))
+    }
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "videoCount")) || !Number.isInteger(search.args(actionArgs, "addVideoCount")))
         return false;
     return true;
 }

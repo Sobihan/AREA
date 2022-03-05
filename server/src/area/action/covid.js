@@ -114,7 +114,16 @@ function checkGetOverX(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
     search.AddArgs(actionArgs, "updated", 0);
-    if (search.args(actionArgs, "country") == null || search.args(actionArgs, "threshold") == null || !Number.isInteger(search.args(actionArgs, "threshold")))
+
+    if (search.args(actionArgs, "country") == null || search.args(actionArgs, "threshold") == null)
+        return false;
+
+    if (+search.args(actionArgs, "threshold") != NaN)
+        search.changeArgs(actionArgs, "threshold", +search.args(actionArgs, "threshold"))
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "threshold")))
         return false;
     return true;
 }

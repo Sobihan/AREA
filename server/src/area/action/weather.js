@@ -305,7 +305,15 @@ function checkXTemperature(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
 
-    if (search.args(actionArgs, "city") == null || search.args(actionArgs, "temperature") == null || !Number.isInteger(search.args(actionArgs, "temperature")))
+    if (search.args(actionArgs, "city") == null || search.args(actionArgs, "temperature") == null)
+        return false;
+
+    if (+search.args(actionArgs, "temperature") != NaN)
+        search.changeArgs(actionArgs, "temperature", +search.args(actionArgs, "temperature"))
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "temperature")))
         return false;
 
     return true;
@@ -315,7 +323,15 @@ function checkXHumidity(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
 
-    if (search.args(actionArgs, "city") == null || search.args(actionArgs, "humidity") == null || !Number.isInteger(search.args(actionArgs, "humidity")))
+    if (search.args(actionArgs, "city") == null || search.args(actionArgs, "humidity") == null)
+        return false;
+
+    if (+search.args(actionArgs, "humidity") != NaN)
+        search.changeArgs(actionArgs, "humidity", +search.args(actionArgs, "humidity"))
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "humidity")))
         return false;
 
     return true;
@@ -325,7 +341,15 @@ function checkXVisibility(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
 
-    if (search.args(actionArgs, "city") == null || search.args(actionArgs, "visibility") == null || !Number.isInteger(search.args(actionArgs, "visibility")))
+    if (search.args(actionArgs, "city") == null || search.args(actionArgs, "visibility") == null)
+        return false;
+
+    if (+search.args(actionArgs, "visibility") != NaN)
+        search.changeArgs(actionArgs, "visibility", +search.args(actionArgs, "visibility"))
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "visibility")))
         return false;
 
     return true;
@@ -335,7 +359,15 @@ function checkXWindSpeed(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
 
-    if (search.args(actionArgs, "city") == null || search.args(actionArgs, "windSpeed") == null || !Number.isInteger(search.args(actionArgs, "windSpeed")))
+    if (search.args(actionArgs, "city") == null || search.args(actionArgs, "windSpeed") == null)
+        return false;
+
+    if (+search.args(actionArgs, "windSpeed") != NaN)
+        search.changeArgs(actionArgs, "windSpeed", +search.args(actionArgs, "windSpeed"))
+    else
+        return false;
+
+    if (!Number.isInteger(search.args(actionArgs, "windSpeed")))
         return false;
 
     return true;

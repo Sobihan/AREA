@@ -44,6 +44,11 @@ function checkSendServerMessages(userToken, reactionArgs)
 {
     search.initializeArgs(reactionArgs);
     // search.AddArgs(reactionArgs, "userToken", userToken);
+
+    if (Number.isInteger(search.args(reactionArgs, "serverID")))
+        return false;
+        //search.changeArgs(reactionArgs, "serverID", search.args(reactionArgs, "serverID").toString())
+
     if (search.args(reactionArgs, "serverID") == null)
         return false;
     return true;
@@ -53,6 +58,15 @@ function checkSendPrivateMessages(userToken, reactionArgs)
 {
     search.initializeArgs(reactionArgs);
     // search.AddArgs(reactionArgs, "userToken", userToken);
+
+    // if (Number.isInteger(search.args(reactionArgs, "userID"))) {
+    //     console.log("INSIDE");
+    //     search.changeArgs(reactionArgs, "userID", search.args(reactionArgs, "userID").toString())
+    // }
+
+    if (Number.isInteger(search.args(reactionArgs, "userID")))
+        return false;
+
     if (search.args(reactionArgs, "userID") == null)
         return false;
     return true;
