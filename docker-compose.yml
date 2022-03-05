@@ -22,8 +22,8 @@ services:
   #   links:
   #     - backend
   #   volumes:
-  #   - ./website/build:/usr/share/nginx/html
-  #     - ./app-apk/:/app-apk
+  #   # - ./website/build:/usr/share/nginx/html
+  #   - ./app-apk/:/app-apk
   #   stdin_open: true
   backend:
     container_name: area_bend

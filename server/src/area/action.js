@@ -40,6 +40,13 @@ action.set("getSomeRandomAnimeHug", some_random_api.getSomeRandomAnimeHug);
 action.set("getSomeRandomMeme", some_random_api.getSomeRandomMeme);
 action.set("getRandomWaifu", waifu.getRandomWaifu);
 action.set("overXTemperature", weather.overXTemperature); //--//
+action.set("belowXTemperature", weather.belowXTemperature); //--//
+action.set("overXHumidity", weather.overXHumidity); //--//
+action.set("belowXHumidity", weather.belowXHumidity); //--//
+action.set("overXVisibility", weather.overXVisibility); //--//
+action.set("belowXVisibility", weather.belowXVisibility); //--//
+action.set("overXWindSpeed", weather.overXWindSpeed); //--//
+action.set("belowXWindSpeed", weather.belowXWindSpeed); //--//
 
 module.exports.action = action;
 
@@ -73,7 +80,14 @@ checkAction.set("getSomeRandomAnimeWink", some_random_api.checkGetSomeRandom);
 checkAction.set("getSomeRandomAnimeHug", some_random_api.checkGetSomeRandom);
 checkAction.set("getSomeRandomMeme", some_random_api.checkGetSomeRandom);
 checkAction.set("getRandomWaifu", waifu.checkGetRandomWaifu);
-checkAction.set("overXTemperature", weather.checkOverXTemperature);
+checkAction.set("overXTemperature", weather.checkXTemperature);
+checkAction.set("belowXTemperature", weather.checkXTemperature);
+checkAction.set("overXHumidity", weather.checkXHumidity);
+checkAction.set("belowXHumidity", weather.checkXHumidity);
+checkAction.set("overXVisibility", weather.checkXVisibility);
+checkAction.set("belowXVisibility", weather.checkXVisibility);
+checkAction.set("overXWindSpeed", weather.checkXWindSpeed);
+checkAction.set("belowXWindSpeed", weather.checkXWindSpeed);
 
 module.exports.checkAction = checkAction;
 
