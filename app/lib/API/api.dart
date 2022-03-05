@@ -76,7 +76,7 @@ Future<http.Response> createUpdate(
         "actionArg": area.action.config,
         "reaction": area.reaction.name,
         "reactionArg": area.reaction.config,
-        "interval": int.parse(area.interval),
+        "interval": area.interval,
         "runNow": area.runNow
       }));
   return response;
