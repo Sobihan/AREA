@@ -30,27 +30,35 @@ async function submitPost(token, subreddit, title, text) {
 
 async function submitPostReaction(args) {
     const token = search.args(args, "userToken");
-    alert(token);
-    //    return submitPost(token, args[0], args[1], args[2]);
+    return submitPost(token, args[0], args[1], args[2]);
 };
 
 async function checkSubmitPost(token, args) {
-    search.AddArgs(reactionArgs, "userToken", userToken);
-    if (search.args(reactionArgs, "text") == null)
-        return false;
+    search.AddArgs(reactionArgs, "userToken", token);
     return true;
 };
 
-async function send_pm(token, to, subject, text) {
+async function sendPM(token, to, subject, text) {
     return send_request(token, "https://oauth.reddit.com/api/compose", {
         api_type: 'json',
         kind: 'self',
-        subject: subreddit,
         text: text,
         to: to,
+        subject: subject
     }
     );
 };
+
+async function checkSendPM(token, args) {
+    search.AddArgs(reactionArgs, "userToken", token);
+    return true;
+};
+
+async function sendPMReaction(args) {
+    const token = search.args(args, "userToken");
+    return sendPM(token, args[0], args[1], args[2]);
+};
+
 
 const redditInfo = new Map();
 
@@ -73,3 +81,5 @@ redditInfo.set("redditPM", {
 module.exports.redditInfo = redditInfo;
 module.exports.submitRedditPost = submitPostReaction;
 module.exports.checkSubmitRedditPost = checkSubmitPost;
+module.exports.sendPM = sendPMReaction;
+module.exports.checkSendPM = checkSendPM;
