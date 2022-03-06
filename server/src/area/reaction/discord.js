@@ -13,12 +13,19 @@ let bot = new Client({intents : [
 
 bot.login("ODMyNTkwMzUzNzk3NDgwNDQ4.YHmAMQ.bMOLEFu6b2dBZF1oecxw2xxO-R4")
 
+var bot_on = false;
+
+bot.on('ready', () => {
+    console.log("Discord bot is online.")
+    bot_on = true;
+});
+
 function sendServerMessages(reactionArgs)
 {
     const text = search.args(reactionArgs, "text");
     const server = search.args(reactionArgs, "serverID");
 
-    if (text.length >= 2000){
+    if (text.length >= 2000 && bot_on){
         const splitText = text.match(/[\s\S]{1,1950}/g) || [];
 
         for (const pos in splitText) {
@@ -28,7 +35,7 @@ function sendServerMessages(reactionArgs)
             .catch(console.error);
         }
     }
-    else if (text.length != 0) {
+    else if (text.length != 0 && bot_on) {
         bot.channels.fetch(server).then(chan => {
             chan.send(text);
         })
@@ -41,7 +48,7 @@ function sendPrivateMessages(reactionArgs)
     const text = search.args(reactionArgs, "text");
     const user = search.args(reactionArgs, "userID");
 
-    if (text.length >= 2000) {
+    if (text.length >= 2000 && bot_on) {
         const splitText = text.match(/[\s\S]{1,1950}/g) || [];
 
         for (const pos in splitText) {
@@ -51,7 +58,7 @@ function sendPrivateMessages(reactionArgs)
             .catch(console.error);
         }
     }
-    else if (text.length != 0) {
+    else if (text.length != 0 && bot_on) {
         bot.users.fetch(user).then(chan => {
             chan.send(text);
         })
