@@ -22,7 +22,7 @@ URL: `/update-api-token`.
 Exemple of request in cURL:
 ```bash
 curl --location --request POST 'http://localhost:8080/api/v1/update-api-token' \
---header 'authToken: efc1672b-00d2-4447-a265-a6d2217dd968' \
+--header 'authToken: [authToken]' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'token=OVV2kNr2yb_oyWucsghPUOCknU5ohA' \
 --data-urlencode 'type=REDDIT' \
@@ -57,7 +57,7 @@ URL: `/get-user-loged-api`.
 Exemple of request in cURL:
 ```bash
 curl --location --request POST 'http://localhost:8080/api/v1/get-user-loged-api' \
---header 'authToken: db413c52-2f13-4033-9a94-8562402d9dbc'
+--header 'authToken: [authToken]'
 ```
 
 Here is an example of a **response**:

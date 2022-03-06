@@ -28,17 +28,17 @@ If `jobToken` is equal to an existing job said job will be updated otherwise it 
 
 ```bash
 curl --location --request POST 'http://localhost:8080/api/v1/update-job' \
---header 'authToken: f9b9ffc1-c151-4521-9769-a58ed9201658' \
+--header 'authToken: [authToken]' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "jobToken": "",
     "name": "chmmma",
     "action": "[Twitch] getStream",
     "actionArg": [{"channelName":"ponce"}],
-    "reaction": "testReaction",
+    "reaction": "[Discord] sendPrivateMessages",
     "reactionArg": [
         {
-            "text": "tonton"
+            "userID": "[userID]"
         }
     ],
     "interval": "5",
@@ -61,11 +61,11 @@ Here is an example of a **response**:
                 "value": "ponce"
             }
         ],
-        "reaction": "testReaction",
+        "reaction": "[Discord] sendPrivateMessages",
         "reactionArg": [
             {
-                "key": "text",
-                "value": "tonton"
+                "key": "userID",
+                "value": "000000000000000000"
             }
         ],
         "interval": 5
@@ -82,9 +82,9 @@ URL: `/delete-job`.
 Exemple of request in cURL:
 ```bash
 curl --location --request POST 'http://localhost:8080/api/v1/delete-job' \
---header 'authToken: f9b9ffc1-c151-4521-9769-a58ed9201658' \
+--header 'authToken: [authToken]' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'jobToken=0845c58d-1a63-4e52-9d1e-f64080e7c229'
+--data-urlencode 'jobToken=[jobToken]'
 ```
 
 Here is an example of a **response**:
@@ -104,7 +104,7 @@ URL: `/search-job`.
 Exemple of request in cURL:
 ```bash
 curl --location --request GET 'http://localhost:8080/api/v1/search-job' \
---header 'authToken: f9b9ffc1-c151-4521-9769-a58ed9201658' \
+--header 'authToken: [authToken]' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'name=' \
 --data-urlencode 'action=' \
@@ -127,11 +127,11 @@ Here is an example of a **response**:
                     "value": "solary"
                 }
             ],
-            "reaction": "testReaction",
+            "reaction": "[Discord] sendPrivateMessages",
             "reactionArg": [
                 {
-                    "key": "text",
-                    "value": "tonton"
+                    "key": "userID",
+                    "value": "000000000000000000"
                 }
             ],
             "interval": 5
@@ -146,68 +146,11 @@ Here is an example of a **response**:
                     "value": "ponce"
                 }
             ],
-            "reaction": "testReaction",
+            "reaction": "[Discord] sendPrivateMessages",
             "reactionArg": [
                 {
-                    "key": "text",
-                    "value": "tonton"
-                }
-            ],
-            "interval": 5
-        },
-        {
-            "jobToken": "249ac525-e0f4-4bdb-9448-e62a63ef057a",
-            "name": "chmmma",
-            "action": "[Twitch] getStream",
-            "actionArg": [
-                {
-                    "key": "channelName",
-                    "value": "ponce"
-                }
-            ],
-            "reaction": "testReaction",
-            "reactionArg": [
-                {
-                    "key": "text",
-                    "value": "tonton"
-                }
-            ],
-            "interval": 5
-        },
-        {
-            "jobToken": "e3a9c9f7-f5f5-474c-87c0-e5362f0de0e2",
-            "name": "chmmma",
-            "action": "[Twitch] getStream",
-            "actionArg": [
-                {
-                    "key": "channelName",
-                    "value": "ponce"
-                }
-            ],
-            "reaction": "testReaction",
-            "reactionArg": [
-                {
-                    "key": "text",
-                    "value": "tonton"
-                }
-            ],
-            "interval": 5
-        },
-        {
-            "jobToken": "8a493a4b-b1f4-4e94-944f-9a483b5c12cf",
-            "name": "chmmma",
-            "action": "[Twitch] getStream",
-            "actionArg": [
-                {
-                    "key": "channelName",
-                    "value": "ponce"
-                }
-            ],
-            "reaction": "testReaction",
-            "reactionArg": [
-                {
-                    "key": "text",
-                    "value": "tonton"
+                    "key": "userID",
+                    "value": "000000000000000000"
                 }
             ],
             "interval": 5
@@ -225,9 +168,9 @@ URL: `/stop-job`.
 Exemple of request in cURL:
 ```bash
 curl --location --request POST 'http://localhost:8080/api/v1/stop-job' \
---header 'authToken: f9b9ffc1-c151-4521-9769-a58ed9201658' \
+--header 'authToken: [authToken]' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'jobToken=8a493a4b-b1f4-4e94-944f-9a483b5c12cf' \
+--data-urlencode 'jobToken=[jobToken]' \
 --data-urlencode 'stop=true'
 ```
 
@@ -248,7 +191,7 @@ URL: `/re-action-info`.
 Exemple of request in cURL:
 ```bash
 curl --location --request GET 'http://localhost:8080/api/v1/re-action-info' \
---header 'authToken: f9b9ffc1-c151-4521-9769-a58ed9201658'
+--header 'authToken: [authToken]'
 ```
 
 Here is an example of a **response**:

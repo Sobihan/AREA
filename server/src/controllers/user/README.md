@@ -39,20 +39,16 @@ Here is an example of a **response**:
     "success": true,
     "body": "Registration done!",
     "user": {
-        "id": 3,
-        "createdAt": "2021-12-15T14:14:26.051Z",
+        "id": 1,
+        "createdAt": "2022-03-06T19:51:02.753Z",
         "username": "itjustworks",
         "email": "itjustworks@bugthesda.com",
         "password": "bugthesda",
         "name": null,
         "lstName": null,
-        "token": "250f87f8-6026-4fe6-8d96-75449cc768b1",
-        "points": 0,
-        "distTrvl": 0,
+        "token": "[authToken]",
         "avatar": null,
-        "role": "USER",
-        "teamId": null,
-        "teamAdm": false
+        "role": "USER"
     }
 }
 ```
@@ -76,11 +72,11 @@ Here is an example of a **response**:
 {
     "success": true,
     "body": "Registration done!",
-    "token": "250f87f8-6026-4fe6-8d96-75449cc768b1"
+    "token": "[authToken]"
 }
 ```
 ____
-### **Login user with google**
+### **Login user with google (WEB)**
 
 Request type: `POST`.
 
@@ -89,32 +85,52 @@ URL: `/api/v1/google-auth`.
 Exemple of request in cURL:
 ```bash
 curl --location --request POST 'http://localhost:8080/api/v1/google-auth' \
---header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'email=itjustworks@bugthesda.com' \
---data-urlencode 'response={...google answer...}'
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "is_mobile": false,
+    "test": true,
+    "response": {
+        "code": "4/0AX4XfWg8ee8aTv_AXcaww6IoBBlmAn-ejwALfP[...]"
+    }
+}'
 ```
 
 Here is an example of a **response**:
 ```json
 {
     "success": true,
-    "body": "Registration done!",
-    "user": {
-        "id": 3,
-        "createdAt": "2021-12-15T14:14:26.051Z",
-        "username": "itjustworks",
-        "email": "itjustworks@bugthesda.com",
-        "password": "bugthesda",
-        "name": null,
-        "lstName": null,
-        "token": "250f87f8-6026-4fe6-8d96-75449cc768b1",
-        "points": 0,
-        "distTrvl": 0,
-        "avatar": null,
-        "role": "USER",
-        "teamId": null,
-        "teamAdm": false
-    }
+    "body": "updateApiToken done!",
+    "token": "[authToken]"
+}
+```
+____
+### **Login user with google (MOBIL)**
+
+Request type: `POST`.
+
+URL: `/api/v1/google-auth`.
+
+Exemple of request in cURL:
+```bash
+curl --location --request POST 'http://localhost:8080/api/v1/google-auth' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "is_mobile": true,
+    "refreshToken": "1//03tYbxXhXXcILCgYIARAAGAMSNwF-L9[...]",
+    "accessToken": "ya29.A0ARrdaM_QHaP03S3RXSc0o09X_Q6_FRASUI8BpISt5hIq7Gz6Pif1[...]",
+    "googleId": "118204546452644603236",
+    "givenName": "Jean",
+    "familyName": "Paul",
+    "email": "[USER EMAIL]"
+}'
+```
+
+Here is an example of a **response**:
+```json
+{
+    "success": true,
+    "body": "updateApiToken done!",
+    "token": "[authToken]"
 }
 ```
 ____
@@ -127,7 +143,7 @@ URL: `/api/v1/update-user-data`.
 Exemple of request in cURL:
 ```bash
 curl --location --request POST 'http://localhost:8080/api/v1/update-user-data' \
---header 'authToken: 250f87f8-6026-4fe6-8d96-75449cc768b1' \
+--header 'authToken: [authToken]' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'name=bbb' \
 --data-urlencode 'lstName=aaa' \
@@ -147,13 +163,9 @@ Here is an example of a **response**:
         "password": "bugthesda",
         "name": "bbb",
         "lstName": "aaa",
-        "token": "250f87f8-6026-4fe6-8d96-75449cc768b1",
-        "points": 0,
-        "distTrvl": 0,
+        "token": "[authToken]",
         "avatar": "ccc",
-        "role": "USER",
-        "teamId": 10,
-        "teamAdm": true
+        "role": "USER"
     }
 }
 ```
@@ -167,7 +179,7 @@ URL: `/api/v1/get-user-data`.
 Exemple of request in cURL:
 ```bash
 curl --location --request GET 'http://localhost:8080/api/v1/get-user-data' \
---header 'authToken: 250f87f8-6026-4fe6-8d96-75449cc768b1'
+--header 'authToken: [authToken]'
 ```
 
 Here is an example of a **response**:
