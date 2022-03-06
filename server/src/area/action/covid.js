@@ -135,16 +135,16 @@ module.exports.checkGetOverX = checkGetOverX;
 
 const covidInfo = new Map();
 
-covidInfo.set("getUpdatedInfo", {
-    name: "getUpdatedInfo",
+covidInfo.set("[Covid] getUpdatedInfo", {
+    name: "[Covid] getUpdatedInfo",
     description: "Informs you of the latest covid information for the chosen country.",
     args: [
         {country: "The chosen country."}
     ]
 });
 
-covidInfo.set("getOverXActive", {
-    name: "getOverXActive",
+covidInfo.set("[Covid] getOverXActive", {
+    name: "[Covid] getOverXActive",
     description: "Informs you of the latest covid information for the chosen country. When the number of active cases reach the threshold.",
     args: [
         {country: "The chosen country."},
@@ -152,8 +152,8 @@ covidInfo.set("getOverXActive", {
     ]
 });
 
-covidInfo.set("getOverXCritical", {
-    name: "getOverXCritical",
+covidInfo.set("[Covid] getOverXCritical", {
+    name: "[Covid] getOverXCritical",
     description: "Informs you of the latest covid information for the chosen country. When the number of critical cases reach the threshold.",
     args: [
         {country: "The chosen country."},

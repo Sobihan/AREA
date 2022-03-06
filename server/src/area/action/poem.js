@@ -57,8 +57,8 @@ module.exports.checkGetRandomPoem = checkGetRandomPoem;
 
 const poemInfo = new Map();
 
-poemInfo.set("getRandomPoem", {
-    name: "getRandomPoem",
+poemInfo.set("[Poemist] getRandomPoem", {
+    name: "[Poemist] getRandomPoem",
     description: "Give a random poem.",
     args: []
 });

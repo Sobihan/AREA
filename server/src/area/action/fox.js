@@ -57,8 +57,8 @@ module.exports.checkGetRandomFox = checkGetRandomFox;
 
 const foxInfo = new Map();
 
-foxInfo.set("getRandomFox", {
-    name: "getRandomFox",
+foxInfo.set("[Fox] getRandomFox", {
+    name: "[Fox] getRandomFox",
     description: "Give a random fox picture.",
     args: []
 });

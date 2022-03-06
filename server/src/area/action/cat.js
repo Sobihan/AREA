@@ -57,8 +57,8 @@ module.exports.checkGetRandomCat = checkGetRandomCat;
 
 const catInfo = new Map();
 
-catInfo.set("getRandomCat", {
-    name: "getRandomCat",
+catInfo.set("[Cat] getRandomCat", {
+    name: "[Cat] getRandomCat",
     description: "Give a random cat picture.",
     args: []
 });

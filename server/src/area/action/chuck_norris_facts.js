@@ -57,8 +57,8 @@ module.exports.checkGetRandomChuckNorrisFacts = checkGetRandomChuckNorrisFacts;
 
 const chuckNorrisFactsInfo = new Map();
 
-chuckNorrisFactsInfo.set("getRandomChuckNorrisFacts", {
-    name: "getRandomChuckNorrisFacts",
+chuckNorrisFactsInfo.set("[Chuck Norris] getRandomChuckNorrisFacts", {
+    name: "[Chuck Norris] getRandomChuckNorrisFacts",
     description: "Give a random and true fact about Chuck Norris.",
     args: []
 });

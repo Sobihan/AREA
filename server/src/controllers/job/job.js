@@ -3,6 +3,7 @@ const job = require('../../db_management/job/db_job');
 const job_extra = require('./job_extra');
 const {infoAction} = require('../../area/action');
 const {infoReaction} = require('../../area/reaction');
+const {cleanArgs} = require('../../area/search');
 
 function convertInt(x, base) {
     const parsed = parseInt(x, base);
@@ -179,6 +180,10 @@ const searchJob = (req, res, next) => {
     .then((job) => {
         if (isSuccess == true && job != null && job[0] != null){
             console.log('findJob SUCESSFUL');
+            for (const jobNumber in job[0].job) {
+                cleanArgs(job[0].job[jobNumber].actionArg);
+                cleanArgs(job[0].job[jobNumber].reactionArg);
+            }
             res.status(200).json({
                 success: true,
                 body: 'Find job done!',

@@ -382,8 +382,8 @@ module.exports.checkXWindSpeed = checkXWindSpeed;
 
 const weatherInfo = new Map();
 
-weatherInfo.set("overXTemperature", {
-    name: "overXTemperature",
+weatherInfo.set("[Weather] overXTemperature", {
+    name: "[Weather] overXTemperature",
     description: "Give information if the current temperature (°C) is above your threshold.",
     args: [
         {city: "the city you wish to monitor."},
@@ -391,8 +391,8 @@ weatherInfo.set("overXTemperature", {
     ]
 });
 
-weatherInfo.set("belowXTemperature", {
-    name: "belowXTemperature",
+weatherInfo.set("[Weather] belowXTemperature", {
+    name: "[Weather] belowXTemperature",
     description: "Give information if the current temperature (°C) is below your threshold.",
     args: [
         {city: "the city you wish to monitor."},
@@ -400,8 +400,8 @@ weatherInfo.set("belowXTemperature", {
     ]
 });
 
-weatherInfo.set("overXHumidity", {
-    name: "overXHumidity",
+weatherInfo.set("[Weather] overXHumidity", {
+    name: "[Weather] overXHumidity",
     description: "Give information if the current humidity (%) is above your threshold.",
     args: [
         {city: "the city you wish to monitor."},
@@ -409,8 +409,8 @@ weatherInfo.set("overXHumidity", {
     ]
 });
 
-weatherInfo.set("belowXHumidity", {
-    name: "belowXHumidity",
+weatherInfo.set("[Weather] belowXHumidity", {
+    name: "[Weather] belowXHumidity",
     description: "Give information if the current humidity (%) is below your threshold.",
     args: [
         {city: "the city you wish to monitor."},
@@ -418,8 +418,8 @@ weatherInfo.set("belowXHumidity", {
     ]
 });
 
-weatherInfo.set("overXVisibility", {
-    name: "overXVisibility",
+weatherInfo.set("[Weather] overXVisibility", {
+    name: "[Weather] overXVisibility",
     description: "Give information if the current visibility (km) is above your threshold.",
     args: [
         {city: "the city you wish to monitor."},
@@ -427,8 +427,8 @@ weatherInfo.set("overXVisibility", {
     ]
 });
 
-weatherInfo.set("belowXVisibility", {
-    name: "belowXVisibility",
+weatherInfo.set("[Weather] belowXVisibility", {
+    name: "[Weather] belowXVisibility",
     description: "Give information if the current visibility (km) is below your threshold.",
     args: [
         {city: "the city you wish to monitor."},
@@ -436,8 +436,8 @@ weatherInfo.set("belowXVisibility", {
     ]
 });
 
-weatherInfo.set("overXWindSpeed", {
-    name: "overXWindSpeed",
+weatherInfo.set("[Weather] overXWindSpeed", {
+    name: "[Weather] overXWindSpeed",
     description: "Give information if the current speed of the wind (km/h) is above your threshold.",
     args: [
         {city: "the city you wish to monitor."},
@@ -445,8 +445,8 @@ weatherInfo.set("overXWindSpeed", {
     ]
 });
 
-weatherInfo.set("belowXWindSpeed", {
-    name: "belowXWindSpeed",
+weatherInfo.set("[Weather] belowXWindSpeed", {
+    name: "[Weather] belowXWindSpeed",
     description: "Give information if the current speed of the wind (km/h) is below your threshold.",
     args: [
         {city: "the city you wish to monitor."},

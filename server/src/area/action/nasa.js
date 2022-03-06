@@ -58,8 +58,8 @@ module.exports.checkGetAPOD = checkGetAPOD;
 
 const nasaInfo = new Map();
 
-nasaInfo.set("getAPOD", {
-    name: "getAPOD",
+nasaInfo.set("[NASA] getAPOD", {
+    name: "[NASA] getAPOD",
     description: "With the nasa gives the astronomy picture of the day.",
     args: []
 });

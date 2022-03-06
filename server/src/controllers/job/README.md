@@ -33,7 +33,7 @@ curl --location --request POST 'http://localhost:8080/api/v1/update-job' \
 --data-raw '{
     "jobToken": "",
     "name": "chmmma",
-    "action": "getStream",
+    "action": "[Twitch] getStream",
     "actionArg": [{"channelName":"ponce"}],
     "reaction": "testReaction",
     "reactionArg": [
@@ -54,7 +54,7 @@ Here is an example of a **response**:
     "good_job": {
         "jobToken": "249ac525-e0f4-4bdb-9448-e62a63ef057a",
         "name": "chmmma",
-        "action": "getStream",
+        "action": "[Twitch] getStream",
         "actionArg": [
             {
                 "key": "channelName",
@@ -120,7 +120,7 @@ Here is an example of a **response**:
         {
             "jobToken": "c1c1e8fd-b311-447e-8c7d-346c3a7233da",
             "name": "chmmma",
-            "action": "getStream",
+            "action": "[Twitch] getStream",
             "actionArg": [
                 {
                     "key": "channelName",
@@ -139,7 +139,7 @@ Here is an example of a **response**:
         {
             "jobToken": "35ab92f6-50f1-4622-89d0-8914d7051cdd",
             "name": "chmmma",
-            "action": "getStream",
+            "action": "[Twitch] getStream",
             "actionArg": [
                 {
                     "key": "channelName",
@@ -158,7 +158,7 @@ Here is an example of a **response**:
         {
             "jobToken": "249ac525-e0f4-4bdb-9448-e62a63ef057a",
             "name": "chmmma",
-            "action": "getStream",
+            "action": "[Twitch] getStream",
             "actionArg": [
                 {
                     "key": "channelName",
@@ -177,7 +177,7 @@ Here is an example of a **response**:
         {
             "jobToken": "e3a9c9f7-f5f5-474c-87c0-e5362f0de0e2",
             "name": "chmmma",
-            "action": "getStream",
+            "action": "[Twitch] getStream",
             "actionArg": [
                 {
                     "key": "channelName",
@@ -196,7 +196,7 @@ Here is an example of a **response**:
         {
             "jobToken": "8a493a4b-b1f4-4e94-944f-9a483b5c12cf",
             "name": "chmmma",
-            "action": "getStream",
+            "action": "[Twitch] getStream",
             "actionArg": [
                 {
                     "key": "channelName",
@@ -261,7 +261,7 @@ Here is an example of a **response**:
             "name": "twitch",
             "actions": [
                 {
-                    "name": "getStream",
+                    "name": "[Twitch] getStream",
                     "description": "I am a description",
                     "args": [
                         {

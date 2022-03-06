@@ -59,8 +59,8 @@ module.exports.checkGetRandomDog = checkGetRandomDog;
 
 const doggoInfo = new Map();
 
-doggoInfo.set("getRandomDog", {
-    name: "getRandomDog",
+doggoInfo.set("[Dog] getRandomDog", {
+    name: "[Dog] getRandomDog",
     description: "Give a random dog picture.",
     args: []
 });

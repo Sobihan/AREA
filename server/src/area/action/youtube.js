@@ -7,7 +7,7 @@ const youtube = new Client();
 function NewLike(actionArgs, callback, reactionArgs)
 {
     let isSuccess = true;
-    const likes = search.args(actionArgs, "likes"); //added by us
+    const likes = search.args(actionArgs, "s_likes"); //added by us
     const videoURL = search.args(actionArgs, "videoURL"); //needed
 
     youtube.getVideo(videoURL)
@@ -17,7 +17,7 @@ function NewLike(actionArgs, callback, reactionArgs)
     })
     .then((video) => {
         if (isSuccess == true && video != null && video != undefined && video.likeCount != undefined && video.likeCount != likes) {
-            search.changeArgs(actionArgs, "likes", video.likeCount);
+            search.changeArgs(actionArgs, "s_likes", video.likeCount);
             search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " like count as changed.\nCurrent like counter is " + video.likeCount + " likes.\n");
             callback(reactionArgs);
         }
@@ -95,7 +95,7 @@ function overXLikeTimesY(actionArgs, callback, reactionArgs)
 function newView(actionArgs, callback, reactionArgs)
 {
     let isSuccess = true;
-    const views = search.args(actionArgs, "views"); //added by us
+    const views = search.args(actionArgs, "s_views"); //added by us
     const videoURL = search.args(actionArgs, "videoURL"); //needed
 
     youtube.getVideo(videoURL)
@@ -105,7 +105,7 @@ function newView(actionArgs, callback, reactionArgs)
     })
     .then((video) => {
         if (isSuccess == true && video != null && video != undefined && video.viewCount != undefined && video.viewCount != views) {
-            search.changeArgs(actionArgs, "views", video.viewCount);
+            search.changeArgs(actionArgs, "s_views", video.viewCount);
             search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " view count as changed.\nCurrent view counter is " + video.viewCount + " views.\n");
             callback(reactionArgs);
         }
@@ -296,7 +296,7 @@ function checkNewLike(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
     // search.AddArgs(actionArgs, "userToken", userToken);
-    search.AddArgs(actionArgs, "likes", 0);
+    search.AddArgs(actionArgs, "s_likes", 0);
     if (search.args(actionArgs, "videoURL") == null)
         return false;
     return true;
@@ -344,7 +344,7 @@ function checkNewView(userToken, actionArgs)
 {
     search.initializeArgs(actionArgs);
     // search.AddArgs(actionArgs, "userToken", userToken);
-    search.AddArgs(actionArgs, "views", 0);
+    search.AddArgs(actionArgs, "s_views", 0);
     if (search.args(actionArgs, "videoURL") == null)
         return false;
     return true;
@@ -452,16 +452,16 @@ module.exports.checkOverXVideosY = checkOverXVideosY;
 
 const youtubeInfo = new Map();
 
-youtubeInfo.set("NewLike", {
-    name: "NewLike",
+youtubeInfo.set("[Youtube] NewLike", {
+    name: "[Youtube] NewLike",
     description: "To know if a video's like counter changed.",
     args: [
         {videoURL: "The URL of the video you wish to monitor."}
     ]
 });
 
-youtubeInfo.set("overXLike", {
-    name: "overXLike",
+youtubeInfo.set("[Youtube] overXLike", {
+    name: "[Youtube] overXLike",
     description: "To know if a video as reached the targeted number of likes.",
     args: [
         {videoURL: "The URL of the video you wish to monitor."},
@@ -469,8 +469,8 @@ youtubeInfo.set("overXLike", {
     ]
 });
 
-youtubeInfo.set("overXLikeAddY", {
-    name: "overXLikeAddY",
+youtubeInfo.set("[Youtube] overXLikeAddY", {
+    name: "[Youtube] overXLikeAddY",
     description: "To know if a video as reached the targeted number of likes. And then add addLikes to the target.",
     args: [
         {videoURL: "The URL of the video you wish to monitor."},
@@ -479,8 +479,8 @@ youtubeInfo.set("overXLikeAddY", {
     ]
 });
 
-youtubeInfo.set("overXLikeTimesY", {
-    name: "overXLikeTimesY",
+youtubeInfo.set("[Youtube] overXLikeTimesY", {
+    name: "[Youtube] overXLikeTimesY",
     description: "To know if a video as reached the targeted number of likes. And then multiply the target by addLikes.",
     args: [
         {videoURL: "The URL of the video you wish to monitor."},
@@ -489,16 +489,16 @@ youtubeInfo.set("overXLikeTimesY", {
     ]
 });
 
-youtubeInfo.set("newView", {
-    name: "newView",
+youtubeInfo.set("[Youtube] newView", {
+    name: "[Youtube] newView",
     description: "To know if a video's views counter changed.",
     args: [
         {videoURL: "The URL of the video you wish to monitor."}
     ]
 });
 
-youtubeInfo.set("overXView", {
-    name: "overXView",
+youtubeInfo.set("[Youtube] overXView", {
+    name: "[Youtube] overXView",
     description: "To know if a video as reached the targeted number of views.",
     args: [
         {videoURL: "The URL of the video you wish to monitor."},
@@ -506,8 +506,8 @@ youtubeInfo.set("overXView", {
     ]
 });
 
-youtubeInfo.set("overXViewAddY", {
-    name: "overXViewAddY",
+youtubeInfo.set("[Youtube] overXViewAddY", {
+    name: "[Youtube] overXViewAddY",
     description: "To know if a video as reached the targeted number of views. And then add addViews to the target.",
     args: [
         {videoURL: "The URL of the video you wish to monitor."},
@@ -516,8 +516,8 @@ youtubeInfo.set("overXViewAddY", {
     ]
 });
 
-youtubeInfo.set("overXViewTimesY", {
-    name: "overXViewTimesY",
+youtubeInfo.set("[Youtube] overXViewTimesY", {
+    name: "[Youtube] overXViewTimesY",
     description: "To know if a video as reached the targeted number of views. And then multiply the target by addViews.",
     args: [
         {videoURL: "The URL of the video you wish to monitor."},
@@ -526,16 +526,16 @@ youtubeInfo.set("overXViewTimesY", {
     ]
 });
 
-youtubeInfo.set("newVideos", {
-    name: "newVideos",
+youtubeInfo.set("[Youtube] newVideos", {
+    name: "[Youtube] newVideos",
     description: "To know if a Youtube channel as uploaded a new video.",
     args: [
         {channelName: "The channel's name you wish to monitor."}
     ]
 });
 
-youtubeInfo.set("overXVideos", {
-    name: "overXVideos",
+youtubeInfo.set("[Youtube] overXVideos", {
+    name: "[Youtube] overXVideos",
     description: "To know if a Youtube channel as reached the targeted number of videos.",
     args: [
         {channelName: "The channel's name you wish to monitor."},
@@ -543,8 +543,8 @@ youtubeInfo.set("overXVideos", {
     ]
 });
 
-youtubeInfo.set("overXVideosAddY", {
-    name: "overXVideosAddY",
+youtubeInfo.set("[Youtube] overXVideosAddY", {
+    name: "[Youtube] overXVideosAddY",
     description: "To know if a Youtube channel as reached the targeted number of videos. And then add addVideoCount to the target.",
     args: [
         {channelName: "The channel's name you wish to monitor."},
@@ -553,8 +553,8 @@ youtubeInfo.set("overXVideosAddY", {
     ]
 });
 
-youtubeInfo.set("overXVideosTimesY", {
-    name: "overXVideosTimesY",
+youtubeInfo.set("[Youtube] overXVideosTimesY", {
+    name: "[Youtube] overXVideosTimesY",
     description: "To know if a Youtube channel as reached the targeted number of videos. And then multiply the target by addVideoCount.",
     args: [
         {channelName: "The channel's name you wish to monitor."},

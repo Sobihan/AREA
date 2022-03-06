@@ -55,8 +55,8 @@ module.exports.checkSendEmail = checkSendEmail;
 
 const emailInfo = new Map();
 
-emailInfo.set("sendEmail", {
-    name:"sendEmail",
+emailInfo.set("[Email] sendEmail", {
+    name:"[Email] sendEmail",
     description:"Send an email as a reaction.",
     args: [
         {recvEmail: "The email adress that will receive the message we send."}

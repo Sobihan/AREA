@@ -385,56 +385,56 @@ module.exports.checkGetSomeRandom = checkGetSomeRandom;
 
 const someRandomInfo = new Map();
 
-someRandomInfo.set("getSomeRandomRedPanda", {
-    name: "getSomeRandomRedPanda",
+someRandomInfo.set("[Some Random] getSomeRandomRedPanda", {
+    name: "[Some Random] getSomeRandomRedPanda",
     description: "Give a random red panda picture and fact.",
     args: []
 });
 
-someRandomInfo.set("getSomeRandomRaccoon", {
-    name: "getSomeRandomRaccoon",
+someRandomInfo.set("[Some Random] getSomeRandomRaccoon", {
+    name: "[Some Random] getSomeRandomRaccoon",
     description: "Give a random raccoon picture and fact.",
     args: []
 });
 
-someRandomInfo.set("getSomeRandomKangaroo", {
-    name: "getSomeRandomKangaroo",
+someRandomInfo.set("[Some Random] getSomeRandomKangaroo", {
+    name: "[Some Random] getSomeRandomKangaroo",
     description: "Give a random kangaroo picture and fact.",
     args: []
 });
 
-someRandomInfo.set("getSomeRandomKoala", {
-    name: "getSomeRandomKoala",
+someRandomInfo.set("[Some Random] getSomeRandomKoala", {
+    name: "[Some Random] getSomeRandomKoala",
     description: "Give a random koala picture and fact.",
     args: []
 });
 
-someRandomInfo.set("getSomeRandomJoke", {
-    name: "getSomeRandomJoke",
+someRandomInfo.set("[Some Random] getSomeRandomJoke", {
+    name: "[Some Random] getSomeRandomJoke",
     description: "Give a random joke.",
     args: []
 });
 
-someRandomInfo.set("getSomeRandomAnimePat", {
-    name: "getSomeRandomAnimePat",
+someRandomInfo.set("[Some Random] getSomeRandomAnimePat", {
+    name: "[Some Random] getSomeRandomAnimePat",
     description: "Give a random anime pat GIF.",
     args: []
 });
 
-someRandomInfo.set("getSomeRandomAnimeWink", {
-    name: "getSomeRandomAnimeWink",
+someRandomInfo.set("[Some Random] getSomeRandomAnimeWink", {
+    name: "[Some Random] getSomeRandomAnimeWink",
     description: "Give a random anime wink GIF.",
     args: []
 });
 
-someRandomInfo.set("getSomeRandomAnimeHug", {
-    name: "getSomeRandomAnimeHug",
+someRandomInfo.set("[Some Random] getSomeRandomAnimeHug", {
+    name: "[Some Random] getSomeRandomAnimeHug",
     description: "Give a random anime hug GIF.",
     args: []
 });
 
-someRandomInfo.set("getSomeRandomJoke", {
-    name: "getSomeRandomJoke",
+someRandomInfo.set("[Some Random] getSomeRandomMeme", {
+    name: "[Some Random] getSomeRandomMeme",
     description: "Give a random joke.",
     args: []
 });

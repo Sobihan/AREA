@@ -57,8 +57,8 @@ module.exports.checkGetRandomWaifu = checkGetRandomWaifu;
 
 const waifuInfo = new Map();
 
-waifuInfo.set("getRandomWaifu", {
-    name: "getRandomWaifu",
+waifuInfo.set("[Waifu] getRandomWaifu", {
+    name: "[Waifu] getRandomWaifu",
     description: "Give a random picture of a female character and the source of said picture.",
     args: []
 });

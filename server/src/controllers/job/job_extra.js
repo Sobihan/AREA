@@ -2,6 +2,7 @@ const job = require('../../db_management/job/db_job');
 const actions = require('../../area/action');
 const reactions = require('../../area/reaction');
 const { ToadScheduler, SimpleIntervalJob, Task, AsyncTask } = require('toad-scheduler');
+const { cleanArgs } = require('../../area/search');
 
 const scheduler = new ToadScheduler()
 
@@ -105,6 +106,9 @@ async function updateJob_extra(jobToken, actionArgJson, reactionArgJson, req)
                         good_job.jobToken
                     );
                     scheduler.addSimpleIntervalJob(job1);
+
+                    cleanArgs(good_job.actionArg);
+                    cleanArgs(good_job.reactionArg);
 
                     return {code:200, json:{
                         success: true,

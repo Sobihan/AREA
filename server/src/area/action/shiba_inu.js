@@ -57,8 +57,8 @@ module.exports.checkGetRandomShibaInu = checkGetRandomShibaInu;
 
 const shibaInuInfo = new Map();
 
-shibaInuInfo.set("getRandomShibaInu", {
-    name: "getRandomShibaInu",
+shibaInuInfo.set("[Shiba Inu] getRandomShibaInu", {
+    name: "[Shiba Inu] getRandomShibaInu",
     description: "Give a random Shiba Inu picture.",
     args: []
 });

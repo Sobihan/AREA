@@ -14,77 +14,77 @@ const covid = require('./action/covid'); //--//
 
 const action = new Map();
 
-action.set("getStream", twitch.getStream); //--//
-action.set("overXViewer", twitch.overXViewer); //--//
-action.set("overXViewerAddY", twitch.overXViewerAddY); //--//
-action.set("overXViewerTimesY", twitch.overXViewerTimesY); //--//
+action.set("[Twitch] getStream", twitch.getStream); //--//
+action.set("[Twitch] overXViewer", twitch.overXViewer); //--//
+action.set("[Twitch] overXViewerAddY", twitch.overXViewerAddY); //--//
+action.set("[Twitch] overXViewerTimesY", twitch.overXViewerTimesY); //--//
 //action.set("getStreamsIfPlayingX", twitch.getStreamsIfPlayingX); //--//
 
 
-action.set("getRandomPoem", poem.getRandomPoem);
+action.set("[Poemist] getRandomPoem", poem.getRandomPoem);
 
 
-action.set("getAPOD", nasa.getAPOD);
+action.set("[NASA] getAPOD", nasa.getAPOD);
 
 
-action.set("NewLike", youtube.NewLike); //--//
-action.set("overXLike", youtube.overXLike); //--//
-action.set("overXLikeAddY", youtube.overXLikeAddY); //--//
-action.set("overXLikeTimesY", youtube.overXLikeTimesY); //--//
+action.set("[Youtube] NewLike", youtube.NewLike); //--//
+action.set("[Youtube] overXLike", youtube.overXLike); //--//
+action.set("[Youtube] overXLikeAddY", youtube.overXLikeAddY); //--//
+action.set("[Youtube] overXLikeTimesY", youtube.overXLikeTimesY); //--//
 
-action.set("newView", youtube.newView); //--//
-action.set("overXView", youtube.overXView); //--//
-action.set("overXViewAddY", youtube.overXViewAddY); //--//
-action.set("overXViewTimesY", youtube.overXViewTimesY); //--//
+action.set("[Youtube] newView", youtube.newView); //--//
+action.set("[Youtube] overXView", youtube.overXView); //--//
+action.set("[Youtube] overXViewAddY", youtube.overXViewAddY); //--//
+action.set("[Youtube] overXViewTimesY", youtube.overXViewTimesY); //--//
 
-action.set("newVideos", youtube.newVideos); //--//
-action.set("overXVideos", youtube.overXVideos); //--//
-action.set("overXVideosAddY", youtube.overXVideosAddY); //--//
-action.set("overXVideosTimesY", youtube.overXVideosTimesY); //--//
-
-
-action.set("getRandomDog", doggo.getRandomDog);
+action.set("[Youtube] newVideos", youtube.newVideos); //--//
+action.set("[Youtube] overXVideos", youtube.overXVideos); //--//
+action.set("[Youtube] overXVideosAddY", youtube.overXVideosAddY); //--//
+action.set("[Youtube] overXVideosTimesY", youtube.overXVideosTimesY); //--//
 
 
-action.set("getRandomChuckNorrisFacts", chuckNorris.getRandomChuckNorrisFacts);
+action.set("[Dog] getRandomDog", doggo.getRandomDog);
 
 
-action.set("getRandomCat", cat.getRandomCat);
+action.set("[Chuck Norris] getRandomChuckNorrisFacts", chuckNorris.getRandomChuckNorrisFacts);
 
 
-action.set("getRandomFox", fox.getRandomFox);
+action.set("[Cat] getRandomCat", cat.getRandomCat);
 
 
-action.set("getRandomShibaInu", shibaInu.getRandomShibaInu);
+action.set("[Fox] getRandomFox", fox.getRandomFox);
 
 
-action.set("getSomeRandomRedPanda", some_random_api.getSomeRandomRedPanda);
-action.set("getSomeRandomRaccoon", some_random_api.getSomeRandomRaccoon);
-action.set("getSomeRandomKangaroo", some_random_api.getSomeRandomKangaroo);
-action.set("getSomeRandomKoala", some_random_api.getSomeRandomKoala);
-action.set("getSomeRandomJoke", some_random_api.getSomeRandomJoke);
-action.set("getSomeRandomAnimePat", some_random_api.getSomeRandomAnimePat);
-action.set("getSomeRandomAnimeWink", some_random_api.getSomeRandomAnimeWink);
-action.set("getSomeRandomAnimeHug", some_random_api.getSomeRandomAnimeHug);
-action.set("getSomeRandomMeme", some_random_api.getSomeRandomMeme);
+action.set("[Shiba Inu] getRandomShibaInu", shibaInu.getRandomShibaInu);
 
 
-action.set("getRandomWaifu", waifu.getRandomWaifu);
+action.set("[Some Random] getSomeRandomRedPanda", some_random_api.getSomeRandomRedPanda);
+action.set("[Some Random] getSomeRandomRaccoon", some_random_api.getSomeRandomRaccoon);
+action.set("[Some Random] getSomeRandomKangaroo", some_random_api.getSomeRandomKangaroo);
+action.set("[Some Random] getSomeRandomKoala", some_random_api.getSomeRandomKoala);
+action.set("[Some Random] getSomeRandomJoke", some_random_api.getSomeRandomJoke);
+action.set("[Some Random] getSomeRandomAnimePat", some_random_api.getSomeRandomAnimePat);
+action.set("[Some Random] getSomeRandomAnimeWink", some_random_api.getSomeRandomAnimeWink);
+action.set("[Some Random] getSomeRandomAnimeHug", some_random_api.getSomeRandomAnimeHug);
+action.set("[Some Random] getSomeRandomMeme", some_random_api.getSomeRandomMeme);
 
 
-action.set("overXTemperature", weather.overXTemperature); //--//
-action.set("belowXTemperature", weather.belowXTemperature); //--//
-action.set("overXHumidity", weather.overXHumidity); //--//
-action.set("belowXHumidity", weather.belowXHumidity); //--//
-action.set("overXVisibility", weather.overXVisibility); //--//
-action.set("belowXVisibility", weather.belowXVisibility); //--//
-action.set("overXWindSpeed", weather.overXWindSpeed); //--//
-action.set("belowXWindSpeed", weather.belowXWindSpeed); //--//
+action.set("[Waifu] getRandomWaifu", waifu.getRandomWaifu);
 
 
-action.set("getUpdatedInfo", covid.getUpdatedInfo); //--//
-action.set("getOverXActive", covid.getOverXActive); //--//
-action.set("getOverXCritical", covid.getOverXCritical); //--//
+action.set("[Weather] overXTemperature", weather.overXTemperature); //--//
+action.set("[Weather] belowXTemperature", weather.belowXTemperature); //--//
+action.set("[Weather] overXHumidity", weather.overXHumidity); //--//
+action.set("[Weather] belowXHumidity", weather.belowXHumidity); //--//
+action.set("[Weather] overXVisibility", weather.overXVisibility); //--//
+action.set("[Weather] belowXVisibility", weather.belowXVisibility); //--//
+action.set("[Weather] overXWindSpeed", weather.overXWindSpeed); //--//
+action.set("[Weather] belowXWindSpeed", weather.belowXWindSpeed); //--//
+
+
+action.set("[Covid] getUpdatedInfo", covid.getUpdatedInfo); //--//
+action.set("[Covid] getOverXActive", covid.getOverXActive); //--//
+action.set("[Covid] getOverXCritical", covid.getOverXCritical); //--//
 
 module.exports.action = action;
 
@@ -92,77 +92,77 @@ module.exports.action = action;
 
 const checkAction = new Map();
 
-checkAction.set("getStream", twitch.checkGetStream);
-checkAction.set("overXViewer", twitch.checkOverXViewer);
-checkAction.set("overXViewerAddY", twitch.checkOverXViewerY);
-checkAction.set("overXViewerTimesY", twitch.checkOverXViewerY);
+checkAction.set("[Twitch] getStream", twitch.checkGetStream);
+checkAction.set("[Twitch] overXViewer", twitch.checkOverXViewer);
+checkAction.set("[Twitch] overXViewerAddY", twitch.checkOverXViewerY);
+checkAction.set("[Twitch] overXViewerTimesY", twitch.checkOverXViewerY);
 //checkAction.set("getStreamsIfPlayingX", twitch.checkGetStreamsIfPlayingX);
 
 
-checkAction.set("getRandomPoem", poem.checkGetRandomPoem);
+checkAction.set("[Poemist] getRandomPoem", poem.checkGetRandomPoem);
 
 
-checkAction.set("getAPOD", nasa.checkGetAPOD);
+checkAction.set("[NASA] getAPOD", nasa.checkGetAPOD);
 
 
-checkAction.set("NewLike", youtube.checkNewLike);
-checkAction.set("overXLike", youtube.checkOverXLike);
-checkAction.set("overXLikeAddY", youtube.checkOverXLikeY);
-checkAction.set("overXLikeTimesY", youtube.checkOverXLikeY);
+checkAction.set("[Youtube] NewLike", youtube.checkNewLike);
+checkAction.set("[Youtube] overXLike", youtube.checkOverXLike);
+checkAction.set("[Youtube] overXLikeAddY", youtube.checkOverXLikeY);
+checkAction.set("[Youtube] overXLikeTimesY", youtube.checkOverXLikeY);
 
-checkAction.set("newView", youtube.checkNewView);
-checkAction.set("overXView", youtube.checkOverXView);
-checkAction.set("overXViewAddY", youtube.checkOverXViewY);
-checkAction.set("overXViewTimesY", youtube.checkOverXViewY);
+checkAction.set("[Youtube] newView", youtube.checkNewView);
+checkAction.set("[Youtube] overXView", youtube.checkOverXView);
+checkAction.set("[Youtube] overXViewAddY", youtube.checkOverXViewY);
+checkAction.set("[Youtube] overXViewTimesY", youtube.checkOverXViewY);
 
-checkAction.set("newVideos", youtube.checkNewVideos);
-checkAction.set("overXVideos", youtube.checkOverXVideos);
-checkAction.set("overXVideosAddY", youtube.checkOverXVideosY);
-checkAction.set("overXVideosTimesY", youtube.checkOverXVideosY);
-
-
-checkAction.set("getRandomDog", doggo.checkGetRandomDog);
+checkAction.set("[Youtube] newVideos", youtube.checkNewVideos);
+checkAction.set("[Youtube] overXVideos", youtube.checkOverXVideos);
+checkAction.set("[Youtube] overXVideosAddY", youtube.checkOverXVideosY);
+checkAction.set("[Youtube] overXVideosTimesY", youtube.checkOverXVideosY);
 
 
-checkAction.set("getRandomChuckNorrisFacts", chuckNorris.checkGetRandomChuckNorrisFacts);
+checkAction.set("[Dog] getRandomDog", doggo.checkGetRandomDog);
 
 
-checkAction.set("getRandomCat", cat.checkGetRandomCat);
+checkAction.set("[Chuck Norris] getRandomChuckNorrisFacts", chuckNorris.checkGetRandomChuckNorrisFacts);
 
 
-checkAction.set("getRandomFox", fox.checkGetRandomFox);
+checkAction.set("[Cat] getRandomCat", cat.checkGetRandomCat);
 
 
-checkAction.set("getRandomShibaInu", shibaInu.checkGetRandomShibaInu);
+checkAction.set("[Fox] getRandomFox", fox.checkGetRandomFox);
 
 
-checkAction.set("getSomeRandomRedPanda", some_random_api.checkGetSomeRandom);
-checkAction.set("getSomeRandomRaccoon", some_random_api.checkGetSomeRandom);
-checkAction.set("getSomeRandomKangaroo", some_random_api.checkGetSomeRandom);
-checkAction.set("getSomeRandomKoala", some_random_api.checkGetSomeRandom);
-checkAction.set("getSomeRandomJoke", some_random_api.checkGetSomeRandom);
-checkAction.set("getSomeRandomAnimePat", some_random_api.checkGetSomeRandom);
-checkAction.set("getSomeRandomAnimeWink", some_random_api.checkGetSomeRandom);
-checkAction.set("getSomeRandomAnimeHug", some_random_api.checkGetSomeRandom);
-checkAction.set("getSomeRandomMeme", some_random_api.checkGetSomeRandom);
+checkAction.set("[Shiba Inu] getRandomShibaInu", shibaInu.checkGetRandomShibaInu);
 
 
-checkAction.set("getRandomWaifu", waifu.checkGetRandomWaifu);
+checkAction.set("[Some Random] getSomeRandomRedPanda", some_random_api.checkGetSomeRandom);
+checkAction.set("[Some Random] getSomeRandomRaccoon", some_random_api.checkGetSomeRandom);
+checkAction.set("[Some Random] getSomeRandomKangaroo", some_random_api.checkGetSomeRandom);
+checkAction.set("[Some Random] getSomeRandomKoala", some_random_api.checkGetSomeRandom);
+checkAction.set("[Some Random] getSomeRandomJoke", some_random_api.checkGetSomeRandom);
+checkAction.set("[Some Random] getSomeRandomAnimePat", some_random_api.checkGetSomeRandom);
+checkAction.set("[Some Random] getSomeRandomAnimeWink", some_random_api.checkGetSomeRandom);
+checkAction.set("[Some Random] getSomeRandomAnimeHug", some_random_api.checkGetSomeRandom);
+checkAction.set("[Some Random] getSomeRandomMeme", some_random_api.checkGetSomeRandom);
 
 
-checkAction.set("overXTemperature", weather.checkXTemperature);
-checkAction.set("belowXTemperature", weather.checkXTemperature);
-checkAction.set("overXHumidity", weather.checkXHumidity);
-checkAction.set("belowXHumidity", weather.checkXHumidity);
-checkAction.set("overXVisibility", weather.checkXVisibility);
-checkAction.set("belowXVisibility", weather.checkXVisibility);
-checkAction.set("overXWindSpeed", weather.checkXWindSpeed);
-checkAction.set("belowXWindSpeed", weather.checkXWindSpeed);
+checkAction.set("[Waifu] getRandomWaifu", waifu.checkGetRandomWaifu);
 
 
-checkAction.set("getUpdatedInfo", covid.checkGetUpdatedInfo);
-checkAction.set("getOverXActive", covid.checkGetOverX);
-checkAction.set("getOverXCritical", covid.checkGetOverX);
+checkAction.set("[Weather] overXTemperature", weather.checkXTemperature);
+checkAction.set("[Weather] belowXTemperature", weather.checkXTemperature);
+checkAction.set("[Weather] overXHumidity", weather.checkXHumidity);
+checkAction.set("[Weather] belowXHumidity", weather.checkXHumidity);
+checkAction.set("[Weather] overXVisibility", weather.checkXVisibility);
+checkAction.set("[Weather] belowXVisibility", weather.checkXVisibility);
+checkAction.set("[Weather] overXWindSpeed", weather.checkXWindSpeed);
+checkAction.set("[Weather] belowXWindSpeed", weather.checkXWindSpeed);
+
+
+checkAction.set("[Covid] getUpdatedInfo", covid.checkGetUpdatedInfo);
+checkAction.set("[Covid] getOverXActive", covid.checkGetOverX);
+checkAction.set("[Covid] getOverXCritical", covid.checkGetOverX);
 
 module.exports.checkAction = checkAction;
 

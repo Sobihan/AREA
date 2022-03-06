@@ -1,5 +1,5 @@
 const search = require('../search');
-const {Client, Intents, MessageEmbed} = require('discord.js');
+const {Client, Intents, MessageEmbed, Util} = require('discord.js');
 
 let bot = new Client({intents : [
     Intents.FLAGS.GUILDS,
@@ -17,22 +17,38 @@ function sendServerMessages(reactionArgs)
 {
     const text = search.args(reactionArgs, "text");
     const server = search.args(reactionArgs, "serverID");
+    const splitText = text.match(/[\s\S]{1,1950}/g) || [];
 
-    bot.channels.fetch(server).then(chan => {
-        chan.send(text);
-    })
-    .catch(console.error);
+    for (const pos in splitText) {
+        bot.channels.fetch(server).then(chan => {
+            chan.send(splitText[pos]);
+        })
+        .catch(console.error);
+    }
+
+    // bot.channels.fetch(server).then(chan => {
+    //     chan.send(text, { split: true });
+    // })
+    // .catch(console.error);
 }
 
 function sendPrivateMessages(reactionArgs)
 {
     const text = search.args(reactionArgs, "text");
     const user = search.args(reactionArgs, "userID");
+    const splitText = text.match(/[\s\S]{1,1950}/g) || [];
 
-    bot.users.fetch(user).then(chan => {
-        chan.send(text);
-    })
-    .catch(console.error);
+    for (const pos in splitText) {
+        bot.users.fetch(user).then(chan => {
+            chan.send(splitText[pos]);
+        })
+        .catch(console.error);
+    }
+
+    // bot.users.fetch(user).then(chan => {
+    //     chan.send(text);
+    // })
+    // .catch(console.error);
 }
 
 module.exports.sendServerMessages = sendServerMessages;
@@ -79,16 +95,16 @@ module.exports.checkSendPrivateMessages = checkSendPrivateMessages;
 
 const discordInfo = new Map();
 
-discordInfo.set("sendServerMessages", {
-    name:"sendServerMessages",
+discordInfo.set("[Discord] sendServerMessages", {
+    name:"[Discord] sendServerMessages",
     description:"Use a discord bot to display a message in you server.",
     args: [
         {serverID: "Channel on wich our bot will communicate."}
     ]
 });
 
-discordInfo.set("sendPrivateMessages", {
-    name:"sendPrivateMessages",
+discordInfo.set("[Discord] sendPrivateMessages", {
+    name:"[Discord] sendPrivateMessages",
     description:"Use a discord bot to send a private message to a user.",
     args: [
         {userID: "The user who will receive a private message."}

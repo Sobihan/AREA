@@ -219,16 +219,16 @@ module.exports.checkOverXViewerY = checkOverXViewerY;
 
 const twitchInfo = new Map();
 
-twitchInfo.set("getStream", {
-    name: "getStream",
+twitchInfo.set("[Twitch] getStream", {
+    name: "[Twitch] getStream",
     description: "Tells you if the requested streamer as started or stoped streamimg.",
     args: [
         {channelName: "The requested streamer channel name."}
     ]
 });
 
-twitchInfo.set("overXViewer", {
-    name: "overXViewer",
+twitchInfo.set("[Twitch] overXViewer", {
+    name: "[Twitch] overXViewer",
     description: "Tells you if the requested streamer as reached the targeted number of viewers.",
     args: [
         {channelName: "The requested streamer channel name."},
@@ -236,8 +236,8 @@ twitchInfo.set("overXViewer", {
     ]
 });
 
-twitchInfo.set("overXViewerAddY", {
-    name: "overXViewerAddY",
+twitchInfo.set("[Twitch] overXViewerAddY", {
+    name: "[Twitch] overXViewerAddY",
     description: "Tells you if the requested streamer as reached the targeted number of viewers. And then add addViewerCount to the target.",
     args: [
         {channelName: "The requested streamer channel name."},
@@ -246,8 +246,8 @@ twitchInfo.set("overXViewerAddY", {
     ]
 });
 
-twitchInfo.set("overXViewerTimesY", {
-    name: "overXViewerTimesY",
+twitchInfo.set("[Twitch] overXViewerTimesY", {
+    name: "[Twitch] overXViewerTimesY",
     description: "Tells you if the requested streamer as reached the targeted number of viewers. And then multiply the target by addViewerCount.",
     args: [
         {channelName: "The requested streamer channel name."},
