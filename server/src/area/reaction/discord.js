@@ -17,38 +17,46 @@ function sendServerMessages(reactionArgs)
 {
     const text = search.args(reactionArgs, "text");
     const server = search.args(reactionArgs, "serverID");
-    const splitText = text.match(/[\s\S]{1,1950}/g) || [];
 
-    for (const pos in splitText) {
+    if (text.length >= 2000){
+        const splitText = text.match(/[\s\S]{1,1950}/g) || [];
+
+        for (const pos in splitText) {
+            bot.channels.fetch(server).then(chan => {
+                chan.send(splitText[pos]);
+            })
+            .catch(console.error);
+        }
+    }
+    else if (text.length != 0) {
         bot.channels.fetch(server).then(chan => {
-            chan.send(splitText[pos]);
+            chan.send(text);
         })
         .catch(console.error);
     }
-
-    // bot.channels.fetch(server).then(chan => {
-    //     chan.send(text, { split: true });
-    // })
-    // .catch(console.error);
 }
 
 function sendPrivateMessages(reactionArgs)
 {
     const text = search.args(reactionArgs, "text");
     const user = search.args(reactionArgs, "userID");
-    const splitText = text.match(/[\s\S]{1,1950}/g) || [];
 
-    for (const pos in splitText) {
+    if (text.length >= 2000) {
+        const splitText = text.match(/[\s\S]{1,1950}/g) || [];
+
+        for (const pos in splitText) {
+            bot.users.fetch(user).then(chan => {
+                chan.send(splitText[pos]);
+            })
+            .catch(console.error);
+        }
+    }
+    else if (text.length != 0) {
         bot.users.fetch(user).then(chan => {
-            chan.send(splitText[pos]);
+            chan.send(text);
         })
         .catch(console.error);
     }
-
-    // bot.users.fetch(user).then(chan => {
-    //     chan.send(text);
-    // })
-    // .catch(console.error);
 }
 
 module.exports.sendServerMessages = sendServerMessages;
@@ -67,6 +75,7 @@ function checkSendServerMessages(userToken, reactionArgs)
 
     if (search.args(reactionArgs, "serverID") == null)
         return false;
+    search.AddArgs(reactionArgs, "text", "");
     return true;
 }
 
@@ -85,6 +94,7 @@ function checkSendPrivateMessages(userToken, reactionArgs)
 
     if (search.args(reactionArgs, "userID") == null)
         return false;
+    search.AddArgs(reactionArgs, "text", "");
     return true;
 }
 

@@ -46,6 +46,7 @@ function checkSendEmail(userToken, reactionArgs)
     search.initializeArgs(reactionArgs);
     if (search.args(reactionArgs, "recvEmail") == null)
         return false;
+    search.AddArgs(reactionArgs, "text", "");
     return true;
 }
 

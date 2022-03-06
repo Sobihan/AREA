@@ -7,7 +7,7 @@ const youtube = new Client();
 function NewLike(actionArgs, callback, reactionArgs)
 {
     let isSuccess = true;
-    const likes = search.args(actionArgs, "s_likes"); //added by us
+    const server_likes = search.args(actionArgs, "s_likes"); //added by us
     const videoURL = search.args(actionArgs, "videoURL"); //needed
 
     youtube.getVideo(videoURL)
@@ -16,9 +16,9 @@ function NewLike(actionArgs, callback, reactionArgs)
         console.log(e);
     })
     .then((video) => {
-        if (isSuccess == true && video != null && video != undefined && video.likeCount != undefined && video.likeCount != likes) {
+        if (isSuccess == true && video != null && video != undefined && video.likeCount != undefined && video.likeCount != server_likes) {
             search.changeArgs(actionArgs, "s_likes", video.likeCount);
-            search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " like count as changed.\nCurrent like counter is " + video.likeCount + " likes.\n");
+            search.changeArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " like count as changed.\nCurrent like counter is " + video.likeCount + " likes.\n");
             callback(reactionArgs);
         }
     });
@@ -41,7 +41,7 @@ function overXLike(actionArgs, callback, reactionArgs)
         .then((video) => {
             if (isSuccess == true && video != null && video != undefined && video.likeCount != undefined && video.likeCount >= likes) {
                 search.changeArgs(actionArgs, "done", true);
-                search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like as been reached.\nCurrent like counter is " + video.likeCount + " likes.\n");
+                search.changeArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like as been reached.\nCurrent like counter is " + video.likeCount + " likes.\n");
                 callback(reactionArgs);
             }
         });
@@ -63,8 +63,7 @@ function overXLikeAddY(actionArgs, callback, reactionArgs)
         .then((video) => {
             if (isSuccess == true && video != null && video != undefined && video.likeCount != undefined && video.likeCount >= likes) {
                 search.changeArgs(actionArgs, "likes", (likes + addLikes));
-                //search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like as been reached.\n New like counter is " + video.likeCount + " likes.\n");
-                search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like (" + likes + " likes) as been reached.\nThe new target is " + (likes + addLikes) + " likes.\nCurrent like counter is " + video.likeCount + " likes.\n");
+                search.changeArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like (" + likes + " likes) as been reached.\nThe new target is " + (likes + addLikes) + " likes.\nCurrent like counter is " + video.likeCount + " likes.\n");
                 callback(reactionArgs);
             }
         });
@@ -85,7 +84,7 @@ function overXLikeTimesY(actionArgs, callback, reactionArgs)
         .then((video) => {
             if (isSuccess == true && video != null && video != undefined && video.likeCount != undefined && video.likeCount >= likes) {
                 search.changeArgs(actionArgs, "likes", (likes * addLikes));
-                search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like (" + likes + " likes) as been reached.\nThe new target is " + (likes * addLikes) + " likes.\nCurrent like counter is " + video.likeCount + " likes.\n");
+                search.changeArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of like (" + likes + " likes) as been reached.\nThe new target is " + (likes * addLikes) + " likes.\nCurrent like counter is " + video.likeCount + " likes.\n");
                 callback(reactionArgs);
             }
         });
@@ -106,7 +105,7 @@ function newView(actionArgs, callback, reactionArgs)
     .then((video) => {
         if (isSuccess == true && video != null && video != undefined && video.viewCount != undefined && video.viewCount != views) {
             search.changeArgs(actionArgs, "s_views", video.viewCount);
-            search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " view count as changed.\nCurrent view counter is " + video.viewCount + " views.\n");
+            search.changeArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " view count as changed.\nCurrent view counter is " + video.viewCount + " views.\n");
             callback(reactionArgs);
         }
     });
@@ -129,7 +128,7 @@ function overXView(actionArgs, callback, reactionArgs)
         .then((video) => {
             if (isSuccess == true && video != null && video != undefined && video.viewCount != undefined && video.viewCount >= views) {
                 search.changeArgs(actionArgs, "done", true);
-                search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views as been reached.\nCurrent views counter is " + video.viewCount + " views.\n");
+                search.changeArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views as been reached.\nCurrent views counter is " + video.viewCount + " views.\n");
                 callback(reactionArgs);
             }
         });
@@ -151,7 +150,7 @@ function overXViewAddY(actionArgs, callback, reactionArgs)
         .then((video) => {
             if (isSuccess == true && video != null && video != undefined && video.viewCount != undefined && video.viewCount >= views) {
                 search.changeArgs(actionArgs, "views", (views + addViews));
-                search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views (" + views + " views) as been reached.\nThe new target is " + (views + addViews) + " views.\nCurrent views counter is " + video.viewCount + " views.\n");
+                search.changeArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views (" + views + " views) as been reached.\nThe new target is " + (views + addViews) + " views.\nCurrent views counter is " + video.viewCount + " views.\n");
                 callback(reactionArgs);
             }
         });
@@ -172,7 +171,7 @@ function overXViewTimesY(actionArgs, callback, reactionArgs)
         .then((video) => {
             if (isSuccess == true && video != null && video != undefined && video.viewCount != undefined && video.viewCount >= views) {
                 search.changeArgs(actionArgs, "views", (views * addViews));
-                search.AddArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views (" + views + " views) as been reached.\nThe new target is " + (views * addViews) + " views.\nCurrent views counter is " + video.viewCount + " views.\n");
+                search.changeArgs(reactionArgs, "text", "Your chossen Youtube video's tilted: " + video.title + " by " + video.channel.name + " targeted number of views (" + views + " views) as been reached.\nThe new target is " + (views * addViews) + " views.\nCurrent views counter is " + video.viewCount + " views.\n");
                 callback(reactionArgs);
             }
         });
@@ -201,7 +200,7 @@ function newVideos(actionArgs, callback, reactionArgs)
             .then(() => {
                 if (isSuccess_2 == true && channel.videos != undefined && channel.videos.length >= 1 && lastVideoID != channel.videos[0].id){
                     search.changeArgs(actionArgs, "lastVideoID", channel.videos[0].id);
-                    search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as published a new video titled \"" + channel.videos[0].title + "\", it has a duration of " + channel.videos[0].duration + " seconds.\n");
+                    search.changeArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as published a new video titled \"" + channel.videos[0].title + "\", it has a duration of " + channel.videos[0].duration + " seconds.\n");
                     callback(reactionArgs);
                 }
             });
@@ -226,7 +225,7 @@ function overXVideos(actionArgs, callback, reactionArgs)
         .then((channel) => {
             if (isSuccess == true && channel != null && channel != undefined && channel.videoCount != undefined && channel.videoCount >= videoCount) {
                 search.changeArgs(actionArgs, "done", true);
-                search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as reached the targeted number of videos uploaded.\nCurrent video counter is " + channel.videoCount + " video.\n");
+                search.changeArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as reached the targeted number of videos uploaded.\nCurrent video counter is " + channel.videoCount + " video.\n");
                 callback(reactionArgs);
             }
         });
@@ -248,7 +247,7 @@ function overXVideosAddY(actionArgs, callback, reactionArgs)
     .then((channel) => {
         if (isSuccess == true && channel != null && channel != undefined && channel.videoCount != undefined && channel.videoCount >= videoCount) {
             search.changeArgs(actionArgs, "videoCount", (videoCount + addVideoCount));
-            search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as reached the targeted number of videos uploaded (" + videoCount + " videos).\nThe new target is " + (videoCount + addVideoCount) + " videos.\nCurrent video counter is " + channel.videoCount + " videos.\n");
+            search.changeArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as reached the targeted number of videos uploaded (" + videoCount + " videos).\nThe new target is " + (videoCount + addVideoCount) + " videos.\nCurrent video counter is " + channel.videoCount + " videos.\n");
             callback(reactionArgs);
         }
     });
@@ -269,7 +268,7 @@ function overXVideosTimesY(actionArgs, callback, reactionArgs)
     .then((channel) => {
         if (isSuccess == true && channel != null && channel != undefined && channel.videoCount != undefined && channel.videoCount >= videoCount) {
             search.changeArgs(actionArgs, "videoCount", (videoCount * addVideoCount));
-            search.AddArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as reached the targeted number of videos uploaded (" + videoCount + " videos).\nThe new target is " + (videoCount * addVideoCount) + " videos.\nCurrent video counter is " + channel.videoCount + " videos.\n");
+            search.changeArgs(reactionArgs, "text", "Your chossen Youtube channel named: " + channel.name + " as reached the targeted number of videos uploaded (" + videoCount + " videos).\nThe new target is " + (videoCount * addVideoCount) + " videos.\nCurrent video counter is " + channel.videoCount + " videos.\n");
             callback(reactionArgs);
         }
     });

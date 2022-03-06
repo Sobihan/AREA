@@ -28,7 +28,7 @@ function getRandomChuckNorrisFacts(actionArgs, callback, reactionArgs)
             .then((fatcs) => {
                 if (isSuccess_2 == true) {
                     // console.log('getRandomChuckNorrisFacts JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random Chuck Norris facts, remember they are ALWAYS true:\n" + fatcs.value);
+                    search.changeArgs(reactionArgs, "text", "Here is your random Chuck Norris facts, remember they are ALWAYS true:\n" + fatcs.value);
                     callback(reactionArgs);
                 }
                 // else

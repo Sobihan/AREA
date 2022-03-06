@@ -28,7 +28,7 @@ function getRandomShibaInu(actionArgs, callback, reactionArgs)
             .then((shibaInu) => {
                 if (isSuccess_2 == true) {
                     // console.log('getRandomShibaInu JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random picture of a Shiba Inu:\n" + shibaInu);
+                    search.changeArgs(reactionArgs, "text", "Here is your random picture of a Shiba Inu:\n" + shibaInu);
                     callback(reactionArgs);
                 }
                 // else

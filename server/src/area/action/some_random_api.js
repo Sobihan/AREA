@@ -28,7 +28,7 @@ function getSomeRandomRedPanda(actionArgs, callback, reactionArgs)
             .then((red_panda) => {
                 if (isSuccess_2 == true) {
                     // console.log('getRandomRedPanda JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random red panda and a fact about them:\n" + red_panda.fact + "\n" + red_panda.image);
+                    search.changeArgs(reactionArgs, "text", "Here is your random red panda and a fact about them:\n" + red_panda.fact + "\n" + red_panda.image);
                     callback(reactionArgs);
                 }
                 // else
@@ -68,7 +68,7 @@ function getSomeRandomRaccoon(actionArgs, callback, reactionArgs)
             .then((raccoon) => {
                 if (isSuccess_2 == true) {
                     // console.log('getSomeRandomRaccoon JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random raccoon and a fact about them:\n" + raccoon.fact + "\n" + raccoon.image);
+                    search.changeArgs(reactionArgs, "text", "Here is your random raccoon and a fact about them:\n" + raccoon.fact + "\n" + raccoon.image);
                     callback(reactionArgs);
                 }
                 // else
@@ -108,7 +108,7 @@ function getSomeRandomKangaroo(actionArgs, callback, reactionArgs)
             .then((kangaroo) => {
                 if (isSuccess_2 == true) {
                     console.log('getSomeRandomKangaroo JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random kangaroo and a fact about them:\n" + kangaroo.fact + "\n" + kangaroo.image);
+                    search.changeArgs(reactionArgs, "text", "Here is your random kangaroo and a fact about them:\n" + kangaroo.fact + "\n" + kangaroo.image);
                     callback(reactionArgs);
                 }
                 // else
@@ -148,7 +148,7 @@ function getSomeRandomKoala(actionArgs, callback, reactionArgs)
             .then((koala) => {
                 if (isSuccess_2 == true) {
                     // console.log('getSomeRandomKoala JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random koala and a fact about them:\n" + koala.fact + "\n" + koala.image);
+                    search.changeArgs(reactionArgs, "text", "Here is your random koala and a fact about them:\n" + koala.fact + "\n" + koala.image);
                     callback(reactionArgs);
                 }
                 // else
@@ -188,7 +188,7 @@ function getSomeRandomJoke(actionArgs, callback, reactionArgs)
             .then((joke) => {
                 if (isSuccess_2 == true) {
                     // console.log('getSomeRandomJoke JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random joke\n" + joke.joke);
+                    search.changeArgs(reactionArgs, "text", "Here is your random joke\n" + joke.joke);
                     callback(reactionArgs);
                 }
                 // else
@@ -228,7 +228,7 @@ function getSomeRandomAnimePat(actionArgs, callback, reactionArgs)
             .then((pat) => {
                 if (isSuccess_2 == true) {
                     // console.log('getSomeRandomAnimePat JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random gif of anime pat\n" + pat.link);
+                    search.changeArgs(reactionArgs, "text", "Here is your random gif of anime pat\n" + pat.link);
                     callback(reactionArgs);
                 }
                 // else
@@ -268,7 +268,7 @@ function getSomeRandomAnimeWink(actionArgs, callback, reactionArgs)
             .then((wink) => {
                 if (isSuccess_2 == true) {
                     // console.log('getSomeRandomAnimeWink JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random gif of anime wink\n" + wink.link);
+                    search.changeArgs(reactionArgs, "text", "Here is your random gif of anime wink\n" + wink.link);
                     callback(reactionArgs);
                 }
                 // else
@@ -308,7 +308,7 @@ function getSomeRandomAnimeHug(actionArgs, callback, reactionArgs)
             .then((hug) => {
                 if (isSuccess_2 == true) {
                     // console.log('getSomeRandomAnimeHug JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random gif of anime hug\n" + hug.link);
+                    search.changeArgs(reactionArgs, "text", "Here is your random gif of anime hug\n" + hug.link);
                     callback(reactionArgs);
                 }
                 // else
@@ -348,7 +348,7 @@ function getSomeRandomMeme(actionArgs, callback, reactionArgs)
             .then((meme) => {
                 if (isSuccess_2 == true) {
                     // console.log('getSomeRandomMeme JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random meme, it comes from the category: \n" + meme.category + "\n" + meme.caption + "\n" + meme.image);
+                    search.changeArgs(reactionArgs, "text", "Here is your random meme, it comes from the category: \n" + meme.category + "\n" + meme.caption + "\n" + meme.image);
                     callback(reactionArgs);
                 }
                 // else

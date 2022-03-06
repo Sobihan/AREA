@@ -28,7 +28,7 @@ function getRandomFox(actionArgs, callback, reactionArgs)
             .then((fox) => {
                 if (isSuccess_2 == true) {
                     // console.log('getRandomFox JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random picture of a fox:\n" + fox.image);
+                    search.changeArgs(reactionArgs, "text", "Here is your random picture of a fox:\n" + fox.image);
                     callback(reactionArgs);
                 }
                 // else

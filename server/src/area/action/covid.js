@@ -27,7 +27,7 @@ function getUpdatedInfo(actionArgs, callback, reactionArgs)
                 coronavirus.population != undefined && coronavirus.updated != undefined && coronavirus.updated > updated) {
 
                 search.changeArgs(actionArgs, "updated", coronavirus.updated)
-                search.AddArgs(reactionArgs, "text", "Please be aware that those informations should be taken with a grain of salt.\nYour chosen country: " + coronavirus.country + ".\nAs " + coronavirus.cases + " cases with " + coronavirus.todayCases + " today, " + coronavirus.deaths + " deaths with " + coronavirus.todayDeaths + " today and " + coronavirus.recovered + " peoples recovered with " + coronavirus.todayRecovered + " today.\nThey currently have " + coronavirus.active + " active cases from wich " + coronavirus.critical + " are critical.\nThey have a population of " + coronavirus.population + " people.\nThos information comes from disease.sh.");
+                search.changeArgs(reactionArgs, "text", "Please be aware that those informations should be taken with a grain of salt.\nYour chosen country: " + coronavirus.country + ".\nAs " + coronavirus.cases + " cases with " + coronavirus.todayCases + " today, " + coronavirus.deaths + " deaths with " + coronavirus.todayDeaths + " today and " + coronavirus.recovered + " peoples recovered with " + coronavirus.todayRecovered + " today.\nThey currently have " + coronavirus.active + " active cases from wich " + coronavirus.critical + " are critical.\nThey have a population of " + coronavirus.population + " people.\nThos information comes from disease.sh.");
                 callback(reactionArgs);
             }
         }
@@ -58,7 +58,7 @@ function getOverXActive(actionArgs, callback, reactionArgs)
                 coronavirus.updated > updated && coronavirus.active >= threshold) {
 
                 search.changeArgs(actionArgs, "updated", coronavirus.updated)
-                search.AddArgs(reactionArgs, "text", "Your threshold (" + threshold + " active cases) for " + coronavirus.country + " as been reached and we have new informations about the covid-19 there.\nPlease be aware that those informations should be taken with a grain of salt.\nThey have " + coronavirus.cases + " cases with " + coronavirus.todayCases + " today, " + coronavirus.deaths + " deaths with " + coronavirus.todayDeaths + " today, " + coronavirus.recovered + " peoples recovered with " + coronavirus.todayRecovered + " today.\nThey currently have " + coronavirus.active + " active cases from wich " + coronavirus.critical + " are critical.\nThey have a population of " + coronavirus.population + " people.\nThos information comes from disease.sh.");
+                search.changeArgs(reactionArgs, "text", "Your threshold (" + threshold + " active cases) for " + coronavirus.country + " as been reached and we have new informations about the covid-19 there.\nPlease be aware that those informations should be taken with a grain of salt.\nThey have " + coronavirus.cases + " cases with " + coronavirus.todayCases + " today, " + coronavirus.deaths + " deaths with " + coronavirus.todayDeaths + " today, " + coronavirus.recovered + " peoples recovered with " + coronavirus.todayRecovered + " today.\nThey currently have " + coronavirus.active + " active cases from wich " + coronavirus.critical + " are critical.\nThey have a population of " + coronavirus.population + " people.\nThos information comes from disease.sh.");
                 callback(reactionArgs);
             }
         }
@@ -89,7 +89,7 @@ function getOverXCritical(actionArgs, callback, reactionArgs)
                 coronavirus.updated > updated && coronavirus.critical >= threshold) {
 
                 search.changeArgs(actionArgs, "updated", coronavirus.updated)
-                search.AddArgs(reactionArgs, "text", "Your threshold (" + threshold + " critical cases) for " + coronavirus.country + " as been reached and we have new informations about the covid-19 there.\nPlease be aware that those informations should be taken with a grain of salt.\nThey have " + coronavirus.cases + " cases with " + coronavirus.todayCases + " today, " + coronavirus.deaths + " deaths with " + coronavirus.todayDeaths + " today, " + coronavirus.recovered + " peoples recovered with " + coronavirus.todayRecovered + " today.\nThey currently have " + coronavirus.active + " active cases from wich " + coronavirus.critical + " are critical.\nThey have a population of " + coronavirus.population + " people.\nThos information comes from disease.sh.");
+                search.changeArgs(reactionArgs, "text", "Your threshold (" + threshold + " critical cases) for " + coronavirus.country + " as been reached and we have new informations about the covid-19 there.\nPlease be aware that those informations should be taken with a grain of salt.\nThey have " + coronavirus.cases + " cases with " + coronavirus.todayCases + " today, " + coronavirus.deaths + " deaths with " + coronavirus.todayDeaths + " today, " + coronavirus.recovered + " peoples recovered with " + coronavirus.todayRecovered + " today.\nThey currently have " + coronavirus.active + " active cases from wich " + coronavirus.critical + " are critical.\nThey have a population of " + coronavirus.population + " people.\nThos information comes from disease.sh.");
                 callback(reactionArgs);
             }
         }

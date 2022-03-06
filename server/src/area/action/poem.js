@@ -28,7 +28,7 @@ function getRandomPoem(actionArgs, callback, reactionArgs)
             .then((poems) => {
                 if (isSuccess_2 == true) {
                     // console.log('getRandomPoem JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random poem:\n\n\nTitled: " + poems[0].title + "\n\n" + poems[0].content + "\nBy: " + poems[0].poet.name);
+                    search.changeArgs(reactionArgs, "text", "Here is your random poem:\n\n\nTitled: " + poems[0].title + "\n\n" + poems[0].content + "\nBy: " + poems[0].poet.name);
                     callback(reactionArgs);
                 }
                 // else

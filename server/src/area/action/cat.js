@@ -28,7 +28,7 @@ function getRandomCat(actionArgs, callback, reactionArgs)
             .then((cat) => {
                 if (isSuccess_2 == true) {
                     // console.log('getRandomCat JSON SUCESSFUL');
-                    search.AddArgs(reactionArgs, "text", "Here is your random picture of a cat:\n" + cat[0].url);
+                    search.changeArgs(reactionArgs, "text", "Here is your random picture of a cat:\n" + cat[0].url);
                     callback(reactionArgs);
                 }
                 // else

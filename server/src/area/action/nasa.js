@@ -29,7 +29,7 @@ function getAPOD(actionArgs, callback, reactionArgs)
                 if (isSuccess_2 == true) {
                     // console.log('getAPOD JSON SUCESSFUL');
                     //search.AddArgs(reactionArgs, "text", "Here is your astronomy picture of the day:\n\n\nTitled: " + apod.title + "\n" + apod.hdurl + "\n\n\n" + "Explanation: " + apod.explanation + "\n");
-                    search.AddArgs(reactionArgs, "text", "Here is your astronomy picture of the day:\n\n\nTitled: " + apod.title + "\n\n" + "Explanation: " + apod.explanation + "\n" + apod.hdurl);
+                    search.changeArgs(reactionArgs, "text", "Here is your astronomy picture of the day:\n\n\nTitled: " + apod.title + "\n\n" + "Explanation: " + apod.explanation + "\n" + apod.hdurl);
                     callback(reactionArgs);
                 }
                 // else

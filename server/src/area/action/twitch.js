@@ -20,12 +20,12 @@ function getStream(actionArgs, callback, reactionArgs)
         if (isSuccess == true) {
             if (!live && twitch.data[0] != undefined && twitch.data[0].game_name != undefined) {
                 search.changeArgs(actionArgs, "live", true);
-                search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " is streamimg.\nThey are currently playing " + twitch.data[0].game_name + ".");
+                search.changeArgs(reactionArgs, "text", "The streamer named " + channelName + " is streamimg.\nThey are currently playing " + twitch.data[0].game_name + ".");
                 callback(reactionArgs);
             }
             else if (live && twitch.data[0] == undefined) {
                 search.changeArgs(actionArgs, "live", false);
-                search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " is no longer streamimg.\n");
+                search.changeArgs(reactionArgs, "text", "The streamer named " + channelName + " is no longer streamimg.\n");
                 callback(reactionArgs);
             }
         }
@@ -54,7 +54,7 @@ function overXViewer(actionArgs, callback, reactionArgs)
             if (isSuccess == true) {
                 if (!done && twitch.data[0] != undefined && twitch.data[0].viewer_count != undefined && twitch.data[0].viewer_count >= viewerCount) {
                     search.changeArgs(actionArgs, "done", true);
-                    search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " as reached the targeted viewer count of " + viewerCount + " viewers.\nThey currently have " + twitch.data[0].viewer_count + " viewers.");
+                    search.changeArgs(reactionArgs, "text", "The streamer named " + channelName + " as reached the targeted viewer count of " + viewerCount + " viewers.\nThey currently have " + twitch.data[0].viewer_count + " viewers.");
                     callback(reactionArgs);
                 }
             }
@@ -83,7 +83,7 @@ function overXViewerAddY(actionArgs, callback, reactionArgs)
         if (isSuccess == true) {
             if (twitch.data[0] != undefined && twitch.data[0].viewer_count != undefined && twitch.data[0].viewer_count >= viewerCount) {
                 search.changeArgs(actionArgs, "viewerCount", (viewerCount + addViewerCount));
-                search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " as reached the targeted viewer count of " + viewerCount + " viewers.\nThey currently have " + twitch.data[0].viewer_count + " viewers.\nThe new target is " + (viewerCount + addViewerCount) + " viewers");
+                search.changeArgs(reactionArgs, "text", "The streamer named " + channelName + " as reached the targeted viewer count of " + viewerCount + " viewers.\nThey currently have " + twitch.data[0].viewer_count + " viewers.\nThe new target is " + (viewerCount + addViewerCount) + " viewers");
                 callback(reactionArgs);
             }
         }
@@ -111,7 +111,7 @@ function overXViewerTimesY(actionArgs, callback, reactionArgs)
         if (isSuccess == true) {
             if (twitch.data[0] != undefined && twitch.data[0].viewer_count != undefined && twitch.data[0].viewer_count >= viewerCount) {
                 search.changeArgs(actionArgs, "viewerCount", (viewerCount * addViewerCount));
-                search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " as reached the targeted viewer count of " + viewerCount + " viewers.\nThey currently have " + twitch.data[0].viewer_count + " viewers.\nThe new target is " + (viewerCount * addViewerCount) + " viewers");
+                search.changeArgs(reactionArgs, "text", "The streamer named " + channelName + " as reached the targeted viewer count of " + viewerCount + " viewers.\nThey currently have " + twitch.data[0].viewer_count + " viewers.\nThe new target is " + (viewerCount * addViewerCount) + " viewers");
                 callback(reactionArgs);
             }
         }
@@ -139,7 +139,7 @@ function overXViewerTimesY(actionArgs, callback, reactionArgs)
 //     .then((twitch) => {
 //         if (isSuccess == true) {
 //             if (twitch.data[0] != undefined && twitch.data[0].game_name != undefined && twitch.data[0].game_name == wantedGame) {
-//                 search.AddArgs(reactionArgs, "text", "The streamer named " + channelName + " is streaming the game you wish to see, " + wantedGame + ".");
+//                 search.changeArgs(reactionArgs, "text", "The streamer named " + channelName + " is streaming the game you wish to see, " + wantedGame + ".");
 //                 callback(reactionArgs);
 //             }
 //         }
