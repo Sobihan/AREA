@@ -30,14 +30,16 @@ function sendServerMessages(reactionArgs)
 
         for (const pos in splitText) {
             bot.channels.fetch(server).then(chan => {
-                chan.send(splitText[pos]);
+                chan.send(splitText[pos])
+                .catch(console.error);
             })
             .catch(console.error);
         }
     }
     else if (text.length != 0 && bot_on) {
         bot.channels.fetch(server).then(chan => {
-            chan.send(text);
+            chan.send(text)
+            .catch(console.error);
         })
         .catch(console.error);
     }
@@ -53,14 +55,16 @@ function sendPrivateMessages(reactionArgs)
 
         for (const pos in splitText) {
             bot.users.fetch(user).then(chan => {
-                chan.send(splitText[pos]);
+                chan.send(splitText[pos])
+                .catch(console.error);
             })
             .catch(console.error);
         }
     }
     else if (text.length != 0 && bot_on) {
         bot.users.fetch(user).then(chan => {
-            chan.send(text);
+            chan.send(text)
+            .catch(console.error);
         })
         .catch(console.error);
     }
