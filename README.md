@@ -1,7 +1,13 @@
-# area
+# AREA
+
+## Introduction
+
+AREA is an Epitech school project. We had to recreate the environment of IFTTT, with a backend, a web frontend and a module frontend.
+
 ## **Authors**
 
 - adrien.moreau@epitech.eu
+- sobihan.mahedran@epitech.eu
 
 ### **QuickStart**
 
